@@ -73,7 +73,7 @@ class DriverReachFormie extends Webhook
         }
 
         // Get phone number
-        $data['cellPhone'] = ($data['cellPhone']['number'] ?? '');
+        $data['cellPhone'] = ($data['cellPhone'] ?? '');
 
         // Get driver ID
         $driverId = $data['webPageUrl'].'?driverId='.$submission->id;
