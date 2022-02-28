@@ -47,10 +47,7 @@ class TenstreetFormie extends Webhook
     public function generatePayloadValues(Submission $submission): array
     {
         // Get form model
-//        $formId = Craft::$app->getRequest()->getParam('formId');
-
-        // Short App
-        $formId = 8004;
+        $formId = Craft::$app->getRequest()->getParam('formId');
 
         /** @var Form $form */
         $form = Formie::$plugin->getForms()->getFormById($formId);
