@@ -64,6 +64,16 @@ class TenstreetFormie extends Webhook
             $label = $field->getAttributeLabel($field->handle);
             $labels[$field->handle] = $label;
 
+            // Fields with default values
+            $useDefaults = [
+                'atsCompanyId',
+                'companyName',
+            ];
+
+            // Fallback to default value if necessary
+            if (in_array($field->handle, $useDefaults) && !$data[$field->handle]) {
+                $data[$field->handle] = $field->defaultValue;
+            }
         }
 
         // Get phone number
