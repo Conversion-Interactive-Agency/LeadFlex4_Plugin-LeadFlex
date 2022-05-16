@@ -104,7 +104,7 @@ class TenstreetFormie extends Webhook
                 'PrimaryPhone' => $this->_cleanPhone($data['cellPhone']),
                 // 'CommercialDriversLicense' => $data['cdlA'],
                 // 'LicenseClass' => $licenseClass,
-                'OptIn' => ($data['optIn'] ? 'Yes' : 'No'),
+                // 'OptIn' => ($data['optIn'] ? 'Yes' : 'No'),
             ],
         ];
 
@@ -113,7 +113,7 @@ class TenstreetFormie extends Webhook
             'companyName','atsCompanyId','referrerValue',
             'firstName','lastName',
             'city','state','zipCode',
-            'email','cellPhone','optIn',
+            'email','cellPhone',
         ];
 
         // Loop through form data
