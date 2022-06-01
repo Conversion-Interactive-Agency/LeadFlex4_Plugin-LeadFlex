@@ -13,12 +13,12 @@ class TenstreetFormie extends Webhook
 
     public static function displayName(): string
     {
-        return Craft::t('formie', 'Generic ATS');
+        return Craft::t('formie', 'Ebe ATS');
     }
 
     public function getDescription(): string
     {
-        return Craft::t('formie', 'This is a generic ATS webhook integration.');
+        return Craft::t('formie', 'This is a Ebe ATS webhook integration.');
     }
 
     public function getIconUrl(): string
