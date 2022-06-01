@@ -3,6 +3,7 @@ namespace conversionia\leadflex;
 
 use conversionia\leadflex\webhooks\DriverReachFormie;
 use conversionia\leadflex\webhooks\TenstreetFormie;
+use conversionia\leadflex\webhooks\EbeFormie;
 use verbb\formie\events\RegisterIntegrationsEvent;
 use verbb\formie\services\Integrations;
 use yii\base\Event;
@@ -31,6 +32,7 @@ class LeadFlex extends Module
             static function(RegisterIntegrationsEvent $event) {
                 $event->webhooks[] = TenstreetFormie::class;
                 $event->webhooks[] = DriverReachFormie::class;
+                $event->webhooks[] = EbeFormie::class;
             }
         );
     }
