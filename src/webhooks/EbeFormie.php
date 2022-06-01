@@ -7,7 +7,7 @@ use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
 
-class TenstreetFormie extends Webhook
+class EbeFormie extends Webhook
 {
     public $webhook;
 
