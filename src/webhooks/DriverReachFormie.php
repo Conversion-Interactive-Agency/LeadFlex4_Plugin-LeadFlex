@@ -105,7 +105,7 @@ class DriverReachFormie extends Webhook
                 'PrimaryPhone' => $this->_cleanPhone($data['cellPhone']),
                 'CommercialDriversLicense' => $data['cdlA'],
                 'LicenseClass' => $licenseClass,
-                'OptIn' => ($data['optIn'] ? 'Yes' : 'No'),
+                'OptIn' => ($data['optIn'] ?? null ?: 'No'),
             ],
         ];
 
