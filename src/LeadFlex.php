@@ -1,6 +1,8 @@
 <?php
 namespace conversionia\leadflex;
 
+use Craft;
+
 use conversionia\leadflex\webhooks\DriverReachFormie;
 use conversionia\leadflex\webhooks\TenstreetFormie;
 use conversionia\leadflex\webhooks\EbeFormie;
@@ -12,11 +14,24 @@ use yii\base\Module;
 class LeadFlex extends Module
 {
     /**
+     * @var string
+     */
+    private $controllerNamespace;
+
+    /**
      * Initializes the plugin.
      */
     public function init()
     {
         parent::init();
+
+        // Set alias for this module
+        Craft::setAlias('@conversionia', __DIR__);
+
+        // Adjust controller namespace for console requests
+        if (Craft::$app->getRequest()->getIsConsoleRequest()) {
+            $this->controllerNamespace = 'conversionia\\controllers';
+        }
 
         $this->_registerFormieIntegrations();
     }
