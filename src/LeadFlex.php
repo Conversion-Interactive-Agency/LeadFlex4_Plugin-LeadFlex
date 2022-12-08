@@ -16,7 +16,7 @@ class LeadFlex extends Module
     /**
      * @var string
      */
-    private $controllerNamespace;
+    public $controllerNamespace;
 
     /**
      * Initializes the plugin.
