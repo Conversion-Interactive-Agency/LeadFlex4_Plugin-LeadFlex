@@ -2,10 +2,17 @@
 namespace conversionia\leadflex\webhooks;
 
 use Craft;
+use craft\base\Volume;
 use verbb\formie\elements\Form;
 use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
+
+// Volume Types
+use craft\base\LocalVolumeInterface;
+
+// todo: Build postFowarinding from Digital Ocean;
+// use vaersaagod\dospaces\Volume as DigitalOceanVolume;
 
 class TenstreetFormie extends Webhook
 {
@@ -48,13 +55,17 @@ class TenstreetFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
+        $fields = $form->getFields();
+        $fileUploadFields = [];
 
         // Initialize form data
         $data = [];
         $labels = [];
 
+        $uploads = [];
+
         // Get every submitted field value
-        foreach ($form->getFields() as $field) {
+        foreach ($fields as $field) {
 
             // Get data
             $value = $submission->getFieldValue($field->handle);
@@ -70,6 +81,22 @@ class TenstreetFormie extends Webhook
                 'companyName',
             ];
 
+            //Collect File Upload Field Types
+            if ($field->getType() === 'verbb\formie\fields\formfields\FileUpload') {
+                $fileUploadFields[] = $field->handle;
+                $upload['handle'] = $field->handle;
+                $upload['name'] = $field->name;
+                $assets = $submission->getFieldValue($field->handle)->all();
+                foreach ($assets as $asset)
+                {
+                    $postAsset['filename'] = $asset->filename;
+                    $postAsset['title'] = $asset->title;
+                    $postAsset['kind'] = $asset->kind;
+                    $postAsset['data'] = $asset->getDataUrl();
+                    $uploads[] = $postAsset;
+                }
+            }
+
             // Fallback to default value if necessary
             if (in_array($field->handle, $useDefaults) && !$data[$field->handle]) {
                 $data[$field->handle] = $field->defaultValue;
@@ -84,6 +111,14 @@ class TenstreetFormie extends Webhook
 
         // Get license class
         // $licenseClass = ('Yes' === $data['cdlA'] ? 'CDL-A' : '');
+
+        // Data has already been assigned
+        $requiredFields = [
+            'companyName','atsCompanyId','referrerValue',
+            'firstName','lastName',
+            'city','state','zipCode',
+            'email','cellPhone','optIn',
+        ];
 
         // Compile JSON data
         $json = [
@@ -108,23 +143,19 @@ class TenstreetFormie extends Webhook
             ],
         ];
 
-        // Data has already been assigned
-        $used = [
-            'companyName','atsCompanyId','referrerValue',
-            'firstName','lastName',
-            'city','state','zipCode',
-            'email','cellPhone','optIn',
-        ];
+        if (!empty($uploads)){
+            $json['uploads'] = $uploads;
+        }
+
+        $usedFields = array_merge($requiredFields, $fileUploadFields);
 
         // Loop through form data
         foreach ($data as $handle => $value) {
-
             // If data point was not used, add to JSON data
-            if (!in_array($handle, $used)) {
+            if (!in_array($handle, $usedFields)) {
                 $label = ($labels[$handle] ?? $handle);
                 $json[$label] = $value;
             }
-
         }
 
         // Return JSON data
