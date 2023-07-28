@@ -6,6 +6,7 @@ use Craft;
 use conversionia\leadflex\webhooks\DriverReachFormie;
 use conversionia\leadflex\webhooks\TenstreetFormie;
 use conversionia\leadflex\webhooks\EbeFormie;
+use conversionia\leadflex\webhooks\UkgFormie;
 use verbb\formie\events\RegisterIntegrationsEvent;
 use verbb\formie\services\Integrations;
 use yii\base\Event;
@@ -48,6 +49,7 @@ class LeadFlex extends Module
                 $event->webhooks[] = TenstreetFormie::class;
                 $event->webhooks[] = DriverReachFormie::class;
                 $event->webhooks[] = EbeFormie::class;
+                $event->webhooks[] = UkgFormie::class;
             }
         );
     }
