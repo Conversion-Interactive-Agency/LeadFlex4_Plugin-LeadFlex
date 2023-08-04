@@ -7,6 +7,7 @@ use conversionia\leadflex\webhooks\DriverReachFormie;
 use conversionia\leadflex\webhooks\TenstreetFormie;
 use conversionia\leadflex\webhooks\EbeFormie;
 use conversionia\leadflex\webhooks\UkgFormie;
+
 use verbb\formie\events\RegisterIntegrationsEvent;
 use verbb\formie\services\Integrations;
 use yii\base\Event;
@@ -31,7 +32,7 @@ class LeadFlex extends Module
 
         // Adjust controller namespace for console requests
         if (Craft::$app->getRequest()->getIsConsoleRequest()) {
-            $this->controllerNamespace = 'conversionia\\controllers';
+            $this->controllerNamespace = 'conversionia\leadflex\console\controllers';
         }
 
         $this->_registerFormieIntegrations();
