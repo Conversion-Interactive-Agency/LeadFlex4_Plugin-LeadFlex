@@ -16,11 +16,6 @@ class GeosheetExporter extends ElementExporter
         return 'GeoSheet';
     }
 
-    private function getLabel($property, $fallbackProperty)
-    {
-        return !empty($property->value) ? $property->label : $fallbackProperty->label;
-    }
-
     public function export(ElementQueryInterface $query): array
     {
         $results = [];
@@ -35,23 +30,23 @@ class GeosheetExporter extends ElementExporter
             $fallback = $element->defaultJobDescription[0] ?? '';
 
             $campaign = !empty($element->assignedCampaign[0])
-                ? $element->assignedCampaign[0]
+                ? $element->assignedCampaign[0]->title
                 : '';
 
 
             /** @var Element $element */
             $results[] = [
                 'ID' => $element->id,
-                'Title' => $element->title ?? $fallback->title,
+                'Title' => $element->adHeadline ?? $fallback->adHeadline,
                 'Status' => ucfirst($element->status),
                 'URL' => $element->getUrl(),
-                'Trailer Type' => $this->getLabel($element->trailerType, $fallback->trailerType),
-                'Driver Type' => $this->getLabel($element->driverType, $fallback->driverType),
-                'Route Type' => $this->getLabel($element->jobType, $fallback->jobType),
-                'Job Type' => $this->getLabel($element->jobType, $fallback->jobType),
+                'Trailer Type' => $element->trailerType->label ?? '',
+                'Driver Type' => $element->driverType->label ?? '',
+                'Route Type' => $element->jobType->label ?? '',
+                'Job Type' => $element->jobType->label ?? '',
                 'Assigned Campaign' => $campaign,
                 'Hiring Radius' => $element->hiringRadius ?? $fallback->hiringRadius,
-                'Google Jobs Title' => $element->googleJobsTitle ?? $fallback->googleJobsTitle,
+                'Google Jobs Title' => $element->googleJobsTitle ?? '',
                 'Ad Headline' => $element->adHeadline ?? $fallback->adHeadline,
                 'Location' => $element->location->formatted,
                 'City' => $element->location->city,
