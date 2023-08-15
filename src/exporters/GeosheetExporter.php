@@ -33,11 +33,14 @@ class GeosheetExporter extends ElementExporter
                 ? $element->assignedCampaign[0]->title
                 : '';
 
+            if ($fallback === '') {
+                echo 'Fail';
+            }
 
             /** @var Element $element */
             $results[] = [
                 'ID' => $element->id,
-                'Title' => $element->adHeadline ?? $fallback->adHeadline,
+                'Title' => $element->adHeadline ?? $fallback->adHeadline ?? '',
                 'Status' => ucfirst($element->status),
                 'URL' => $element->getUrl(),
                 'Trailer Type' => $element->trailerType->label ?? '',
@@ -45,16 +48,16 @@ class GeosheetExporter extends ElementExporter
                 'Route Type' => $element->jobType->label ?? '',
                 'Job Type' => $element->jobType->label ?? '',
                 'Assigned Campaign' => $campaign,
-                'Hiring Radius' => $element->hiringRadius ?? $fallback->hiringRadius,
+                'Hiring Radius' => $element->hiringRadius ?? $fallback->hiringRadius ?? '',
                 'Google Jobs Title' => $element->googleJobsTitle ?? '',
-                'Ad Headline' => $element->adHeadline ?? $fallback->adHeadline,
-                'Location' => $element->location->formatted,
-                'City' => $element->location->city,
-                'State' => $element->location->state,
-                'Zip' => $element->location->zip,
+                'Ad Headline' => $element->adHeadline ?? $fallback->adHeadline ?? '',
+                'Location' => $element->location->formatted ?? '',
+                'City' => $element->location->city ?? '',
+                'State' => $element->location->state ?? '',
+                'Zip' => $element->location->zip ?? '',
                 'Custom UTM Tag' => $element->customUtmTag ?? '',
                 'External Job ID' => $element->externalJobId ?? '',
-                'Pay' => $element->pay ?? $fallback->pay,
+                'Pay' => $element->pay ?? $fallback->pay ?? '',
             ];
         }
 
