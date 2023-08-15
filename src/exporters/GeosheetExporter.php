@@ -33,10 +33,6 @@ class GeosheetExporter extends ElementExporter
                 ? $element->assignedCampaign[0]->title
                 : '';
 
-            if ($fallback === '') {
-                echo 'Fail';
-            }
-
             /** @var Element $element */
             $results[] = [
                 'ID' => $element->id,
