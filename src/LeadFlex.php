@@ -52,6 +52,7 @@ class LeadFlex extends Module
         // Adjust controller namespace for console requests
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'conversionia\leadflex\console\controllers';
+            $this->_registerConsoleEventListeners();
         } else {
             if ($request->getIsCpRequest()) {
                 Craft::$app->view->registerAssetBundle(ControlPanel::class);
@@ -63,10 +64,32 @@ class LeadFlex extends Module
         $this->_registerSaveEntryEvents();
     }
 
+    private function _registerConsoleEventListeners()
+    {
+        Event::on(Process::class, Process::EVENT_STEP_BEFORE_PARSE_CONTENT, [$this, 'beforeParseContent']);
+    }
+
     private function _registerSaveEntryEvents()
     {
         Event::on(Entry::class, Element::EVENT_BEFORE_SAVE, [$this, 'entryBeforeSave']);
         Event::on(Entry::class, Element::EVENT_AFTER_SAVE, [$this, 'entryAfterSave']);
+    }
+
+    /**
+     * @throws InvalidConfigException
+     * Removing the slug field from the feed mapping for the jobs section
+     */
+    public function beforeParseContent(FeedProcessEvent $event)
+    {
+        $entry = $event->element;
+        if(!$entry instanceof Entry){
+            return false;
+        }
+
+        $handle = strtolower($entry->section->handle);
+        if (!$entry->isNewForSite && $handle == $this->key) {
+            unset($event->feed['fieldMapping']['slug']);
+        }
     }
 
     function entryBeforeSave(ModelEvent $event)
