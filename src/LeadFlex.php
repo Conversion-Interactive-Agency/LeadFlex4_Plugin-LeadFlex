@@ -102,9 +102,6 @@ class LeadFlex extends Module
             $location = $entry->getFieldValue('location');
             $isStatewide = empty($location['city']);
             $event->sender->setFieldValue('statewideJob', $isStatewide);
-
-            // Temporary Capture of old slug
-            $entry->setFieldValue('oldSlug', $entry->slug);
         }
     }
 
