@@ -103,6 +103,16 @@ class LeadFlex extends Module
             $isStatewide = empty($location['city']);
             $event->sender->setFieldValue('statewideJob', $isStatewide);
         }
+
+        // If it has an ID and the slug is not protected, then we can update the slug.
+        if ($validated && isset($entry->id) && !$entry->getFieldValue('protectedSlug')) {
+            $entry->setFieldValue('oldSlug', $entry->slug);
+            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
+            $titleText = !empty($entry->adHeadline) ? $entry->adHeadline : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
+            $title = StringHelper::slugify($titleText);
+            $entry->slug = $title . "-" . $entry->id;
+            $entry->setFieldValue('protectedSlug', true);
+        }
     }
 
     /**
