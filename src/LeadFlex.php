@@ -87,7 +87,7 @@ class LeadFlex extends Module
         }
 
         $handle = strtolower($entry->section->handle);
-        if ($entry->id && $handle == $this->key) {
+        if (isset($entry->id) && $handle == $this->key) {
             unset($event->feed['fieldMapping']['title']);
             unset($event->feed['fieldMapping']['slug']);
             return $event;
@@ -100,21 +100,13 @@ class LeadFlex extends Module
         $handle = strtolower($entry->section->handle);
         $validated = $handle === $this->key;
 
-        if ($validated) {
-            $location = $entry->getFieldValue('location');
-            $isStatewide = empty($location['city']);
-            $event->sender->setFieldValue('statewideJob', $isStatewide);
+        if (!$validated) {
+            return;
         }
 
-        // If it has an ID and the slug is not protected, then we can update the slug.
-        if ($validated && isset($entry->id) && !$entry->getFieldValue('protectedSlug')) {
-            $entry->setFieldValue('oldSlug', $entry->slug);
-            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
-            $titleText = !empty($entry->adHeadline) ? $entry->adHeadline : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
-            $title = StringHelper::slugify($titleText);
-            $entry->slug = $title . "-" . $entry->id;
-            $entry->setFieldValue('protectedSlug', true);
-        }
+        $location = $entry->getFieldValue('location');
+        $isStatewide = empty($location['city']);
+        $event->sender->setFieldValue('statewideJob', $isStatewide);
     }
 
     /**
@@ -126,17 +118,19 @@ class LeadFlex extends Module
     {
         $entry = $event->sender;
         $handle = strtolower($entry->section->handle);
-        $validated = $handle === $this->key && $entry->firstSave;
+        $validated = $handle === $this->key;
 
-        if ($validated) {
-            $id = $entry->id;
+        if (!$validated) {
+            return;
+        }
 
+        if (!$entry->getFieldValue('protectedSlug') ) {
             $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
             $titleText = !empty($entry->adHeadline) ? $entry->adHeadline : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
             $title = StringHelper::slugify($titleText);
 
-            $entry->slug = $title . "-" . $id;
-            $entry->firstSave = false;
+            $entry->slug = $title . "-" .  $entry->id;
+            $entry->setFieldValue('protectedSlug', true);
             Craft::$app->elements->saveElement($entry);
         }
     }
