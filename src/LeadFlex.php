@@ -87,8 +87,10 @@ class LeadFlex extends Module
         }
 
         $handle = strtolower($entry->section->handle);
-        if (!$entry->isNewForSite && $handle == $this->key) {
+        if ($entry->id && $handle == $this->key) {
+            unset($event->feed['fieldMapping']['title']);
             unset($event->feed['fieldMapping']['slug']);
+            return $event;
         }
     }
 
