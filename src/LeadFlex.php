@@ -121,11 +121,12 @@ class LeadFlex extends Module
         $validated = $handle === $this->key;
 
         if ($validated) {
-            if (!$entry->getFieldValue('protectedSlug')) {
-                $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
-                $titleText = !empty($entry->adHeadline) ? $entry->adHeadline : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : (!empty($defaultJob->title) ? $defaultJob->title : 'job'));
+            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
+            $isProtected = $entry->getFieldValue('protectedSlug');
+            if (!empty($defaultJob) && !$isProtected) {
+                $titleText = !empty($entry->adHeadline) ? $entry->adHeadline
+                    : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
                 $title = StringHelper::slugify($titleText);
-
                 $entry->slug = $title . "-" . $entry->id;
                 $entry->setFieldValue('protectedSlug', true);
                 Craft::$app->elements->saveElement($entry);
