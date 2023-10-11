@@ -53,11 +53,11 @@ class LeadFlex extends Module
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'conversionia\leadflex\console\controllers';
             $this->_registerConsoleEventListeners();
-        } else {
-            if ($request->getIsCpRequest()) {
-                Craft::$app->view->registerAssetBundle(ControlPanel::class);
-                $this->_registerExporters();
-            }
+        }
+
+        if ($request->getIsCpRequest()) {
+            Craft::$app->view->registerAssetBundle(ControlPanel::class);
+            $this->_registerExporters();
         }
 
         $this->_registerFormieIntegrations();
