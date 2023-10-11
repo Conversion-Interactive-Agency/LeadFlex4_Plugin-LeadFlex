@@ -31,7 +31,7 @@ use craft\helpers\StringHelper;
 
 class LeadFlex extends Module
 {
-    public $key = 'jobs';
+    public $section = 'jobs';
     /**
      * @var string
      */
@@ -82,12 +82,11 @@ class LeadFlex extends Module
     public function beforeParseContent(FeedProcessEvent $event)
     {
         $entry = $event->element;
-        if(!$entry instanceof Entry){
+        if (!$this->isJobEntry($entry)) {
             return false;
         }
-
-        $handle = strtolower($entry->section->handle);
-        if (isset($entry->id) && $handle == $this->key) {
+        $isExistingElement = $entry->id;
+        if ($isExistingElement) {
             unset($event->feed['fieldMapping']['title']);
             unset($event->feed['fieldMapping']['slug']);
             return $event;
@@ -97,10 +96,8 @@ class LeadFlex extends Module
     function entryBeforeSave(ModelEvent $event)
     {
         $entry = $event->sender;
-        $handle = strtolower($entry->section->handle);
-        $validated = $handle === $this->key;
-
-        if (!$validated) {
+        $fields = ['location','statewideJob'];
+        if (!$this->doFieldsExists($entry, $fields)) {
             return;
         }
 
@@ -117,20 +114,20 @@ class LeadFlex extends Module
     function entryAfterSave(ModelEvent $event)
     {
         $entry = $event->sender;
-        $handle = strtolower($entry->section->handle);
-        $validated = $handle === $this->key;
+        $fields = ['protectedSlug','defaultJobDescription','protectedSlug'];
+        if (!$this->doFieldsExists($entry, $fields)) {
+            return;
+        }
 
-        if ($validated) {
-            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
-            $isProtected = $entry->getFieldValue('protectedSlug');
-            if (!empty($defaultJob) && !$isProtected) {
-                $titleText = !empty($entry->adHeadline) ? $entry->adHeadline
-                    : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
-                $title = StringHelper::slugify($titleText);
-                $entry->slug = $title . "-" . $entry->id;
-                $entry->setFieldValue('protectedSlug', true);
-                Craft::$app->elements->saveElement($entry);
-            }
+        $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
+        $isProtected = $entry->getFieldValue('protectedSlug');
+        if (!empty($defaultJob) && !$isProtected) {
+            $titleText = !empty($entry->adHeadline) ? $entry->adHeadline
+                : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
+            $title = StringHelper::slugify($titleText);
+            $entry->slug = $title . "-" . $entry->id;
+            $entry->setFieldValue('protectedSlug', true);
+            Craft::$app->elements->saveElement($entry);
         }
     }
 
@@ -161,5 +158,42 @@ class LeadFlex extends Module
                 $event->exporters[] = GeosheetExporter::class;
             }
         );
+    }
+
+    // Check if a field exists
+    private function doFieldsExists($entry, $fieldHandle): bool
+    {
+        if (!$this->isJobEntry($entry)) {
+            return false;
+        }
+
+        $hasAllFields = true;
+
+        if (!is_array($fieldHandle)){
+            $fieldHandle = [$fieldHandle];
+        }
+
+        $entryFields = $entry->getType()->getFieldLayout()->getFields();
+
+        // transform the array of Field objects into an array of field handles for convenience
+        $entryFieldHandles = array_column($entryFields, 'handle');
+
+        // check entry has fields
+        foreach ($fieldHandle as $handle) {
+            $entryHasMyCustomField = in_array($handle, $entryFieldHandles);
+            if (!$entryHasMyCustomField) {
+                $hasAllFields = false;
+            }
+        }
+
+        return $hasAllFields;
+    }
+
+    private function isJobEntry($entry):bool
+    {
+        if(!$entry instanceof Entry){
+            return false;
+        }
+        return $this->section == $entry->section->handle;
     }
 }
