@@ -101,6 +101,10 @@ class LeadFlex extends Module
             return;
         }
 
+        if(!$entry->enabled){
+            $this->isDisabled($entry);
+        }
+
         $location = $entry->getFieldValue('location');
         $isStatewide = empty($location['city']);
         $event->sender->setFieldValue('statewideJob', $isStatewide);
@@ -195,5 +199,10 @@ class LeadFlex extends Module
             return false;
         }
         return $this->section == $entry->section->handle;
+    }
+
+    private function isDisabled($entry){
+        $entry->setFieldValue('advertiseJob', "false");
+        $entry->setFieldValue('assignedCampaign', '');
     }
 }
