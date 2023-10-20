@@ -1,6 +1,7 @@
 <?php
 namespace conversionia\leadflex;
 
+use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 use Craft;
 
 use conversionia\leadflex\webhooks\DriverReachFormie;
@@ -62,6 +63,7 @@ class LeadFlex extends Module
 
         $this->_registerFormieIntegrations();
         $this->_registerSaveEntryEvents();
+        $this->_registerTwigExtensions();
     }
 
     private function _registerConsoleEventListeners()
@@ -161,5 +163,16 @@ class LeadFlex extends Module
                 $event->exporters[] = GeosheetExporter::class;
             }
         );
+    }
+
+    private function _registerTwigExtensions()
+    {
+        $extensions = [
+            BusinessLogicTwigExtensions::class,
+        ];
+
+        foreach ($extensions as $extension) {
+            Craft::$app->view->registerTwigExtension(new $extension);
+        }
     }
 }
