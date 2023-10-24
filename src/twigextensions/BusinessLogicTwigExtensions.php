@@ -55,7 +55,7 @@ class BusinessLogicTwigExtensions extends AbstractExtension implements GlobalsIn
     public function getGlobals(): array
     {
         return [
-            'referrer'      =>  $this->buildCookieValue('r','cookie-monster', "eric"),
+            'referrer'      =>  $this->buildCookieValue('r','cookie-monster', "lf_direct"),
             'utmSource'     =>  $this->buildCookieValue('utm_source','cookie-monster-utm-source', "leadflex"),
             'utmMedium'     =>  $this->buildCookieValue('utm_medium','cookie-monster-utm-medium', "direct"),
             'utmCampaign'   =>  $this->buildCookieValue('utm_campaign','cookie-monster-utm-campaign', "lf_direct"),
