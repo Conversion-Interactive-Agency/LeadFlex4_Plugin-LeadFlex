@@ -59,11 +59,12 @@ class LeadFlex extends Module
                 Craft::$app->view->registerAssetBundle(ControlPanel::class);
                 $this->_registerExporters();
             }
+            $this->_registerTwigExtensions();
         }
 
         $this->_registerFormieIntegrations();
         $this->_registerSaveEntryEvents();
-        $this->_registerTwigExtensions();
+
     }
 
     private function _registerConsoleEventListeners()
