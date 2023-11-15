@@ -1,6 +1,7 @@
 <?php
 namespace conversionia\leadflex;
 
+use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 use Craft;
 
 use conversionia\leadflex\webhooks\DriverReachFormie;
@@ -54,11 +55,12 @@ class LeadFlex extends Module
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'conversionia\leadflex\console\controllers';
             $this->_registerConsoleEventListeners();
-        }
-
-        if ($request->getIsCpRequest()) {
-            Craft::$app->view->registerAssetBundle(ControlPanel::class);
-            $this->_registerExporters();
+        } else {
+            if ($request->getIsCpRequest()) {
+                Craft::$app->view->registerAssetBundle(ControlPanel::class);
+                $this->_registerExporters();
+            }
+            $this->_registerTwigExtensions();
         }
 
         $this->_registerFormieIntegrations();
@@ -203,5 +205,16 @@ class LeadFlex extends Module
             return false;
         }
         return $this->section == $entry->section->handle;
+    }
+
+    private function _registerTwigExtensions()
+    {
+        $extensions = [
+            BusinessLogicTwigExtensions::class,
+        ];
+
+        foreach ($extensions as $extension) {
+            Craft::$app->view->registerTwigExtension(new $extension);
+        }
     }
 }
