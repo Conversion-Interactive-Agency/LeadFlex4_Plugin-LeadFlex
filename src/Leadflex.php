@@ -1,8 +1,22 @@
 <?php
+/**
+ * Leadflex plugin for Craft CMS 3.x
+ *
+ * This is a generic Craft CMS plugin
+ *
+ * @link      http://DoeDesign.com/
+ * @copyright Copyright (c) 2023 Eric LaFontsee
+ */
+
 namespace conversionia\leadflex;
 
-use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
+
 use Craft;
+use craft\base\Plugin;
+use craft\services\Plugins;
+use craft\events\PluginEvent;
+
+use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 
 use conversionia\leadflex\webhooks\DriverReachFormie;
 use conversionia\leadflex\webhooks\TenstreetFormie;
@@ -22,7 +36,6 @@ use verbb\formie\services\Integrations;
 
 use yii\base\Event;
 use yii\base\Exception;
-use yii\base\Module;
 use yii\base\InvalidConfigException;
 
 use craft\errors\ElementNotFoundException;
@@ -32,20 +45,82 @@ use craft\events\ModelEvent;
 use craft\events\RegisterElementExportersEvent;
 use craft\helpers\StringHelper;
 
-class LeadFlex extends Module
+/**
+ * Craft plugins are very much like little applications in and of themselves. We’ve made
+ * it as simple as we can, but the training wheels are off. A little prior knowledge is
+ * going to be required to write a plugin.
+ *
+ * For the purposes of the plugin docs, we’re going to assume that you know PHP and SQL,
+ * as well as some semi-advanced concepts like object-oriented programming and PHP namespaces.
+ *
+ * https://docs.craftcms.com/v3/extend/
+ *
+ * @author    Eric LaFontsee
+ * @package   Leadflex
+ * @since     1.0.0
+ *
+ */
+class Leadflex extends Plugin
 {
+    // Static Properties
+    // =========================================================================
+
+    /**
+     * Static property that is an instance of this plugin class so that it can be accessed via
+     * Leadflex::$plugin
+     *
+     * @var Leadflex
+     */
+    public static $plugin;
+
+    // Public Properties
+    // =========================================================================
+
+    /**
+     * To execute your plugin’s migrations, you’ll need to increase its schema version.
+     *
+     * @var string
+     */
+    public $schemaVersion = '1.0.0';
+
+    /**
+     * Set to `true` if the plugin should have a settings view in the control panel.
+     *
+     * @var bool
+     */
+    public $hasCpSettings = false;
+
+    /**
+     * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
+     *
+     * @var bool
+     */
+    public $hasCpSection = true;
+
+    // Public Methods
+    // =========================================================================
+
+    /**
+     * Set our $plugin static property to this class so that it can be accessed via
+     * Leadflex::$plugin
+     *
+     * Called after the plugin class is instantiated; do any one-time initialization
+     * here such as hooks and events.
+     *
+     * If you have a '/vendor/autoload.php' file, it will be loaded for you automatically;
+     * you do not need to load it in your init() method.
+     *
+     */
     public $section = 'jobs';
     /**
      * @var string
      */
     public $controllerNamespace;
 
-    /**
-     * Initializes the plugin.
-     */
     public function init()
     {
         parent::init();
+        self::$plugin = $this;
 
         // Set alias for this module
         Craft::setAlias('@conversionia', __DIR__);
@@ -66,8 +141,27 @@ class LeadFlex extends Module
 
         $this->_registerFormieIntegrations();
         $this->_registerSaveEntryEvents();
-    }
 
+        // Do something after we're installed
+        Event::on(
+            Plugins::class,
+            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
+            function (PluginEvent $event) {
+                if ($event->plugin === $this) {
+                    // We were just installed
+                }
+            }
+        );
+
+        Craft::info(
+            Craft::t(
+                'leadflex',
+                '{name} plugin loaded',
+                ['name' => $this->name]
+            ),
+            __METHOD__
+        );
+    }
     private function _registerConsoleEventListeners()
     {
         Event::on(Process::class, Process::EVENT_STEP_BEFORE_PARSE_CONTENT, [$this, 'beforeParseContent']);

@@ -1,15 +1,33 @@
 {
     "name": "conversionia/leadflex",
     "description": "Provides specialized LeadFlex utilities.",
-    "version": "1.1.0",
-    "type": "craft-module",
-    "license": "proprietary",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "leadflex"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric LaFontsee"
+        }
+    ],
     "require": {
-        "craftcms/cms": "^3.7.0"
+        "craftcms/cms": "^3.0.0"
     },
     "autoload": {
         "psr-4": {
-            "conversionia\\leadflex\\": "src/"
+          "conversionia\\leadflex\\": "src/"
         }
+    },
+    "extra": {
+        "name": "Leadflex",
+        "handle": "leadflex",
+        "developer": "Eric LaFontsee",
+        "class": "conversionia\\leadflex\\Leadflex"
     }
 }
