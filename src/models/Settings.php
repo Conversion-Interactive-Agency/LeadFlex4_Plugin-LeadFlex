@@ -8,7 +8,5 @@ class Settings extends Model
 {
     // Public Properties
     // =========================================================================
-    public $pluginName = 'Leadflex';
-
     public $section = 'jobs';
 }

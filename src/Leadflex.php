@@ -11,7 +11,7 @@
 namespace conversionia\leadflex;
 
 use conversionia\leadflex\assets\ControlPanel;
-use conversionia\reporter\models\Settings;
+use conversionia\leadflex\models\Settings;
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
@@ -97,9 +97,8 @@ class Leadflex extends Plugin
      * you do not need to load it in your init() method.
      *
      */
-//    public $section = 'jobs';
-//    public $section = Leadflex::$plugin->getSettings()->section;
-//$section = Leadflex::$plugin->getSettings()->section;
+    public $section = 'jobs';
+
     /**
      * @var string
      */
@@ -108,6 +107,9 @@ class Leadflex extends Plugin
     public function init()
     {
         parent::init();
+
+        $this->section = Leadflex::$plugin->getSettings()->section;
+
 
         // Set alias for this module
         Craft::setAlias('@conversionia', __DIR__);
@@ -152,21 +154,5 @@ class Leadflex extends Plugin
     protected function createSettingsModel()
     {
         return new Settings();
-    }
-
-    /**
-     * Returns the rendered settings HTML, which will be inserted into the content
-     * block on the settings page.
-     *
-     * @return string The rendered settings HTML
-     */
-    protected function settingsHtml(): string
-    {
-        return Craft::$app->view->renderTemplate(
-            'leadflex/settings',
-            [
-                'settings' => $this->getSettings()
-            ]
-        );
     }
 }
