@@ -97,7 +97,6 @@ class Leadflex extends Plugin
      * you do not need to load it in your init() method.
      *
      */
-    public $section = 'jobs';
 
     /**
      * @var string
@@ -107,9 +106,6 @@ class Leadflex extends Plugin
     public function init()
     {
         parent::init();
-
-        $this->section = Leadflex::$plugin->getSettings()->section;
-
 
         // Set alias for this module
         Craft::setAlias('@conversionia', __DIR__);
@@ -149,9 +145,9 @@ class Leadflex extends Plugin
     /**
      * Creates and returns the model used to store the plugin’s settings.
      *
-     * @return \craft\base\Model|null
+     *
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): Settings
     {
         return new Settings();
     }

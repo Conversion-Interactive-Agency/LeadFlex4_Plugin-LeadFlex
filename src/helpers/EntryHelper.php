@@ -40,9 +40,12 @@ class EntryHelper
 
     public static function isJobEntry($entry):bool
     {
+        // Get optional field parameters
+        $section = Leadflex::$plugin->getSettings()->section;
+
         if(!$entry instanceof Entry){
             return false;
         }
-        return Leadflex::class->section == $entry->section->handle;
+        return Leadflex::class->$section == $entry->section->handle;
     }
 }
