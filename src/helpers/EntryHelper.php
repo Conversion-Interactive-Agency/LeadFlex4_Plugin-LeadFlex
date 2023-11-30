@@ -4,6 +4,7 @@ namespace conversionia\leadflex\helpers;
 
 use conversionia\leadflex\Leadflex;
 
+
 class EntryHelper
 {
     // Public Methods

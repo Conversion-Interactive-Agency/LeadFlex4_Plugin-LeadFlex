@@ -42,6 +42,8 @@ use craft\helpers\StringHelper;
  * @author    Eric LaFontsee
  * @package   Leadflex
  * @since     1.0.0
+ * @property  Settings $settings
+ * @method    Settings getSettings()
  *
  */
 class Leadflex extends Plugin
@@ -95,7 +97,9 @@ class Leadflex extends Plugin
      * you do not need to load it in your init() method.
      *
      */
-    public $section = 'jobs';
+//    public $section = 'jobs';
+//    public $section = Leadflex::$plugin->getSettings()->section;
+//$section = Leadflex::$plugin->getSettings()->section;
     /**
      * @var string
      */
@@ -133,7 +137,7 @@ class Leadflex extends Plugin
             $this->webhooks->registerEvents();
         }
 
-        if($request->getIsSiteRequest){
+        if ($request->getIsSiteRequest) {
             $this->twig->registerVariables();
         }
     }
@@ -149,6 +153,7 @@ class Leadflex extends Plugin
     {
         return new Settings();
     }
+
     /**
      * Returns the rendered settings HTML, which will be inserted into the content
      * block on the settings page.
