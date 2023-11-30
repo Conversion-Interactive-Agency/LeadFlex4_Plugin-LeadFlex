@@ -11,6 +11,7 @@
 namespace conversionia\leadflex;
 
 use conversionia\leadflex\assets\ControlPanel;
+use conversionia\reporter\models\Settings;
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
@@ -135,5 +136,32 @@ class Leadflex extends Plugin
         if($request->getIsSiteRequest){
             $this->twig->registerVariables();
         }
+    }
+
+    // Protected Methods
+    // =========================================================================
+    /**
+     * Creates and returns the model used to store the plugin’s settings.
+     *
+     * @return \craft\base\Model|null
+     */
+    protected function createSettingsModel()
+    {
+        return new Settings();
+    }
+    /**
+     * Returns the rendered settings HTML, which will be inserted into the content
+     * block on the settings page.
+     *
+     * @return string The rendered settings HTML
+     */
+    protected function settingsHtml(): string
+    {
+        return Craft::$app->view->renderTemplate(
+            'leadflex/settings',
+            [
+                'settings' => $this->getSettings()
+            ]
+        );
     }
 }
