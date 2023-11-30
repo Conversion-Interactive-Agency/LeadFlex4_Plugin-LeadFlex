@@ -13,12 +13,12 @@ class EbeFormie extends Webhook
 
     public static function displayName(): string
     {
-        return Craft::t('formie', 'Ebe ATS');
+        return Craft::t('formie', 'EBE ATS');
     }
 
     public function getDescription(): string
     {
-        return Craft::t('formie', 'This is a Ebe ATS webhook integration.');
+        return Craft::t('formie', 'This is a EBE ATS webhook integration.');
     }
 
     public function getIconUrl(): string
