@@ -135,7 +135,7 @@ class Leadflex extends Plugin
             $this->webhooks->registerEvents();
         }
 
-        if ($request->getIsSiteRequest()) {
+        if ($request->getIsSiteRequest) {
             $this->twig->registerVariables();
         }
     }
