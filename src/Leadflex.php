@@ -12,6 +12,7 @@ namespace conversionia\leadflex;
 
 use conversionia\leadflex\assets\ControlPanel;
 use conversionia\leadflex\models\Settings;
+use conversionia\reporter\Reporter;
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
@@ -106,6 +107,7 @@ class Leadflex extends Plugin
     public function init()
     {
         parent::init();
+        self::$plugin = $this;
 
         // Set alias for this module
         Craft::setAlias('@conversionia', __DIR__);

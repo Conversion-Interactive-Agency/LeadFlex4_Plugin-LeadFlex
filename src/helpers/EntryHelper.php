@@ -43,6 +43,6 @@ class EntryHelper
         if(!$entry instanceof Entry){
             return false;
         }
-        return Leadflex::class->section == $entry->section->handle;
+        return Leadflex::$plugin->getSettings()->section == $entry->section->handle;
     }
 }

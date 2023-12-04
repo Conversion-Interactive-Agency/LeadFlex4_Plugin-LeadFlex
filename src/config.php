@@ -21,7 +21,6 @@
  */
 
 
-//return [
-//    // Handle for the jobs
-//    "section" => "jobs",
-//];
+return [
+    "section" => 'jobs',
+];
