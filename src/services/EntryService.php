@@ -60,7 +60,7 @@ class EntryService extends Component
     function entryAfterSave(ModelEvent $event)
     {
         $entry = $event->sender;
-        $fields = ['protectedSlug','defaultJobDescription','protectedSlug'];
+        $fields = ['protectedSlug','defaultJobDescription'];
         if (!EntryHelper::doFieldsExists($entry, $fields)) {
             return;
         }
