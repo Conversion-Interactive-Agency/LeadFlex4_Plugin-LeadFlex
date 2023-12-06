@@ -21,7 +21,7 @@ use craft\events\PluginEvent;
 use conversionia\leadflex\services\WebhooksService;
 use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\EntryService;
-use conversionia\leadflex\services\FeedmeService;
+use conversionia\leadflex\services\FeedMeService;
 use conversionia\leadflex\services\TwigVariablesService;
 
 use craft\elements\Entry;
@@ -117,7 +117,7 @@ class Leadflex extends Plugin
             'controlpanel' => ControlPanel::class,
             'entry' => EntryService::class,
             'exports' => ExportsService::class,
-            'feedme' => FeedmeService::class,
+            'feedme' => FeedMeService::class,
             'webhooks' => WebhooksService::class,
             'twig' => TwigVariablesService::class
         ]);
