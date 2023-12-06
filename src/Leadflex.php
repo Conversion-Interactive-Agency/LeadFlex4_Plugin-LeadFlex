@@ -127,7 +127,6 @@ class Leadflex extends Plugin
         // Adjust controller namespace for console requests
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'conversionia\leadflex\console\controllers';
-            $this->entry->registerEvents();
             $this->feedme->registerEvents();
         }
 
@@ -140,6 +139,9 @@ class Leadflex extends Plugin
         if ($request->getIsSiteRequest()) {
             $this->twig->registerVariables();
         }
+
+        $this->entry->registerEvents();
+
     }
 
     // Protected Methods
