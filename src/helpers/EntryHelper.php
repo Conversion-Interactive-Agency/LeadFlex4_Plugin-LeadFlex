@@ -3,7 +3,7 @@
 namespace conversionia\leadflex\helpers;
 
 use conversionia\leadflex\Leadflex;
-
+use craft\elements\Entry;
 
 class EntryHelper
 {
