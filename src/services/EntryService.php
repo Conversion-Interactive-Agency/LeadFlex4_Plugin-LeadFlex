@@ -10,6 +10,8 @@
 
 namespace conversionia\leadflex\services;
 
+use Craft;
+
 use craft\base\Component;
 
 use verbb\formie\services\Integrations;
