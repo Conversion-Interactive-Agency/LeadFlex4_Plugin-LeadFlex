@@ -22,5 +22,13 @@
 
 
 return [
+    // Override for LeadFlex jobs section
     "section" => 'jobs',
+
+    // ATS keys mapping to location field keys
+    "locationKeys" => [
+        'city' => 'City',
+        'state' => 'State',
+        'zip' => 'PostalCode'
+    ]
 ];
