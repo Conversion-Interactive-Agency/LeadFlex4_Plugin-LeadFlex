@@ -12,6 +12,7 @@ namespace conversionia\leadflex;
 
 use conversionia\leadflex\assets\ControlPanel;
 use conversionia\leadflex\models\Settings;
+use conversionia\leadflex\services\ControlPanelService;
 use conversionia\reporter\Reporter;
 use Craft;
 use craft\base\Plugin;
@@ -114,7 +115,7 @@ class Leadflex extends Plugin
 
         // Register our services
         $this->setComponents([
-            'controlpanel' => ControlPanel::class,
+            'controlpanel' => ControlPanelService::class,
             'entry' => EntryService::class,
             'exports' => ExportsService::class,
             'feedme' => FeedMeService::class,
