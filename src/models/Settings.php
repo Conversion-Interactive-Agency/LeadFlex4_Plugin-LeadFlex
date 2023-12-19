@@ -24,8 +24,14 @@ class Settings extends Model
         'state' => 'State',
         'zip' => 'PostalCode'
     ];
+
     /**
      * @var boolean Disable custom slug generation for jobs {adheadline}-{jobid}
      */
     public $disableCustomSlugGeneration = false;
+
+    /**
+     * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
+     */
+    public $disableAdvertiseJob = true;
 }

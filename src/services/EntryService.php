@@ -11,6 +11,7 @@
 namespace conversionia\leadflex\services;
 
 use conversionia\leadflex\Leadflex;
+
 use Craft;
 
 use craft\base\Component;
@@ -45,7 +46,10 @@ class EntryService extends Component
         }
 
         $assignedCampaign = $entry->getFieldValue('assignedCampaign')->one();
-        if(!$entry->enabled || is_null($assignedCampaign)){
+
+        $disableAdvertiseJob = Leadflex::$plugin->getSettings()->disableAdvertiseJob;
+
+        if ($disableAdvertiseJob && (!$entry->enabled || is_null($assignedCampaign))) {
             $event->sender->setFieldValue('advertiseJob', 'false');
             $event->sender->setFieldValue('assignedCampaign', []);
         }

@@ -63,6 +63,10 @@ class FeedMeService extends Component
         $locationKeys = Leadflex::$plugin->getSettings()->locationKeys;
 
         foreach ($locationKeys as $key => $value) {
+            if(!isset($feedData[$value])) {
+                return false;
+            }
+
             if ($currentLocation[$key] != $feedData[$value]){
                 return false;
             }
