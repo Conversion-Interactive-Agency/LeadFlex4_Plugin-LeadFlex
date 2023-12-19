@@ -22,7 +22,7 @@
 
 
 return [
-    // Override for LeadFlex jobs section
+    // The section to use for the job listings
     "section" => 'jobs',
 
     // ATS keys mapping to location field keys
@@ -30,5 +30,8 @@ return [
         'city' => 'City',
         'state' => 'State',
         'zip' => 'PostalCode'
-    ]
+    ],
+
+    // Disable custom slug generation for jobs {adheadline}-{jobid}
+    "disableCustomSlugGeneration" => false
 ];

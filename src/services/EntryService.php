@@ -10,6 +10,7 @@
 
 namespace conversionia\leadflex\services;
 
+use conversionia\leadflex\Leadflex;
 use Craft;
 
 use craft\base\Component;
@@ -61,21 +62,23 @@ class EntryService extends Component
      */
     function entryAfterSave(ModelEvent $event)
     {
-        $entry = $event->sender;
-        $fields = ['protectedSlug','defaultJobDescription'];
-        if (!EntryHelper::doFieldsExists($entry, $fields)) {
-            return;
-        }
+        if (!Leadflex::$plugin->getSettings()->disableCustomSlugGeneration)
+        {
+            $entry = $event->sender;
+            $fields = ['protectedSlug','defaultJobDescription'];
+            if (!EntryHelper::doFieldsExists($entry, $fields))
+                return;
 
-        $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
-        $isProtected = $entry->getFieldValue('protectedSlug');
-        if (!empty($defaultJob) && !$isProtected) {
-            $titleText = !empty($entry->adHeadline) ? $entry->adHeadline
-                : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
-            $title = StringHelper::slugify($titleText);
-            $entry->slug = $title . "-" . $entry->id;
-            $entry->setFieldValue('protectedSlug', true);
-            Craft::$app->elements->saveElement($entry);
+            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
+            $isProtected = $entry->getFieldValue('protectedSlug');
+            if (!empty($defaultJob) && !$isProtected) {
+                $titleText = !empty($entry->adHeadline) ? $entry->adHeadline
+                    : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
+                $title = StringHelper::slugify($titleText);
+                $entry->slug = $title . "-" . $entry->id;
+                $entry->setFieldValue('protectedSlug', true);
+                Craft::$app->elements->saveElement($entry);
+            }
         }
     }
 }

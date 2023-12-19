@@ -16,26 +16,8 @@ use craft\web\Controller;
 
 use yii\web\Response;
 
-/**
- * Controller
- * https://nystudio107.com/blog/using-the-craft-cms-graphql-api-on-the-frontend
- */
 class SectionsController extends Controller
 {
-
-    const GQL_TOKEN_NAME = 'Hireline';
-
-    // Protected Properties
-    // =========================================================================
-
-    //    protected $allowAnonymous = [
-    //        'get-csrf',
-    //        'get-gql-token',
-    //        'get-field-options',
-    //    ];
-
-    /* todo - remove anonymous access; Delete $allowAnonymous = true; Uncomment protected $allowAnonymous above */
-
     // Protected Properties
     // =========================================================================
 
@@ -44,9 +26,6 @@ class SectionsController extends Controller
     // Public Methods
     // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
     public function beforeAction($action): bool
     {
         // Disable CSRF validation for get-csrf POST requests
@@ -93,10 +72,5 @@ class SectionsController extends Controller
         }
 
         return $this->asJson($result);
-    }
-
-    public function actionSpeak(): Response
-    {
-        return $this->asJson('Hello World');;
     }
 }
