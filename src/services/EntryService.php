@@ -47,9 +47,9 @@ class EntryService extends Component
 
         $assignedCampaign = $entry->getFieldValue('assignedCampaign')->one();
 
-        $disableAdvertiseJob = Leadflex::$plugin->getSettings()->disableAdvertiseJob;
+        $includeJobCampaignEvaluation = Leadflex::$plugin->getSettings()->includeJobCampaignEvaluation;
 
-        if ($disableAdvertiseJob && (!$entry->enabled || is_null($assignedCampaign))) {
+        if ($includeJobCampaignEvaluation && (!$entry->enabled || is_null($assignedCampaign))) {
             $event->sender->setFieldValue('advertiseJob', 'false');
             $event->sender->setFieldValue('assignedCampaign', []);
         }

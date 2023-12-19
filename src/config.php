@@ -33,5 +33,10 @@ return [
     ],
 
     // Disable custom slug generation for jobs {adheadline}-{jobid}
-    "disableCustomSlugGeneration" => false
+    "disableCustomSlugGeneration" => false,
+
+        /**
+         * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
+         */
+    "includeJobCampaignEvaluation" => true
 ];

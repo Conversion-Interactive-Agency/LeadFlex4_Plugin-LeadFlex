@@ -33,5 +33,5 @@ class Settings extends Model
     /**
      * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
      */
-    public $disableAdvertiseJob = true;
+    public $includeJobCampaignEvaluation = true;
 }
