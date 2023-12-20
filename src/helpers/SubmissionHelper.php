@@ -4,11 +4,19 @@ namespace conversionia\leadflex\helpers;
 
 use conversionia\leadflex\Leadflex;
 
+/**
+ * Common Formatting Utility Functions
+ */
 class SubmissionHelper
 {
     // Public Methods
     // =========================================================================
-    // Check if a field exists
+    /**
+     * Removes all non-numeric characters and leading "1" (if it exists).
+     *
+     * @param string $phone
+     * @return string
+     */
     public static function cleanPhone(string $phone): string
     {
         // Remove all non-numeric characters
