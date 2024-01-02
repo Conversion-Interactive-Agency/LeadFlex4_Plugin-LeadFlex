@@ -20,6 +20,7 @@ use conversionia\leadflex\webhooks\TenstreetFormie;
 use conversionia\leadflex\webhooks\EbeFormie;
 use conversionia\leadflex\webhooks\UkgFormie;
 use conversionia\leadflex\webhooks\TalentDriverFormie;
+use conversionia\leadflex\webhooks\TruckRightFormie;
 
 class WebhooksService extends Component
 {
@@ -34,6 +35,7 @@ class WebhooksService extends Component
                 $event->webhooks[] = EbeFormie::class;
                 $event->webhooks[] = UkgFormie::class;
                 $event->webhooks[] = TalentDriverFormie::class;
+                $event->webhooks[] = TruckRightFormie::class;
             }
         );
     }
