@@ -85,4 +85,24 @@ class EntryService extends Component
             }
         }
     }
+
+    function getJob(Entry $entry) : Entry
+    {
+        $rel = $entry->getFieldValue('defaultJobDescription')->one();
+        if (!is_null($rel)) {
+            $layout = $entry->getFieldLayuot();
+            $fields = $layout->getFields();
+            $job = new Entry(); // Work out how to specify it is a job->default field layout and type
+            foreach ($fields as $field) {
+                $value = $entry->getFieldValue($field->handle);
+                // todo: Add test if field exists on rel before querying
+                is_null($value)
+                    ? $job->setFieldValue($field->handle, $rel->getFieldValue($field->handle) ?? null)
+                    : $job->setFieldValue($field->handle, $value);
+            }
+            return $job;
+        } else {
+            return $entry;
+        }
+    }
 }
