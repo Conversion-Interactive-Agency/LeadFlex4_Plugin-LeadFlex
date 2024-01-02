@@ -1,15 +1,7 @@
 <?php
 namespace conversionia\leadflex\webhooks;
 
-use Craft;
-use craft\base\Volume;
-use verbb\formie\elements\Form;
-use verbb\formie\elements\Submission;
-use verbb\formie\Formie;
-use verbb\formie\integrations\webhooks\Webhook;
-
-// Volume Types
-use craft\base\LocalVolumeInterface;
+use conversionia\leadflex\webhooks\TenstreetFormie;
 
 class TruckRightFormie extends TenstreetFormie
 {
