@@ -21,6 +21,7 @@ use conversionia\leadflex\webhooks\EbeFormie;
 use conversionia\leadflex\webhooks\UkgFormie;
 use conversionia\leadflex\webhooks\TalentDriverFormie;
 use conversionia\leadflex\webhooks\TruckRightFormie;
+use conversionia\leadflex\webhooks\SalesForceFormie;
 use conversionia\leadflex\webhooks\StarsCampusFormie;
 
 class WebhooksService extends Component
@@ -33,6 +34,7 @@ class WebhooksService extends Component
             static function(RegisterIntegrationsEvent $event) {
                 $event->webhooks[] = DriverReachFormie::class;
                 $event->webhooks[] = EbeFormie::class;
+                $event->webhooks[] = SalesForceFormie::class;
                 $event->webhooks[] = StarsCampusFormie::class;
                 $event->webhooks[] = TalentDriverFormie::class;
                 $event->webhooks[] = TenstreetFormie::class;
