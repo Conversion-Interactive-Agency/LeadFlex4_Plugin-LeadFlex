@@ -108,7 +108,7 @@ class TalentDriverFormie extends Webhook
 
             // Add required fields to applicants post data
             foreach ($requiredFieldsMapping as $key => $value) {
-                $data[$key] = -1;
+                $data[$key] = 0;
             }
         }
 
