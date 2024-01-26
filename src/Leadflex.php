@@ -69,21 +69,21 @@ class Leadflex extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.0.0';
 
     /**
      * Set to `true` if the plugin should have a settings view in the control panel.
      *
      * @var bool
      */
-    public $hasCpSettings = false;
+    public bool $hasCpSettings = false;
 
     /**
      * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
      *
      * @var bool
      */
-    public $hasCpSection = false;
+    public bool $hasCpSection = false;
 
     // Public Methods
     // =========================================================================
@@ -105,23 +105,27 @@ class Leadflex extends Plugin
      */
     public $controllerNamespace;
 
-    public function init()
+    public static function config(): array
+    {
+        return [
+            'components' => [
+                'controlpanel' => ControlPanelService::class,
+                'entry' => EntryService::class,
+                'exports' => ExportsService::class,
+                'feedme' => FeedMeService::class,
+                'webhooks' => WebhooksService::class,
+                'twig' => TwigVariablesService::class
+            ],
+        ];
+    }
+
+    public function init() : void
     {
         parent::init();
         self::$plugin = $this;
 
         // Set alias for this module
         Craft::setAlias('@conversionia', __DIR__);
-
-        // Register our services
-        $this->setComponents([
-            'controlpanel' => ControlPanelService::class,
-            'entry' => EntryService::class,
-            'exports' => ExportsService::class,
-            'feedme' => FeedMeService::class,
-            'webhooks' => WebhooksService::class,
-            'twig' => TwigVariablesService::class
-        ]);
 
         // Register Events
         $request = Craft::$app->getRequest();
