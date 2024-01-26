@@ -16,7 +16,7 @@ use craft\base\Component;
 
 class ControlPanelService extends Component
 {
-    public function init()
+    public function init():void
     {
         Craft::$app->view->registerAssetBundle(ControlPanel::class);
     }
