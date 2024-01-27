@@ -22,7 +22,7 @@ class EntryHelper
             $fieldHandle = [$fieldHandle];
         }
 
-        $entryFields = $entry->getType()->getFieldLayout()->getFields();
+        $entryFields = $entry->getType()->getFieldLayout()->getCustomFields();
 
         // transform the array of Field objects into an array of field handles for convenience
         $entryFieldHandles = array_column($entryFields, 'handle');

@@ -142,11 +142,10 @@ class Leadflex extends Plugin
         }
 
         if ($request->getIsSiteRequest()) {
-            $this->twig->registerVariables();
+            $this->twig->registerFrontend();
         }
 
         $this->entry->registerEvents();
-
     }
 
     // Protected Methods

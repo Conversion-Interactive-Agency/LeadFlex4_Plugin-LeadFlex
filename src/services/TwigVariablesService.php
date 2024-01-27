@@ -9,12 +9,23 @@
 
 namespace conversionia\leadflex\services;
 
-use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 use Craft;
 use craft\base\Component;
+use yii\base\Event;
+
+use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
+use conversionia\leadflex\variables\LeadflexVariable;
+use craft\web\twig\variables\CraftVariable;
 
 class TwigVariablesService extends Component
 {
+
+    public function registerFrontend()
+    {
+        $this->registerVariables();
+        $this->registerPluginVariable();
+    }
+
     public function registerVariables()
     {
         $extensions = [
@@ -24,5 +35,19 @@ class TwigVariablesService extends Component
         foreach ($extensions as $extension) {
             Craft::$app->view->registerTwigExtension(new $extension);
         }
+    }
+
+    public function registerPluginVariable()
+    {
+        // Register our plugin
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function (Event $event) {
+                /** @var CraftVariable $variable */
+                $variable = $event->sender;
+                $variable->set('leadflex', LeadflexVariable::class);
+            }
+        );
     }
 }
