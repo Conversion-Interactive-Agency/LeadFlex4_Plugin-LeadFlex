@@ -7,9 +7,7 @@ use Craft;
 
 class TruckRightFormie extends TenstreetFormie
 {
-// Form submissions are modeled the same as Tenstreet Json.
-    public $webhook;
-
+    // Form submissions are modeled the same as Tenstreet Json.
     public static function displayName(): string
     {
         return Craft::t('formie', 'TruckRight ATS');

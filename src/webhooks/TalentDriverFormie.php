@@ -14,8 +14,6 @@ use conversionia\leadflex\events\ReturnJsonEvent;
 
 class TalentDriverFormie extends Webhook
 {
-    public $webhook;
-
     const EVENT_BEFORE_RETURN_JSON = 'beforeReturnJson';
 
     public static function displayName(): string

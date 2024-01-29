@@ -16,8 +16,6 @@ use craft\base\LocalVolumeInterface;
 
 class TenstreetFormie extends Webhook
 {
-    public $webhook;
-
     public static function displayName(): string
     {
         return Craft::t('formie', 'Generic ATS');

@@ -9,8 +9,6 @@ use verbb\formie\integrations\webhooks\Webhook;
 
 class EbeFormie extends Webhook
 {
-    public $webhook;
-
     public static function displayName(): string
     {
         return Craft::t('formie', 'EBE ATS');
