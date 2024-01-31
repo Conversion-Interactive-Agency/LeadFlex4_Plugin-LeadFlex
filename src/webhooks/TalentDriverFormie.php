@@ -158,6 +158,9 @@ class TalentDriverFormie extends Webhook
                 "accidents"=> (int)$data['accidents'],
                 "violations"=> (int)$data['movingViolations'],
                 "source"=> $sourceInt,
+                "notes" => [[
+                    "new" => ["message" => trim($data['referrerValue'])]
+                ]]
             ],
             'form'=>[
                 'id' => $form->id,
