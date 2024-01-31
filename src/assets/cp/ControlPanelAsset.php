@@ -1,14 +1,15 @@
 <?php
-namespace conversionia\leadflex\assets;
+namespace conversionia\leadflex\assets\cp;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
-class ControlPanel extends AssetBundle
+
+class ControlPanelAsset extends AssetBundle
 {
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = '@conversionia/resources';
+        $this->sourcePath = '@conversionia/assets/cp/dist';
 
         // define the dependencies
         $this->depends = [
@@ -16,7 +17,11 @@ class ControlPanel extends AssetBundle
         ];
 
         $this->js = [
-            'batchSize.js',
+            'js/leadflex-cp.js',
+        ];
+
+        $this->css = [
+            'css/leadflex-cp.css',
         ];
 
         parent::init();

@@ -37,4 +37,9 @@ class LeadflexVariable
     {
         return Leadflex::$plugin->entry->mergeEntries($primary, $rel);
     }
+
+    public function buildExternalApplicationUrl($job) : String
+    {
+        return Leadflex::$plugin->entry->buildExternalApplicationUrl($job);
+    }
 }

@@ -96,4 +96,18 @@ class EntryService extends Component
 
         return $job;
     }
+
+    public function buildExternalApplicationUrl($job)
+    {
+        $view = Craft::$app->getView();
+        $referrer = $view->getTwig()->getGlobals()['referrer'];
+
+        // Get the value from field defaultAtsLinkglobal in the global group "companyInfo"
+        $companyInfo = Craft::$app->globals->getSetByHandle("companyInfo");
+        $baseUrl = $job["atsLink"] ?: $companyInfo->getFieldValue("atsLink");
+        $intelliAppUrlHasQuery = strpos($baseUrl, "?") !== false;
+        $atsReferrerFormat = $companyInfo->getFieldValue("atsApplyButtonFormatting");
+        $referrerKey = $intelliAppUrlHasQuery ? str_replace("?", "&", $atsReferrerFormat) : str_replace("&", "?", $atsReferrerFormat);
+        return $baseUrl . $referrerKey . $referrer;
+    }
 }

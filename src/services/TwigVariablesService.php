@@ -14,6 +14,7 @@ use craft\base\Component;
 use yii\base\Event;
 
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
+use conversionia\leadflex\twigextensions\FrontendTwigExtensions;
 use conversionia\leadflex\variables\LeadflexVariable;
 use craft\web\twig\variables\CraftVariable;
 
@@ -30,6 +31,7 @@ class TwigVariablesService extends Component
     {
         $extensions = [
             BusinessLogicTwigExtensions::class,
+            // FrontendTwigExtensions::class
         ];
 
         foreach ($extensions as $extension) {

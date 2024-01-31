@@ -10,26 +10,22 @@
 
 namespace conversionia\leadflex;
 
-use conversionia\leadflex\assets\ControlPanel;
 use conversionia\leadflex\models\Settings;
 use conversionia\leadflex\services\ControlPanelService;
-use conversionia\reporter\Reporter;
-use Craft;
-use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
-
-use conversionia\leadflex\services\WebhooksService;
-use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\EntryService;
+use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\FeedMeService;
 use conversionia\leadflex\services\TwigVariablesService;
-
-use craft\elements\Entry;
+use conversionia\leadflex\services\WebhooksService;
+use conversionia\reporter\Reporter;
+use Craft;
 use craft\base\Element;
+use craft\base\Plugin;
+use craft\elements\Entry;
 use craft\events\ModelEvent;
-
+use craft\events\PluginEvent;
 use craft\helpers\StringHelper;
+use craft\services\Plugins;
 
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made

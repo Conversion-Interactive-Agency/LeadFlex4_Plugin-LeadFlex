@@ -10,14 +10,14 @@
 
 namespace conversionia\leadflex\services;
 
+use conversionia\leadflex\assets\cp\ControlPanelAsset;
 use Craft;
-use conversionia\leadflex\assets\ControlPanel;
 use craft\base\Component;
 
 class ControlPanelService extends Component
 {
     public function init():void
     {
-        Craft::$app->view->registerAssetBundle(ControlPanel::class);
+        Craft::$app->view->registerAssetBundle(ControlPanelAsset::class);
     }
 }

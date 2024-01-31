@@ -21,7 +21,7 @@ class EbeFormie extends Webhook
 
     public function getIconUrl(): string
     {
-        return Craft::$app->getAssetManager()->getPublishedUrl("@verbb/formie/web/assets/webhooks/dist/img/webhook.svg", true);
+        return Craft::$app->getAssetManager()->getPublishedUrl("@conversionia/assets/cp/dist/img/webhook.svg", true);
     }
 
     public function getSettingsHtml(): string
