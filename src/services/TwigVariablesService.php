@@ -15,6 +15,8 @@ use yii\base\Event;
 
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 use conversionia\leadflex\twigextensions\FrontendTwigExtensions;
+use conversionia\leadflex\twigextensions\TwigFiltersExtensions;
+
 use conversionia\leadflex\variables\LeadflexVariable;
 use craft\web\twig\variables\CraftVariable;
 
@@ -25,13 +27,15 @@ class TwigVariablesService extends Component
     {
         $this->registerVariables();
         $this->registerPluginVariable();
+
     }
 
     public function registerVariables()
     {
         $extensions = [
             BusinessLogicTwigExtensions::class,
-            // FrontendTwigExtensions::class
+            // FrontendTwigExtensions::class,
+            TwigFiltersExtensions::class
         ];
 
         foreach ($extensions as $extension) {
