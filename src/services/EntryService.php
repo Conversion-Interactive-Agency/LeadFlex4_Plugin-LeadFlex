@@ -70,7 +70,7 @@ class EntryService extends Component
 
     public function mergeEntries(Entry $primary, Entry $fallback = null) : Entry
     {
-        $job = new Entry();
+        $job = clone $primary;
         if (is_null($fallback)) return $primary;
 
         // Build array of fields handles from $fallback
