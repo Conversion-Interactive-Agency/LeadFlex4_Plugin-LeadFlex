@@ -16,6 +16,7 @@ use Craft;
 
 use craft\base\Component;
 
+use craft\helpers\ElementHelper;
 use verbb\formie\services\Integrations;
 use verbb\formie\events\RegisterIntegrationsEvent;
 
@@ -26,6 +27,7 @@ use craft\errors\ElementNotFoundException;
 use craft\events\ModelEvent;
 use craft\elements\Entry;
 use craft\base\Element;
+use craft\helpers\ElementHelper;
 use craft\helpers\StringHelper;
 
 
@@ -40,7 +42,7 @@ class EntryService extends Component
     {
         $entry = $event->sender;
 
-        $fields = ['location','statewideJob','advertiseJob','assignedCampaign','defaultJobDescription'];
+        $fields = ['location', 'statewideJob', 'advertiseJob', 'assignedCampaign', 'defaultJobDescription'];
         if (!EntryHelper::doFieldsExists($entry, $fields)) {
             return;
         }
@@ -53,10 +55,10 @@ class EntryService extends Component
         }
 
         $disableCustomSlugGeneration = Leadflex::$plugin->getSettings()->disableCustomSlugGeneration;
-        if (!$disableCustomSlugGeneration && empty($entry->slug))
-        {
+
+        if (!$disableCustomSlugGeneration && empty($entry->slug)) {
             $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
-            if (!is_null($defaultJob)){
+            if (!is_null($defaultJob)) {
                 $job = $this->mergeEntries($entry, $defaultJob);
                 $titleText = $job->adHeadline ?: $defaultJob->title;
                 $entry->slug = StringHelper::slugify($titleText);
@@ -66,9 +68,20 @@ class EntryService extends Component
         $location = $entry->getFieldValue('location');
         $isStatewide = empty($location['city']);
         $event->sender->setFieldValue('statewideJob', $isStatewide);
+
+        $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
+        if ($entry->firstSave || ElementHelper::isTempSlug($entry->slug)) {
+            $titleText = !empty($entry->adHeadline) ? $entry->adHeadline : ElementHelper::tempSlug();
+            if (!is_null($defaultJob) && empty($entry->adHeadline)) {
+                $titleText = !empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title;
+            }
+            $title = StringHelper::slugify($titleText);
+
+            $entry->slug = $title;
+        }
     }
 
-    public function mergeEntries(Entry $primary, Entry $fallback = null) : Entry
+    public function mergeEntries(Entry $primary, Entry $fallback = null): Entry
     {
         $job = new Entry();
         if (is_null($fallback)) return $primary;
