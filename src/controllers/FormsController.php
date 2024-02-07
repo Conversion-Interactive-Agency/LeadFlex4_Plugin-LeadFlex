@@ -10,7 +10,8 @@ use yii\web\Response;
 class FormsController extends Controller
 {
 
-    protected $allowAnonymous = true;
+    protected array|bool|int $allowAnonymous = true;
+
 
     public function actionJson(): Response
     {

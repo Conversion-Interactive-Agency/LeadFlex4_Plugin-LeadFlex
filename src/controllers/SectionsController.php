@@ -21,7 +21,7 @@ class SectionsController extends Controller
     // Protected Properties
     // =========================================================================
 
-    protected $allowAnonymous = true;
+    protected array|bool|int $allowAnonymous = true;
 
     // Public Methods
     // =========================================================================
@@ -61,7 +61,8 @@ class SectionsController extends Controller
         $section = Craft::$app->getSections()->getSectionByHandle($sectionHandle);
         $entryTypes = $section->getEntryTypes();
         foreach ($entryTypes as $entryType) {
-            $typeFields = $entryType->fieldLayout->fields;
+            $fieldLayout  = $entryType->getFieldLayout();
+            $typeFields = $entryType->getCustomFields();
             $fieldResponse = [];
             foreach ($typeFields as $field) {
                 $type = StringHelper::slugify($field->displayName());
