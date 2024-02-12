@@ -60,8 +60,8 @@ class EntryService extends Component
         $event->sender->setFieldValue('statewideJob', $isStatewide);
 
         $disableCustomSlugGeneration = Leadflex::$plugin->getSettings()->disableCustomSlugGeneration;
-        $isDuplicate = $entry->duplicateOf;
-        if (!$disableCustomSlugGeneration && (($entry->firstSave && !$isDuplicate) || ElementHelper::isTempSlug($entry->slug))) {
+
+        if (!$disableCustomSlugGeneration && ($entry->firstSave || ElementHelper::isTempSlug($entry->slug))) {
             $job = $this->mergeEntries($entry, $defaultJob);
             $titleText = $job->adHeadline ?: $defaultJob->title;
             $entry->slug = StringHelper::slugify($titleText);
