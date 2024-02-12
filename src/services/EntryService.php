@@ -60,8 +60,7 @@ class EntryService extends Component
         $event->sender->setFieldValue('statewideJob', $isStatewide);
 
         $disableCustomSlugGeneration = Leadflex::$plugin->getSettings()->disableCustomSlugGeneration;
-
-        if (!$disableCustomSlugGeneration && ($entry->firstSave || ElementHelper::isTempSlug($entry->slug))) {
+        if (!$disableCustomSlugGeneration && ($entry->firstSave || ElementHelper::isTempSlug($entry->slug)) && !empty($defaultJob)) {
             $job = $this->mergeEntries($entry, $defaultJob);
             $titleText = $job->adHeadline ?: $defaultJob->title;
             $entry->slug = StringHelper::slugify($titleText);
@@ -74,11 +73,11 @@ class EntryService extends Component
         if (is_null($fallback)) return $primary;
 
         // Build array of fields handles from $fallback
-        $fallbackFields = $fallback->getType()->getFieldLayout()->getCustomFields();
+        $fallbackFields = $fallback->getType()->getFieldLayout()->getFields();
         $fallbackFieldHandles = array_column($fallbackFields, 'handle');
 
         // Merging logic will go here
-        foreach ($primary->getFieldLayout()->getCustomFields() as $field) {
+        foreach ($primary->getFieldLayout()->getFields() as $field) {
             $handle = $field->handle;
             $value = $primary->getFieldValue($handle);
             $job->setfieldValue($handle, $value);
