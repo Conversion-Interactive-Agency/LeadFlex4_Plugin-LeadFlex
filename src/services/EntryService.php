@@ -16,6 +16,7 @@ use Craft;
 
 use craft\base\Component;
 
+use craft\helpers\ElementHelper;
 use verbb\formie\services\Integrations;
 use verbb\formie\events\RegisterIntegrationsEvent;
 
@@ -40,11 +41,13 @@ class EntryService extends Component
     {
         $entry = $event->sender;
 
+        // Required Fields Check
         $fields = ['location','statewideJob','advertiseJob','assignedCampaign','defaultJobDescription'];
         if (!EntryHelper::doFieldsExists($entry, $fields)) {
             return;
         }
 
+        // Check if the entry has a campaign - if not, prevent from being included into XML feed / jobs.json
         $hasCampaign = boolval($entry->getFieldValue('assignedCampaign'));
         $includeJobCampaignEvaluation = Leadflex::$plugin->getSettings()->includeJobCampaignEvaluation;
         if ($includeJobCampaignEvaluation && (!$entry->enabled || !$hasCampaign)) {
@@ -52,8 +55,10 @@ class EntryService extends Component
             $event->sender->setFieldValue('assignedCampaign', []);
         }
 
+        // rebuilding slugs w/ the defaultJobDescription or adHeadline
         $disableCustomSlugGeneration = Leadflex::$plugin->getSettings()->disableCustomSlugGeneration;
-        if (!$disableCustomSlugGeneration && empty($entry->slug))
+        $rebuildSlugConditions = $entry->firstSave || empty($entry->slug) || ElementHelper::isTempSlug($entry->slug);
+        if (!$disableCustomSlugGeneration && $rebuildSlugConditions)
         {
             $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
             if (!is_null($defaultJob)){
@@ -63,6 +68,7 @@ class EntryService extends Component
             }
         }
 
+        // Set statewideJob based on location - used for jobSearch component and orderBy
         $location = $entry->getFieldValue('location');
         $isStatewide = empty($location['city']);
         $event->sender->setFieldValue('statewideJob', $isStatewide);
