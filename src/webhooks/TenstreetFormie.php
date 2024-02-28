@@ -7,6 +7,7 @@ use verbb\formie\elements\Form;
 use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
+use conversionia\leadflex\helpers\SubmissionHelper;
 
 // Volume Types
 use craft\base\LocalVolumeInterface;
@@ -18,12 +19,12 @@ class TenstreetFormie extends Webhook
 {
     public static function displayName(): string
     {
-        return Craft::t('formie', 'Generic ATS');
+        return Craft::t('formie', 'Tenstreet ATS');
     }
 
     public function getDescription(): string
     {
-        return Craft::t('formie', 'This is a generic ATS webhook integration.');
+        return Craft::t('formie', 'This is a Tenstreet webhook integration. Commonly extended by other ATS webhooks.');
     }
 
     public function getIconUrl(): string
@@ -53,7 +54,7 @@ class TenstreetFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
-        $fields = $form->getFields();
+        $fields = $form->getCustomFields();
         $fileUploadFields = [];
 
         // Initialize form data
@@ -134,7 +135,7 @@ class TenstreetFormie extends Webhook
                 'Region' => trim($data['state']),
                 'PostalCode' => trim($data['zipCode']),
                 'InternetEmailAddress' => trim($data['email']),
-                'PrimaryPhone' => $this->_cleanPhone($data['cellPhone']),
+                'PrimaryPhone' => SubmissionHelper::cleanPhone($data['cellPhone']),
                 // 'CommercialDriversLicense' => $data['cdlA'],
                 // 'LicenseClass' => $licenseClass,
                 'OptIn' => ($data['optIn'] ?? null || 'No' ?: 'No' ),
@@ -157,29 +158,6 @@ class TenstreetFormie extends Webhook
         }
 
         // Return JSON data
-        return [
-            'json' => $json
-        ];
-    }
-
-    /**
-     * Strip all formatting from phone number.
-     *
-     * @param string $phone
-     * @return string
-     */
-    private function _cleanPhone(string $phone): string
-    {
-        // Remove all non-numeric characters
-        $phone = preg_replace('/[^\d]/', '', $phone);
-
-        // If longer than 10 digits
-        if (strlen($phone) > 10) {
-            // Remove leading "1" (if it exists)
-            $phone = preg_replace('/^1?/', '', $phone);
-        }
-
-        // Return clean phone number
-        return $phone;
+        return $json;
     }
 }

@@ -53,7 +53,7 @@ class TalentDriverFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
-        $fields = $form->getFields();
+        $fields = $form->getCustomFields();
         
         // Initialize form data
         $json = [
@@ -195,8 +195,6 @@ class TalentDriverFormie extends Webhook
         */
 
         // Return JSON data
-        return [
-            'json' => $json
-        ];
+        return $json;
     }
 }

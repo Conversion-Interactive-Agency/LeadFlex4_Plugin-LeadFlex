@@ -12,4 +12,9 @@ class TruckRightFormie extends TenstreetFormie
     {
         return Craft::t('formie', 'TruckRight ATS');
     }
+
+    public function getDescription(): string
+    {
+        return Craft::t('formie', 'This is an TruckRight webhook. Extended from Tenstreet Webhook.');
+    }
 }

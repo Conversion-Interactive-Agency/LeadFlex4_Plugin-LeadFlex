@@ -6,6 +6,7 @@ use verbb\formie\elements\Form;
 use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
+use conversionia\leadflex\helpers\SubmissionHelper;
 
 class DriverReachFormie extends Webhook
 {
@@ -52,7 +53,7 @@ class DriverReachFormie extends Webhook
         $labels = [];
 
         // Get every submitted field value
-        foreach ($form->getFields() as $field) {
+        foreach ($form->getCustomFields() as $field) {
 
             // Get data
             $value = $submission->getFieldValue($field->handle);
@@ -100,7 +101,7 @@ class DriverReachFormie extends Webhook
                 'Region' => trim($data['state']),
                 'PostalCode' => trim($data['zipCode']),
                 'InternetEmailAddress' => trim($data['email']),
-                'PrimaryPhone' => $this->_cleanPhone($data['cellPhone']),
+                'PrimaryPhone' => SubmissionHelper::cleanPhone($data['cellPhone']),
                 'CommercialDriversLicense' => $data['cdlA'],
                 'LicenseClass' => $licenseClass,
                 'OptIn' => ($data['optIn'] ?? null || 'No' ?: 'No' ),
@@ -128,29 +129,6 @@ class DriverReachFormie extends Webhook
         }
 
         // Return JSON data
-        return [
-            'json' => $json
-        ];
-    }
-
-    /**
-     * Strip all formatting from phone number.
-     *
-     * @param string $phone
-     * @return string
-     */
-    private function _cleanPhone(string $phone): string
-    {
-        // Remove all non-numeric characters
-        $phone = preg_replace('/[^\d]/', '', $phone);
-
-        // If longer than 10 digits
-        if (strlen($phone) > 10) {
-            // Remove leading "1" (if it exists)
-            $phone = preg_replace('/^1?/', '', $phone);
-        }
-
-        // Return clean phone number
-        return $phone;
+        return $json;
     }
 }

@@ -12,4 +12,8 @@ class SalesForceFormie extends TenstreetFormie
     {
         return Craft::t('formie', 'SalesForce ATS');
     }
+    public function getDescription(): string
+    {
+        return Craft::t('formie', 'This is an SalesForce webhook. Extended from Tenstreet Webhook.');
+    }
 }

@@ -1,13 +1,13 @@
 <?php
 namespace conversionia\leadflex\webhooks;
 
-use conversionia\leadflex\helpers\SubmissionHelper;
 use Craft;
 use craft\base\Volume;
 use verbb\formie\elements\Form;
 use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
+use conversionia\leadflex\helpers\SubmissionHelper;
 
 // Volume Types
 use craft\base\LocalVolumeInterface;
@@ -54,7 +54,7 @@ class StarsCampusFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
-        $fields = $form->getFields();
+        $fields = $form->getCustomFields();
         $fileUploadFields = [];
 
         // Initialize form data
@@ -137,8 +137,6 @@ class StarsCampusFormie extends Webhook
         }
 
         // Return JSON data
-        return [
-            'json' => $json
-        ];
+        return $json;
     }
 }
