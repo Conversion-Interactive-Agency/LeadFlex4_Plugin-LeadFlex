@@ -24,18 +24,9 @@ class FormService extends Component
 {
     public function registerEvents()
     {
-        Event::on(Form::class, Form::EVENT_AFTER_SAVE, [$this, 'afterSaveForm']);
-    }
-
-    public function afterSaveForm(ModelEvent $event)
-    {
-        $form = $event->sender;
-        $this->clearGraphQLCache();
-    }
-
-    protected function clearGraphQLCache()
-    {
-        $cache = Craft::$app->getCache();
-        TagDependency::invalidate($cache, 'graphql');
+        Event::on(Form::class, Form::EVENT_AFTER_SAVE, function() {
+            $cache = Craft::$app->getCache();
+            TagDependency::invalidate($cache, 'graphql');
+        });
     }
 }
