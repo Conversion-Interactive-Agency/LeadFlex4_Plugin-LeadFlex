@@ -24,7 +24,7 @@ class FormService extends Component
 {
     public function registerEvents()
     {
-        Event::on(Form::class, Form::EVENT_AFTER_SAVE, function() {
+        Event::on(Form::class, Form::EVENT_AFTER_SAVE, function(ModelEvent $event) {
             $cache = Craft::$app->getCache();
             TagDependency::invalidate($cache, 'graphql');
         });
