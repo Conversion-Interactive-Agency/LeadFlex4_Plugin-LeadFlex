@@ -42,4 +42,9 @@ class LeadflexVariable
     {
         return Leadflex::$plugin->entry->buildExternalApplicationUrl($job);
     }
+
+    public function getConvirza($job) : array
+    {
+        return Leadflex::$plugin->twig->getConvirza($job);
+    }
 }

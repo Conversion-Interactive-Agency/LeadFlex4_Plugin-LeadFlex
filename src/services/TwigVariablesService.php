@@ -16,6 +16,8 @@ use yii\base\Event;
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 use conversionia\leadflex\twigextensions\FrontendTwigExtensions;
 use conversionia\leadflex\twigextensions\TwigFiltersExtensions;
+use conversionia\leadflex\helpers\SubmissionHelper;
+use conversionia\leadflex\helpers\EntryHelper;
 
 use conversionia\leadflex\variables\LeadflexVariable;
 use craft\web\twig\variables\CraftVariable;
@@ -23,11 +25,12 @@ use craft\web\twig\variables\CraftVariable;
 class TwigVariablesService extends Component
 {
 
+    private $convirza = [];
+
     public function registerFrontend()
     {
         $this->registerVariables();
         $this->registerPluginVariable();
-
     }
 
     public function registerVariables()
@@ -55,5 +58,22 @@ class TwigVariablesService extends Component
                 $variable->set('leadflex', LeadflexVariable::class);
             }
         );
+    }
+    
+    public function getConvirza($job): array
+    {
+        if (!empty($this->convirza)) return $this->convirza;
+        $companyInfo = Craft::$app->globals->getSetByHandle("companyInfo");
+
+        if (EntryHelper::doFieldsExists($job, ['customPhoneTag', 'phone'])) {
+            $this->convirza['tag'] = $job->getFieldValue('customPhoneTag') ?? $companyInfo->getFieldValue("customPhoneTag");
+            $this->convirza['number'] = $job->getFieldValue('phone') ?? $companyInfo->getFieldValue("phone");
+            $this->convirza['tel'] = "tel:".SubmissionHelper::cleanPhone($this->convirza['number']);
+        } else {
+            $this->convirza['tag'] = $companyInfo->getFieldValue("customPhoneTag");
+            $this->convirza['number'] = $companyInfo->getFieldValue("phone");
+            $this->convirza['tel'] = "tel:".SubmissionHelper::cleanPhone($this->convirza['number']);
+        }
+        return $this->convirza;
     }
 }
