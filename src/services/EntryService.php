@@ -108,11 +108,11 @@ class EntryService extends Component
         $view = Craft::$app->getView();
         $referrer = $view->getTwig()->getGlobals()['referrer'];
 
-        // Get the value from field defaultAtsLinkglobal in the global group "companyInfo"
-        $companyInfo = Craft::$app->globals->getSetByHandle("companyInfo");
-        $baseUrl = $job["atsLink"] ?: $companyInfo->getFieldValue("atsLink");
+        // Get the value from field defaultAtsLinkglobal in the global group "project"
+        $project = Entry::find()->section('project')->one();
+        $baseUrl = $job["atsLink"] ?: $project->getFieldValue("atsLink");
         $intelliAppUrlHasQuery = strpos($baseUrl, "?") !== false;
-        $atsReferrerFormat = $companyInfo->getFieldValue("atsApplyButtonFormatting");
+        $atsReferrerFormat = $project->getFieldValue("atsApplyButtonFormatting");
         $referrerKey = $intelliAppUrlHasQuery ? str_replace("?", "&", $atsReferrerFormat) : str_replace("&", "?", $atsReferrerFormat);
         return $baseUrl . $referrerKey . $referrer;
     }
