@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "cp": "cd ./src/assets/cp && vite build --watch",
-        "cp-build": "cd ./src/web/assets/cp && vite build"
+        "cp-build": "cd ./src/assets/cp && vite build"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.17",
