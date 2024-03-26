@@ -44,7 +44,7 @@ class EntryService extends Component
         // Required Fields Check
         $fields = ['location','statewideJob','advertiseJob','assignedCampaign','defaultJobDescription'];
         if (!EntryHelper::doFieldsExists($entry, $fields)) {
-            return;
+            return null;
         }
 
         // Check if the entry has a campaign - if not, prevent from being included into XML feed / jobs.json
