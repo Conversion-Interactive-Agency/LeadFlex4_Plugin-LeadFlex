@@ -61,6 +61,8 @@ class Leadflex extends Plugin
      */
     public static $plugin;
 
+    public const EVENT_BEFORE_RETURN_JSON = 'beforeReturnJson';
+
     // Public Properties
     // =========================================================================
 
