@@ -13,6 +13,7 @@ namespace conversionia\leadflex;
 use conversionia\leadflex\assets\ControlPanel;
 use conversionia\leadflex\models\Settings;
 use conversionia\leadflex\services\ControlPanelService;
+use conversionia\leadflex\services\FormService;
 use conversionia\reporter\Reporter;
 use Craft;
 use craft\base\Plugin;
@@ -121,6 +122,7 @@ class Leadflex extends Plugin
             'entry' => EntryService::class,
             'exports' => ExportsService::class,
             'feedme' => FeedMeService::class,
+            'formie' => FormService::class,
             'webhooks' => WebhooksService::class,
             'twig' => TwigVariablesService::class
         ]);
@@ -136,6 +138,7 @@ class Leadflex extends Plugin
         if ($request->getIsCpRequest()) {
             $this->controlpanel->init();
             $this->exports->registerEvents();
+            $this->formie->registerEvents();
             $this->webhooks->registerEvents();
         }
 
