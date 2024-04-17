@@ -11,5 +11,4 @@ class ReturnJsonEvent extends Event
     public $form;
     public $json;
     public $submission;
-    public $webhook;
 }

@@ -6,8 +6,10 @@ use verbb\formie\elements\Form;
 use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
+
 use conversionia\leadflex\Leadflex;
 use conversionia\leadflex\events\ReturnJsonEvent;
+use conversionia\leadflex\helpers\SubmissionHelper;
 
 class DriverReachFormie extends Webhook
 {
@@ -104,7 +106,7 @@ class DriverReachFormie extends Webhook
                 'Region' => trim($data['state']),
                 'PostalCode' => trim($data['zipCode']),
                 'InternetEmailAddress' => trim($data['email']),
-                'PrimaryPhone' => $this->_cleanPhone($data['cellPhone']),
+                'PrimaryPhone' => SubmissionHelper::cleanPhone($data['cellPhone']),
                 'CommercialDriversLicense' => $data['cdlA'],
                 'LicenseClass' => $licenseClass,
                 'OptIn' => ($data['optIn'] ?? null || 'No' ?: 'No' ),
@@ -128,42 +130,23 @@ class DriverReachFormie extends Webhook
                 $label = ($labels[$handle] ?? $handle);
                 $json[$label] = $value;
             }
-
         }
 
-        $JSON_EVENT_OBJECT = new ReturnJsonEvent([
-            'data' => $data,
-            'form' => $form,
-            'json' => $json,
-            'submission' => $submission,
-        ]);
-        Leadflex::$plugin->trigger(Leadflex::EVENT_BEFORE_RETURN_JSON,$JSON_EVENT_OBJECT);
-
-        $json = $JSON_EVENT_OBJECT->json;
+        if (Leadflex::$plugin->hasEventHandlers(Leadflex::EVENT_BEFORE_RETURN_JSON)) {
+            $JSON_EVENT_OBJECT = new ReturnJsonEvent([
+                'data' => $data,
+                'form' => $form,
+                'json' => $json,
+                'submission' => $submission,
+            ]);
+            Leadflex::$plugin->trigger(Leadflex::EVENT_BEFORE_RETURN_JSON, $JSON_EVENT_OBJECT);
+            
+            $json = $JSON_EVENT_OBJECT->json;
+        }
+        
         // Return JSON data
         return [
             'json' => $json
         ];
-    }
-
-    /**
-     * Strip all formatting from phone number.
-     *
-     * @param string $phone
-     * @return string
-     */
-    private function _cleanPhone(string $phone): string
-    {
-        // Remove all non-numeric characters
-        $phone = preg_replace('/[^\d]/', '', $phone);
-
-        // If longer than 10 digits
-        if (strlen($phone) > 10) {
-            // Remove leading "1" (if it exists)
-            $phone = preg_replace('/^1?/', '', $phone);
-        }
-
-        // Return clean phone number
-        return $phone;
     }
 }

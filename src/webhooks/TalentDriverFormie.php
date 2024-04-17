@@ -9,8 +9,9 @@ use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
 
-use conversionia\leadflex\helpers\SubmissionHelper;
+use conversionia\leadflex\Leadflex;
 use conversionia\leadflex\events\ReturnJsonEvent;
+use conversionia\leadflex\helpers\SubmissionHelper;
 
 class TalentDriverFormie extends Webhook
 {
@@ -183,21 +184,17 @@ class TalentDriverFormie extends Webhook
             ],
         ];
 
-        /*
-        ToDo: Add event to modify JSON data before sending
-        $event = new ReturnJsonEvent([
-            'data' => $data,
-            'form' => $form,
-            'json' => $json,
-            'submission' => $submission,
-            'webhook' => $this,
-        ]);
-
-         if ($this->hasEventHandlers(self::EVENT_BEFORE_RETURN_JSON)) {
-            $this->trigger(self::EVENT_BEFORE_RETURN_JSON, $event);
-            $json = $event->json;
-         }
-        */
+        if (Leadflex::$plugin->hasEventHandlers(Leadflex::EVENT_BEFORE_RETURN_JSON)) {
+            $JSON_EVENT_OBJECT = new ReturnJsonEvent([
+                'data' => $data,
+                'form' => $form,
+                'json' => $json,
+                'submission' => $submission,
+            ]);
+            Leadflex::$plugin->trigger(Leadflex::EVENT_BEFORE_RETURN_JSON, $JSON_EVENT_OBJECT);
+            
+            $json = $JSON_EVENT_OBJECT->json;
+        }
 
         // Return JSON data
         return [
