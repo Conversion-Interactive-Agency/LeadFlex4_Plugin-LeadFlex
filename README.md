@@ -4,40 +4,23 @@ This is a generic Craft CMS plugin
 
 ![Screenshot](resources/img/plugin-logo.png)
 
-## Requirements
+## Requirements for 4.1
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+Adding routes for Job Entries to `config/routes.php`
+```
+'jobs/<entryId:[0-9]+>' => ['template' => 'jobs/entry'],
+'jobs/<entryId:[0-9]+>/<slug:[^\/]+>' => ['template' => 'jobs/entry'],
+```
 
-## Installation
+Adding handlers into `templates/jobs/entry`
+```
+{% if entryId is defined %}
+    {% set entry = craft.entries.id(entryId).one() %}
+{% endif %}
 
-To install the plugin, follow these instructions.
+{% if entry is null %}
+    {% redirect "jobs?closed=true" %}
+{% endif %}
+```
 
-1. Open your terminal and go to your Craft project:
 
-        cd /path/to/project
-
-2. Then tell Composer to load the plugin:
-
-        composer require conversionia/leadflex
-
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Leadflex.
-
-## Leadflex Overview
-
--Insert text here-
-
-## Configuring Leadflex
-
--Insert text here-
-
-## Using Leadflex
-
--Insert text here-
-
-## Leadflex Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
-
-Brought to you by [Eric LaFontsee](http://DoeDesign.com/)

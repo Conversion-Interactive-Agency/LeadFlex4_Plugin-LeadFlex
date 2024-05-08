@@ -57,8 +57,7 @@ class EntryService extends Component
 
         // rebuilding slugs w/ the defaultJobDescription or adHeadline
         $disableCustomSlugGeneration = Leadflex::$plugin->getSettings()->disableCustomSlugGeneration;
-        $rebuildSlugConditions = $entry->firstSave || empty($entry->slug) || ElementHelper::isTempSlug($entry->slug);
-        if (!$disableCustomSlugGeneration && $rebuildSlugConditions)
+        if (!$disableCustomSlugGeneration)
         {
             $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
             if (!is_null($defaultJob)){
