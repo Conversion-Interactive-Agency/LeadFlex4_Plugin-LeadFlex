@@ -6,7 +6,7 @@ use craft\web\Controller;
 use craft\elements\Entry;
 use craft\helpers\UrlHelper;
 
-class RouteController extends Controller
+class RoutesController extends Controller
 {
 
     protected array|bool|int $allowAnonymous = true;
