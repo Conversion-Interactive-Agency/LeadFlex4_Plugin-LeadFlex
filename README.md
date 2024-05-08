@@ -6,21 +6,12 @@ This is a generic Craft CMS plugin
 
 ## Requirements for 4.1
 
-Adding routes for Job Entries to `config/routes.php`
+### Adding routes for Job Entries to `config/routes.php`
 ```
-'jobs/<entryId:[0-9]+>' => ['template' => 'jobs/entry'],
-'jobs/<entryId:[0-9]+>/<slug:[^\/]+>' => ['template' => 'jobs/entry'],
+'jobs/<entryId:[0-9]+>' => 'leadflex/route/jobs',
+'jobs/<entryId:[0-9]+>/<slug:[^\/]+>' => 'leadflex/route/jobs',
 ```
 
-Adding handlers into `templates/jobs/entry`
-```
-{% if entryId is defined %}
-    {% set entry = craft.entries.id(entryId).one() %}
-{% endif %}
-
-{% if entry is null %}
-    {% redirect "jobs?closed=true" %}
-{% endif %}
-```
+### Handlers moved into Controllers/RouteController.php.
 
 
