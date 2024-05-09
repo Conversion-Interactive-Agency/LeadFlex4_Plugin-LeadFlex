@@ -9,11 +9,12 @@
 
 namespace conversionia\leadflex\services;
 
-use Craft;
 use yii\base\Event;
-use craft\web\UrlManager;
-use craft\events\RegisterUrlRulesEvent;
 
+use Craft;
+use craft\base\Component;
+use craft\events\RegisterUrlRulesEvent;
+use craft\web\UrlManager;
 
 class RoutesService extends Component
 {
