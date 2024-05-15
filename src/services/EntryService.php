@@ -16,6 +16,7 @@ use Craft;
 
 use craft\base\Component;
 
+use craft\helpers\ElementHelper;
 use verbb\formie\services\Integrations;
 use verbb\formie\events\RegisterIntegrationsEvent;
 
@@ -34,55 +35,71 @@ class EntryService extends Component
     public function registerEvents()
     {
         Event::on(Entry::class, Element::EVENT_BEFORE_SAVE, [$this, 'entryBeforeSave']);
-        Event::on(Entry::class, Element::EVENT_AFTER_SAVE, [$this, 'entryAfterSave']);
     }
 
     function entryBeforeSave(ModelEvent $event)
     {
         $entry = $event->sender;
-        $fields = ['location','statewideJob','advertiseJob','assignedCampaign'];
+
+        // Required Fields Check
+        $fields = ['location','statewideJob','advertiseJob','assignedCampaign','defaultJobDescription'];
         if (!EntryHelper::doFieldsExists($entry, $fields)) {
-            return;
+            return null;
         }
 
-        $assignedCampaign = $entry->getFieldValue('assignedCampaign')->one();
-
+        // Check if the entry has a campaign - if not, prevent from being included into XML feed / jobs.json
+        $hasCampaign = boolval($entry->getFieldValue('assignedCampaign'));
         $includeJobCampaignEvaluation = Leadflex::$plugin->getSettings()->includeJobCampaignEvaluation;
-
-        if ($includeJobCampaignEvaluation && (!$entry->enabled || is_null($assignedCampaign))) {
+        if ($includeJobCampaignEvaluation && (!$entry->enabled || !$hasCampaign)) {
             $event->sender->setFieldValue('advertiseJob', 'false');
             $event->sender->setFieldValue('assignedCampaign', []);
         }
 
+        // rebuilding slugs w/ the defaultJobDescription or adHeadline
+        $disableCustomSlugGeneration = Leadflex::$plugin->getSettings()->disableCustomSlugGeneration;
+        $rebuildSlugConditions = $entry->firstSave || empty($entry->slug) || ElementHelper::isTempSlug($entry->slug);
+        if (!$disableCustomSlugGeneration && $rebuildSlugConditions)
+        {
+            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
+            if (!is_null($defaultJob)){
+                $job = $this->mergeEntries($entry, $defaultJob);
+                $titleText = $job->adHeadline ?: $defaultJob->title;
+                $entry->slug = StringHelper::slugify($titleText);
+            }
+        }
+
+        // Set statewideJob based on location - used for jobSearch component and orderBy
         $location = $entry->getFieldValue('location');
         $isStatewide = empty($location['city']);
         $event->sender->setFieldValue('statewideJob', $isStatewide);
     }
 
-    /**
-     * @throws Exception
-     * @throws \Throwable
-     * @throws ElementNotFoundException
-     */
-    function entryAfterSave(ModelEvent $event)
+    public function mergeEntries(Entry $primary, Entry $fallback = null) : Entry
     {
-        if (!Leadflex::$plugin->getSettings()->disableCustomSlugGeneration)
-        {
-            $entry = $event->sender;
-            $fields = ['protectedSlug','defaultJobDescription'];
-            if (!EntryHelper::doFieldsExists($entry, $fields))
-                return;
+        $job = clone $primary;
+        if (is_null($fallback)) return $primary;
 
-            $defaultJob = $entry->getFieldValue('defaultJobDescription')->one();
-            $isProtected = $entry->getFieldValue('protectedSlug');
-            if (!empty($defaultJob) && !$isProtected) {
-                $titleText = !empty($entry->adHeadline) ? $entry->adHeadline
-                    : (!empty($defaultJob->adHeadline) ? $defaultJob->adHeadline : $defaultJob->title);
-                $title = StringHelper::slugify($titleText);
-                $entry->slug = $title . "-" . $entry->id;
-                $entry->setFieldValue('protectedSlug', true);
-                Craft::$app->elements->saveElement($entry);
+        // Build array of fields handles from $fallback
+        $fallbackFields = $fallback->getType()->getFieldLayout()->getFields();
+        $fallbackFieldHandles = array_column($fallbackFields, 'handle');
+
+        // Merging logic will go here
+        foreach ($primary->getFieldLayout()->getFields() as $field) {
+            $handle = $field->handle;
+            $value = $primary->getFieldValue($handle);
+            $job->setfieldValue($handle, $value);
+
+            // Check if primary field is empty
+            if (empty($value) && in_array($handle, $fallbackFieldHandles)) {
+                // Check if fallback has the field and it's not empty
+                $fallbackValue = $fallback->getFieldValue($handle);
+                if (!empty($fallbackValue)) {
+                    // Assign fallback value to primary
+                    $job->setfieldValue($handle, $fallbackValue);
+                }
             }
         }
+
+        return $job;
     }
 }
