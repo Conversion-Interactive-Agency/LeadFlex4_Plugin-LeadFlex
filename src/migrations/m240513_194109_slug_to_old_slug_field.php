@@ -1,6 +1,6 @@
 <?php
 
-namespace craft\contentmigrations;
+namespace conversionia\leadflex\migrations;
 
 use Craft;
 use craft\db\Migration;
@@ -9,7 +9,7 @@ use craft\elements\Entry;
 /**
  * m240513_194109_slug_to_old_slug_field migration.
  */
-class m240513_194109_slug_to_old_slug_field extends Migration
+class m240514_204109_updating_jobs_url_pattern extends Migration
 {
     /**
      * @inheritdoc
