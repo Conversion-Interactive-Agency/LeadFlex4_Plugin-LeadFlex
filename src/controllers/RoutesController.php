@@ -12,7 +12,7 @@ class RoutesController extends Controller
     protected $allowAnonymous = true;
 
 
-    /* Handlding Job Entries with changed urls mapped by config/routes.php instead of Craft's URL table
+    /* Handling Job Entries with changed urls mapped by config/routes.php instead of Craft's URL table
     * @param int $entryId
     * @return void */
 

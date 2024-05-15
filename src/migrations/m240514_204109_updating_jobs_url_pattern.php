@@ -7,13 +7,10 @@ use craft\db\Migration;
 use craft\elements\Entry;
 
 /**
- * m240513_194109_slug_to_old_slug_field migration.
+ * m240514_204109_updating_jobs_url_pattern migration.
  */
 class m240514_204109_updating_jobs_url_pattern extends Migration
 {
-    /**
-     * @inheritdoc
-     */
     public function safeUp()
     {
         // Get all the entries in the jobs section.

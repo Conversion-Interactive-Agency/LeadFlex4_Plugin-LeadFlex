@@ -26,7 +26,7 @@ class RoutesService extends Component
             function (RegisterUrlRulesEvent $event) {
                 $event->rules["jobs/<entryId:[0-9]+>"] = 'leadflex/routes/jobs';
                 $event->rules["jobs/<entryId:[0-9]+>/<slug:[^\/]+>"] = 'leadflex/routes/jobs';
-                $event->rules["jobs/<slug:[^\/]+>"] = 'leadflex/routes/oldJobs';
+                $event->rules["jobs/<slug:[^\/]+>"] = 'leadflex/routes/old-jobs';
             }
         );
     }
