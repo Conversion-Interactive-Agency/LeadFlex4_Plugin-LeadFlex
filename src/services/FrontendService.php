@@ -10,11 +10,17 @@
 namespace conversionia\leadflex\services;
 
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
+use conversionia\leadflex\assets\site\SiteAsset;
 use Craft;
 use craft\base\Component;
 
-class TwigVariablesService extends Component
+class FrontendService extends Component
 {
+    public function init()
+    {
+        $this->registerVariables();
+        $this->regisertAssets();
+    }
     public function registerVariables()
     {
         $extensions = [
@@ -24,5 +30,10 @@ class TwigVariablesService extends Component
         foreach ($extensions as $extension) {
             Craft::$app->view->registerTwigExtension(new $extension);
         }
+    }
+
+    public function regisertAssets()
+    {
+        Craft::$app->view->registerAssetBundle(SiteAsset::class);
     }
 }
