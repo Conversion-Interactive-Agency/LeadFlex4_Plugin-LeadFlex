@@ -16,7 +16,7 @@ use conversionia\leadflex\services\EntryService;
 use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\FeedMeService;
 use conversionia\leadflex\services\RoutesService;
-use conversionia\leadflex\services\TwigVariablesService;
+use conversionia\leadflex\services\FrontendService;
 use conversionia\leadflex\services\WebhooksService;
 use conversionia\reporter\Reporter;
 use Craft;
@@ -111,7 +111,7 @@ class Leadflex extends Plugin
                 'exports' => ExportsService::class,
                 'feedme' => FeedMeService::class,
                 'routes' => RoutesService::class,
-                'twig' => TwigVariablesService::class,
+                'frontend' => FrontendService::class,
                 'webhooks' => WebhooksService::class
             ],
         ];
@@ -140,7 +140,7 @@ class Leadflex extends Plugin
         }
 
         if ($request->getIsSiteRequest()) {
-            $this->twig->registerFrontend();
+            $this->frontend->registerFrontend();
             $this->routes->registerEvents();
         }
 

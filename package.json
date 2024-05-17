@@ -3,8 +3,11 @@
     "version": "2.0.0",
     "private": true,
     "scripts": {
+        "pre-deploy": "npm run cp-build && npm run site-build",
         "cp": "cd ./src/assets/cp && vite build --watch",
-        "cp-build": "cd ./src/assets/cp && vite build"
+        "cp-build": "cd ./src/assets/cp && vite build",
+        "site": "cd ./src/assets/site && vite build --watch",
+        "site-build": "cd ./src/assets/site && vite build"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.17",

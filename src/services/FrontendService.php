@@ -14,6 +14,8 @@ use craft\base\Component;
 use craft\elements\Entry;
 use yii\base\Event;
 
+use conversionia\leadflex\assets\site\SiteAsset;
+
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
 use conversionia\leadflex\twigextensions\FrontendTwigExtensions;
 use conversionia\leadflex\twigextensions\TwigFiltersExtensions;
@@ -23,7 +25,7 @@ use conversionia\leadflex\helpers\EntryHelper;
 use conversionia\leadflex\variables\LeadflexVariable;
 use craft\web\twig\variables\CraftVariable;
 
-class TwigVariablesService extends Component
+class FrontendService extends Component
 {
 
     private $convirza = [];
@@ -32,6 +34,7 @@ class TwigVariablesService extends Component
     {
         $this->registerVariables();
         $this->registerPluginVariable();
+        $this->registertAssets();
     }
 
     public function registerVariables()
@@ -59,6 +62,11 @@ class TwigVariablesService extends Component
                 $variable->set('leadflex', LeadflexVariable::class);
             }
         );
+    }
+
+    public function registertAssets()
+    {
+        Craft::$app->view->registerAssetBundle(SiteAsset::class);
     }
     
     public function getConvirza($job): array

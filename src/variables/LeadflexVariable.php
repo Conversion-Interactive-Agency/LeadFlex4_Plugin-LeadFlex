@@ -45,6 +45,6 @@ class LeadflexVariable
 
     public function getConvirza($job) : array
     {
-        return Leadflex::$plugin->twig->getConvirza($job);
+        return Leadflex::$plugin->frontend->getConvirza($job);
     }
 }
