@@ -1,0 +1,1 @@
+{"version":3,"file":"leadflex-cp.js","sources":["../../src/js/app.js"],"sourcesContent":["// CSS needs to be imported here as it's treated as a module\nimport \"../scss/main.scss\";\n\nCraft.BaseElementIndex.defaults.batchSize = 1000; // eslint-disable-line no-undef\n"],"names":[],"mappings":"AAGA,MAAM,iBAAiB,SAAS,UAAY"}

@@ -21,7 +21,7 @@ export default ({ command }) => ({
         sourcemap: true,
         rollupOptions: {
             input: {
-                'leadflex-cp': 'src/js/leadflex-cp.js',
+                'leadflex-cp': 'src/js/app.js',
             },
             output: {
                 entryFileNames: 'js/[name].js',

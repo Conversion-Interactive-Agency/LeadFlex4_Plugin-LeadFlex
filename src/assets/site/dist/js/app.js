@@ -1,0 +1,2 @@
+function E(){const o=document.querySelectorAll("[data-event-trigger]");function a(t){const e=t.dataset.googleEventCategory,n=t.dataset.facebookEventTrack;e&&Object.prototype.hasOwnProperty.call("window","dataLayer")&&c(e),n&&Object.prototype.hasOwnProperty.call("window","fbq")&&r(n)}function c(t){window.dataLayer.push({event:"click",method:"",transport_type:"beacon",event_category:t})}function r(t){window.fbq("track",t)}o.forEach(t=>{const e=t.dataset.eventTriggerType||"click";t.addEventListener(e,()=>a(t))})}E();
+//# sourceMappingURL=app.js.map
