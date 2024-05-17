@@ -6,11 +6,11 @@ function tracking() {
     const GOOGLE_EVENT = node.dataset.googleEventCategory;
     const FACEBOOK_EVENT = node.dataset.facebookEventTrack;
 
-    if (GOOGLE_EVENT && !!Object.getOwnPropertyDescriptor(window, "dataLayer")) {
+    if (GOOGLE_EVENT && window.hasOwnProperty("dataLayer")) {
       pushGoogleEvent(GOOGLE_EVENT);
     }
 
-    if (FACEBOOK_EVENT && !!Object.getOwnPropertyDescriptor(window, "fbq")) {
+    if (FACEBOOK_EVENT && window.hasOwnProperty("fbq")) {
       pushFacebookEvent(FACEBOOK_EVENT);
     }
   }
