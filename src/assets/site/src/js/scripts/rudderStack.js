@@ -1,5 +1,6 @@
 /* eslint no-console:0 */
 import { RudderAnalytics } from "@rudderstack/analytics-js";
+import checkIfHtmxIsLoaded from "./helpers/htmx";
 
 function updateAnonymousIdField() {
   const anonymousIdField = document.querySelector("[name=\"fields[anonymous_id]\"]");
@@ -67,22 +68,6 @@ function registerEvents() {
   });
 }
 
-function checkIfHtmxIsLoaded(count = 0) {
-  if (count > 5) {
-    return false;
-  }
-  setTimeout(() => {
-    if ("htmx" in window) {
-      registerEvents();
-      window.htmx.on("htmx:afterSwap", () => {
-        registerEvents();
-      });
-    } else {
-      checkIfHtmxIsLoaded(count + 1);
-    }
-  }, 500);
-}
-
 const rudderanalytics = new RudderAnalytics();
 
 rudderanalytics.load("2Fivwkm2WzdbgiuTksdgWz729mz", "https://conversionwbv.dataplane.rudderstack.com");
@@ -97,5 +82,3 @@ rudderanalytics.ready(() => {
   });
 });
 rudderanalytics.page();
-
-export default { rudderanalytics };

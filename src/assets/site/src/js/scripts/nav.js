@@ -16,7 +16,7 @@ function nav() {
     }
   }
 
-  mobileIcon.addEventListener("click", openCloseMenu);
+  mobileIcon?.addEventListener("click", openCloseMenu);
 }
 
 export default nav();

@@ -1,6 +1,3 @@
-// Import JS helper methods
-import checkIfHtmxIsLoaded from "./scripts/helpers/htmx";
-
 // Import all the JS modules
 import "./scripts/nav";
 import "./scripts/virtualRecruiter";
