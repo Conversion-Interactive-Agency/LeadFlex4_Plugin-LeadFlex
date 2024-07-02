@@ -1,3 +1,4 @@
+/* eslint no-console:0 */
 import { RudderAnalytics } from "@rudderstack/analytics-js";
 
 function updateAnonymousIdField() {
