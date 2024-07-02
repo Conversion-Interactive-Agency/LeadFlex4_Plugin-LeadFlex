@@ -38,6 +38,14 @@ class RoutesController extends Controller
             ->oldSlug($slug)
             ->one();
 
+        if ($entry == null) {
+            preg_match("/([0-9]+)$/", $slug, $matches);
+
+            $entry = Entry::find()
+                ->id($matches[1])
+                ->one();
+        }
+
         $redirectUrl = $entry instanceof Entry ? $entry->url : UrlHelper::url("jobs?closed=true");
         $this->redirect($redirectUrl, 301);
     }
