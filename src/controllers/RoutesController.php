@@ -38,7 +38,7 @@ class RoutesController extends Controller
             ->oldSlug($slug)
             ->one();
 
-        if ($entry == null) {
+        if (empty($entry)) {
             preg_match("/([0-9]+)$/", $slug, $matches);
 
             $entry = Entry::find()
