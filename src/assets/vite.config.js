@@ -32,7 +32,6 @@ export default ({ command }) => ({
         rollupOptions: {
             input: { ...entries },
             output: {
-                name: '[name]',
                 entryFileNames: 'js/[name].js',
                 chunkFileNames: 'js/[name].js',
                 assetFileNames: `css/[name].[ext]`,
