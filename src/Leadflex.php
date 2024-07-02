@@ -20,11 +20,12 @@ use craft\base\Plugin;
 use craft\services\Plugins;
 use craft\events\PluginEvent;
 
-use conversionia\leadflex\services\WebhooksService;
 use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\EntryService;
 use conversionia\leadflex\services\FeedMeService;
+use conversionia\leadflex\services\RoutesService;
 use conversionia\leadflex\services\TwigVariablesService;
+use conversionia\leadflex\services\WebhooksService;
 
 use craft\elements\Entry;
 use craft\base\Element;
@@ -123,8 +124,9 @@ class Leadflex extends Plugin
             'exports' => ExportsService::class,
             'feedme' => FeedMeService::class,
             'formie' => FormService::class,
+            'routes' => RoutesService::class,
+            'twig' => TwigVariablesService::class,
             'webhooks' => WebhooksService::class,
-            'twig' => TwigVariablesService::class
         ]);
 
         // Register Events
@@ -144,6 +146,7 @@ class Leadflex extends Plugin
 
         if ($request->getIsSiteRequest()) {
             $this->twig->registerVariables();
+            $this->routes->registerEvents();
         }
 
         $this->entry->registerEvents();
