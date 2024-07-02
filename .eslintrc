@@ -18,6 +18,7 @@
     "no-console": ["warn"],
     "eqeqeq": ["error", "always"],
     "curly": "error",
-    "no-prototype-builtins": "off"
+    "no-prototype-builtins": "off",
+    "no-inner-declarations": "off"
   }
 }

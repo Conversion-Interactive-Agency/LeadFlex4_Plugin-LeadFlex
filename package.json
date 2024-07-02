@@ -8,6 +8,7 @@
     "cp-build": "cd ./src/assets/cp && vite build",
     "site": "cd ./src/assets/site && vite build --watch",
     "site-build": "cd ./src/assets/site && vite build",
+    "dev": "cd ./src/assets && vite build --watch",
     "build": "cd ./src/assets && vite build"
   },
   "devDependencies": {
@@ -29,6 +30,8 @@
     "vite-plugin-stylelint": "^5.3.1"
   },
   "dependencies": {
-    "@rudderstack/analytics-js": "^3.5.2"
+    "@rudderstack/analytics-js": "^3.5.2",
+    "is-mobile": "^4.0.0",
+    "js-cookie": "^3.0.5"
   }
 }
