@@ -70,7 +70,13 @@ function registerEvents() {
 
 const rudderanalytics = new RudderAnalytics();
 
-rudderanalytics.load("2Fivwkm2WzdbgiuTksdgWz729mz", "https://conversionwbv.dataplane.rudderstack.com");
+rudderanalytics.load("2Fivwkm2WzdbgiuTksdgWz729mz", "https://conversionwbv.dataplane.rudderstack.com", {
+  storage: {
+    encryption: {
+      version: "legacy"
+    }
+  }
+});
 rudderanalytics.ready(() => {
   // Register Custom Events
   checkIfHtmxIsLoaded();
