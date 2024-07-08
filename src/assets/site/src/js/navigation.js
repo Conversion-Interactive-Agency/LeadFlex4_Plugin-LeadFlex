@@ -1,4 +1,4 @@
-function nav() {
+function navigation() {
   const mainNav = document.getElementById("nav");
   const mobileIcon = document.getElementById("mobile-icon");
   const useElement = document.querySelector("#mobile-icon > svg > use");
@@ -19,4 +19,4 @@ function nav() {
   mobileIcon?.addEventListener("click", openCloseMenu);
 }
 
-export default nav();
+export default navigation();
