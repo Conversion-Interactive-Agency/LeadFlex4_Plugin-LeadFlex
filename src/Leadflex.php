@@ -10,9 +10,7 @@
 
 namespace conversionia\leadflex;
 
-use conversionia\leadflex\assets\ControlPanel;
 use conversionia\leadflex\models\Settings;
-use conversionia\leadflex\services\ControlPanelService;
 use conversionia\leadflex\services\FormService;
 use conversionia\reporter\Reporter;
 use Craft;
@@ -119,7 +117,6 @@ class Leadflex extends Plugin
 
         // Register our services
         $this->setComponents([
-            'controlpanel' => ControlPanelService::class,
             'entry' => EntryService::class,
             'exports' => ExportsService::class,
             'feedme' => FeedMeService::class,
@@ -138,7 +135,6 @@ class Leadflex extends Plugin
         }
 
         if ($request->getIsCpRequest()) {
-            $this->controlpanel->init();
             $this->exports->registerEvents();
             $this->formie->registerEvents();
             $this->webhooks->registerEvents();

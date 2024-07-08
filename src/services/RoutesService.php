@@ -9,12 +9,15 @@
 
 namespace conversionia\leadflex\services;
 
+use conversionia\leadflex\assets\site\SiteAsset;
+
 use yii\base\Event;
 
 use Craft;
 use craft\base\Component;
 use craft\events\RegisterUrlRulesEvent;
 use craft\web\UrlManager;
+use craft\web\View;
 
 class RoutesService extends Component
 {
@@ -27,6 +30,14 @@ class RoutesService extends Component
                 $event->rules["jobs/<entryId:[0-9]+>"] = 'leadflex/routes/jobs';
                 $event->rules["jobs/<entryId:[0-9]+>/<slug:[^\/]+>"] = 'leadflex/routes/jobs';
                 $event->rules["jobs/<slug:[^\/]+>"] = 'leadflex/routes/old-jobs';
+            }
+        );
+
+        Event::on(
+            View::class,
+            View::EVENT_END_BODY,
+            function (Event $event) {
+                Craft::$app->getView()->registerAssetBundle(SiteAsset::class);
             }
         );
     }
