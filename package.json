@@ -3,11 +3,6 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "pre-deploy": "npm run cp-build && npm run site-build",
-    "cp": "cd ./src/assets/cp && vite build --watch",
-    "cp-build": "cd ./src/assets/cp && vite build",
-    "site": "cd ./src/assets/site && vite build --watch",
-    "site-build": "cd ./src/assets/site && vite build",
     "dev": "cd ./src/assets && vite build --watch",
     "build": "cd ./src/assets && vite build"
   },
