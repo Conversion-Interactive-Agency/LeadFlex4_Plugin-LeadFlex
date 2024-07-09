@@ -8,15 +8,15 @@ class SiteAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = '@conversionia/assets/site/dist';
+        $this->sourcePath = '@conversionia/assets/dist';
 
 
         $this->js = [
-            'js/app.js',
+            'js/site.js',
         ];
 
         //$this->css = [
-        //    'css/app.css',
+        //    'css/site.css',
         //];
 
         parent::init();

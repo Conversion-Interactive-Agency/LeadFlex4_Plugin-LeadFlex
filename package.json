@@ -3,11 +3,8 @@
     "version": "2.0.0",
     "private": true,
     "scripts": {
-        "pre-deploy": "npm run cp-build && npm run site-build",
-        "cp": "cd ./src/assets/cp && vite build --watch",
-        "cp-build": "cd ./src/assets/cp && vite build",
-        "site": "cd ./src/assets/site && vite build --watch",
-        "site-build": "cd ./src/assets/site && vite build"
+        "dev": "cd ./src/assets && vite build --watch",
+        "build": "cd ./src/assets && vite build"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.17",
@@ -26,5 +23,10 @@
         "vite-plugin-resolve": "^2.5.1",
         "vite-plugin-restart": "^0.4.0",
         "vite-plugin-stylelint": "^5.3.1"
+    },
+    "dependencies": {
+        "@rudderstack/analytics-js": "^3.5.2",
+        "is-mobile": "^4.0.0",
+        "js-cookie": "^3.0.5"
     }
 }
