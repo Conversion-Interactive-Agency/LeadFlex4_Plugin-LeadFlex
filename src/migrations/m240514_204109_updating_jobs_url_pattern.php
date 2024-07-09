@@ -52,6 +52,8 @@ class m240514_204109_updating_jobs_url_pattern extends Migration
             Craft::error('No section found with the handle "jobs".', __METHOD__);
         }
 
+        // Run the queue
+        Craft::$app->queue->run();
     }
 
     /**
