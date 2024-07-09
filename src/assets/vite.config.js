@@ -14,8 +14,7 @@ import StaticCopy from "./vite-plugins/static-copy";
 import { resolve } from "path";
 
 const apps = [
-  "site",
-  "cp",
+  "site"
 ];
 
 const entries = {};
