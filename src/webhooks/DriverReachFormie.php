@@ -6,6 +6,9 @@ use verbb\formie\elements\Form;
 use verbb\formie\elements\Submission;
 use verbb\formie\Formie;
 use verbb\formie\integrations\webhooks\Webhook;
+
+use conversionia\leadflex\Leadflex;
+use conversionia\leadflex\events\ReturnJsonEvent;
 use conversionia\leadflex\helpers\SubmissionHelper;
 
 class DriverReachFormie extends Webhook
@@ -125,7 +128,18 @@ class DriverReachFormie extends Webhook
                 $label = ($labels[$handle] ?? $handle);
                 $json[$label] = $value;
             }
+        }
 
+        if (Leadflex::$plugin->hasEventHandlers(Leadflex::EVENT_BEFORE_RETURN_JSON)) {
+            $JSON_EVENT_OBJECT = new ReturnJsonEvent([
+                'data' => $data,
+                'form' => $form,
+                'json' => $json,
+                'submission' => $submission,
+            ]);
+            Leadflex::$plugin->trigger(Leadflex::EVENT_BEFORE_RETURN_JSON, $JSON_EVENT_OBJECT);
+
+            $json = $JSON_EVENT_OBJECT->json;
         }
 
         // Return JSON data

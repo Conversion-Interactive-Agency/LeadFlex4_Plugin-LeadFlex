@@ -12,6 +12,9 @@ use conversionia\leadflex\helpers\SubmissionHelper;
 // Volume Types
 use craft\base\LocalVolumeInterface;
 
+use conversionia\leadflex\Leadflex;
+use conversionia\leadflex\events\ReturnJsonEvent;
+
 // todo: Build postFowarinding from Digital Ocean;
 // use vaersaagod\dospaces\Volume as DigitalOceanVolume;
 
@@ -54,7 +57,7 @@ class TenstreetFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
-        $fields = $form->getCustomFields();
+        $fields = $form->getFields();
         $fileUploadFields = [];
 
         // Initialize form data
@@ -155,6 +158,18 @@ class TenstreetFormie extends Webhook
                 $label = ($labels[$handle] ?? $handle);
                 $json[$label] = $value;
             }
+        }
+
+        if (Leadflex::$plugin->hasEventHandlers(Leadflex::EVENT_BEFORE_RETURN_JSON)) {
+            $JSON_EVENT_OBJECT = new ReturnJsonEvent([
+                'data' => $data,
+                'form' => $form,
+                'json' => $json,
+                'submission' => $submission,
+            ]);
+            Leadflex::$plugin->trigger(Leadflex::EVENT_BEFORE_RETURN_JSON, $JSON_EVENT_OBJECT);
+
+            $json = $JSON_EVENT_OBJECT->json;
         }
 
         // Return JSON data

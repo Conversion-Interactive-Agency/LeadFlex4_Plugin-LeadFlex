@@ -16,7 +16,7 @@ class RoutesController extends Controller
     * @param int $entryId
     * @return void */
 
-    public function actionJobs(int $entryId)
+    public function actionJobs(int $entryId, string $slug = '') : void
     {
         $this->requireSiteRequest();
 
@@ -26,6 +26,27 @@ class RoutesController extends Controller
             ->one();
 
         $redirectUrl = $entry instanceof Entry ? $entry->url : UrlHelper::url("jobs?closed=true");
-        $this->redirect($redirectUrl);
+        $this->redirect($redirectUrl, 301);
+    }
+
+    public function actionOldJobs(string $slug = '') : void
+    {
+        $this->requireSiteRequest();
+
+        // Use the ID to look up the entry...
+        $entry = Entry::find()
+            ->oldSlug($slug)
+            ->one();
+
+        if (empty($entry)) {
+            preg_match("/([0-9]+)$/", $slug, $matches);
+
+            $entry = Entry::find()
+                ->id($matches[1])
+                ->one();
+        }
+
+        $redirectUrl = $entry instanceof Entry ? $entry->url : UrlHelper::url("jobs?closed=true");
+        $this->redirect($redirectUrl, 301);
     }
 }

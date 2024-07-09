@@ -1,9 +1,9 @@
 <?php
 namespace conversionia\leadflex\events;
 
-use craft\events\CancelableEvent;
+use yii\base\Event;
 
-class ReturnJsonEvent extends CancelableEvent
+class ReturnJsonEvent extends Event
 {
     // Properties
     // =========================================================================
@@ -11,5 +11,4 @@ class ReturnJsonEvent extends CancelableEvent
     public $form;
     public $json;
     public $submission;
-    public $webhook;
 }

@@ -11,22 +11,24 @@
 namespace conversionia\leadflex;
 
 use conversionia\leadflex\models\Settings;
-use conversionia\leadflex\services\ControlPanelService;
-use conversionia\leadflex\services\EntryService;
+use conversionia\leadflex\services\FormService;
+use conversionia\reporter\Reporter;
+use Craft;
+use craft\base\Plugin;
+use craft\services\Plugins;
+use craft\events\PluginEvent;
+
 use conversionia\leadflex\services\ExportsService;
+use conversionia\leadflex\services\EntryService;
 use conversionia\leadflex\services\FeedMeService;
 use conversionia\leadflex\services\RoutesService;
 use conversionia\leadflex\services\FrontendService;
 use conversionia\leadflex\services\WebhooksService;
-use conversionia\reporter\Reporter;
-use Craft;
-use craft\base\Element;
-use craft\base\Plugin;
+
 use craft\elements\Entry;
+use craft\base\Element;
 use craft\events\ModelEvent;
-use craft\events\PluginEvent;
 use craft\helpers\StringHelper;
-use craft\services\Plugins;
 
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made
@@ -57,6 +59,8 @@ class Leadflex extends Plugin
      * @var Leadflex
      */
     public static $plugin;
+
+    public const EVENT_BEFORE_RETURN_JSON = 'beforeReturnJson';
 
     // Public Properties
     // =========================================================================
@@ -106,13 +110,13 @@ class Leadflex extends Plugin
     {
         return [
             'components' => [
-                'controlpanel' => ControlPanelService::class,
                 'entry' => EntryService::class,
                 'exports' => ExportsService::class,
                 'feedme' => FeedMeService::class,
+                'formie' => FormService::class,
                 'routes' => RoutesService::class,
                 'frontend' => FrontendService::class,
-                'webhooks' => WebhooksService::class
+                'webhooks' => WebhooksService::class,
             ],
         ];
     }
@@ -134,8 +138,8 @@ class Leadflex extends Plugin
         }
 
         if ($request->getIsCpRequest()) {
-            $this->controlpanel->init();
             $this->exports->registerEvents();
+            $this->formie->registerEvents();
             $this->webhooks->registerEvents();
         }
 
