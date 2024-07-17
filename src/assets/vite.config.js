@@ -10,6 +10,7 @@ import autoprefixer from "autoprefixer";
 // Custom (for the moment) - Pulled from Verbb Formie project
 import ImageminCopy from "./vite-plugins/imagemin-copy";
 import StaticCopy from "./vite-plugins/static-copy";
+import IifeWrap from "./vite-plugins/iife-wrap";
 
 import { resolve } from "path";
 
@@ -68,5 +69,8 @@ export default ({ command }) => ({
     // }),
 
     ViteImageOptimizer(),
+
+    // Wrap the build files in a self invoking function
+    IifeWrap
   ],
 });
