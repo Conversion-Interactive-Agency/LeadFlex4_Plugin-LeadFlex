@@ -106,28 +106,35 @@ class Leadflex extends Plugin
      */
     public $controllerNamespace;
 
-    public static function config(): array
-    {
-        return [
-            'components' => [
-                'entry' => EntryService::class,
-                'exports' => ExportsService::class,
-                'feedme' => FeedMeService::class,
-                'formie' => FormService::class,
-                'routes' => RoutesService::class,
-                'frontend' => FrontendService::class,
-                'webhooks' => WebhooksService::class,
-            ],
-        ];
-    }
+    /**
+     * @var mixed|object|null
+     */
+    public mixed $entry;
 
     public function init() : void
     {
         parent::init();
         self::$plugin = $this;
+        Craft::setAlias('@conversionia', __DIR__);
+
+        // Register services
+        $this->setComponents([
+            'controlpanel' => ControlPanelService::class,
+            'entry' => [
+                'class' => EntryService::class,
+            ],
+            'exports' => ExportsService::class,
+            'feedme' => FeedMeService::class,
+            'routes' => RoutesService::class,
+            'frontend' => FrontendService::class,
+            'webhooks' => WebhooksService::class,
+        ]);
+
+        // Now you can access the services via $this->get('entry') or $this->entry
+        $this->entry = $this->get('entry');
 
         // Set alias for this module
-        Craft::setAlias('@conversionia', __DIR__);
+
 
         // Register Events
         $request = Craft::$app->getRequest();
