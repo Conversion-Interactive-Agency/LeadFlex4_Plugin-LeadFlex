@@ -123,6 +123,7 @@ class Leadflex extends Plugin
             'entry' => [
                 'class' => EntryService::class,
             ],
+            'form' => FormService::class,
             'exports' => ExportsService::class,
             'feedme' => FeedMeService::class,
             'routes' => RoutesService::class,
@@ -146,7 +147,7 @@ class Leadflex extends Plugin
 
         if ($request->getIsCpRequest()) {
             $this->exports->registerEvents();
-            $this->formie->registerEvents();
+            $this->form->registerEvents();
             $this->webhooks->registerEvents();
         }
 
