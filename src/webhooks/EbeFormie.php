@@ -50,13 +50,14 @@ class EbeFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
+        $fields = $form->getCustomFields();
 
         // Initialize form data
         $data = [];
         $labels = [];
 
         // Get every submitted field value
-        foreach ($form->getFields() as $field) {
+        foreach ($fields as $field) {
 
             // Get data
             $value = $submission->getFieldValue($field->handle);
