@@ -17,7 +17,8 @@ class m240514_204109_updating_jobs_url_pattern extends Migration
         $jobs = Entry::find()->section('jobs')->anyStatus()->all();
         // Copy the current's slug into the Old Slug field.
         foreach ($jobs as $job) {
-            $job->setFieldValues(['oldSlug' => $job->slug]);
+            $newSlug = $job->slug . '-' . $job->id;
+            $job->setFieldValues(['oldSlug' => $newSlug]);
             echo $job->url . " updated.  \n";
             Craft::$app->getElements()->saveElement($job);
         }
