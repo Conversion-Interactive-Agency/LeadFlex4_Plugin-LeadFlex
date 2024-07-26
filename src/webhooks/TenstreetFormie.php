@@ -57,7 +57,7 @@ class TenstreetFormie extends Webhook
     {
         /** @var Form $form */
         $form = $submission->getForm();
-        $fields = $form->getFields();
+        $fields = $form->getCustomFields();
         $fileUploadFields = [];
 
         // Initialize form data
