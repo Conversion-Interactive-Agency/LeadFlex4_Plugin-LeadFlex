@@ -10,7 +10,7 @@
 
 namespace conversionia\leadflex\services;
 
-use conversionia\leadflex\webhooks\LeasePassFormie;
+use conversionia\leadflex\webhooks\LeasePathFormie;
 use craft\base\Component;
 use yii\base\Event;
 use verbb\formie\services\Integrations;
@@ -35,7 +35,7 @@ class WebhooksService extends Component
             static function(RegisterIntegrationsEvent $event) {
                 $event->webhooks[] = DriverReachFormie::class;
                 $event->webhooks[] = EbeFormie::class;
-                $event->webhooks[] = LeasePassFormie::class;
+                $event->webhooks[] = LeasePathFormie::class;
                 $event->webhooks[] = SalesForceFormie::class;
                 $event->webhooks[] = StarsCampusFormie::class;
                 $event->webhooks[] = TalentDriverFormie::class;

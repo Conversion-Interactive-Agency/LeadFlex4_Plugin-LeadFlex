@@ -18,16 +18,16 @@ use conversionia\leadflex\events\ReturnJsonEvent;
 // todo: Build postFowarinding from Digital Ocean;
 // use vaersaagod\dospaces\Volume as DigitalOceanVolume;
 
-class LeasePassFormie extends Webhook
+class LeasePathFormie extends Webhook
 {
     public static function displayName(): string
     {
-        return Craft::t('formie', 'LeasePass ATS');
+        return Craft::t('formie', 'LeasePath ATS');
     }
 
     public function getDescription(): string
     {
-        return Craft::t('formie', 'This is a LeasePass webhook integration. Commonly extended by other ATS webhooks.');
+        return Craft::t('formie', 'This is a LeasePath webhook integration. Commonly extended by other ATS webhooks.');
     }
 
     public function getIconUrl(): string
