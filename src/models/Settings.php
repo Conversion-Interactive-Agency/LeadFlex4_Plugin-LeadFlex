@@ -34,4 +34,9 @@ class Settings extends Model
      * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
      */
     public $includeJobCampaignEvaluation = true;
+
+    /**
+     * @var string The classes to use for the filter input on the Job Search page
+     */
+    public $filterClass = "w-full rounded-[5px] px-1 py-1";
 }

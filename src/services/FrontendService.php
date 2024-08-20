@@ -9,9 +9,14 @@
 
 namespace conversionia\leadflex\services;
 
+use conversionia\leadflex\Leadflex;
 use Craft;
 use craft\base\Component;
+use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
+use craft\fields\Dropdown;
+use craft\fields\PlainText;
+
 use yii\base\Event;
 
 use conversionia\leadflex\assets\site\SiteAsset;
@@ -21,6 +26,8 @@ use conversionia\leadflex\twigextensions\FrontendTwigExtensions;
 use conversionia\leadflex\twigextensions\TwigFiltersExtensions;
 use conversionia\leadflex\helpers\SubmissionHelper;
 use conversionia\leadflex\helpers\EntryHelper;
+use conversionia\leadflex\helpers\FrontendHelper;
+use doublesecretagency\googlemaps\helpers\GoogleMaps;
 
 use conversionia\leadflex\variables\LeadflexVariable;
 use craft\web\twig\variables\CraftVariable;
@@ -83,5 +90,103 @@ class FrontendService extends Component
             $this->convirza['tel'] = "tel:".SubmissionHelper::cleanPhone($this->convirza['number']);
         }
         return $this->convirza;
+    }
+
+    public function getJobs($filters, $location) : ElementQuery
+    {
+        $filters = array_filter($filters);
+
+        $query = Entry::find()->section('jobs')
+            ->orderBy('makeSticky desc, postDate desc')
+            ->with(['defaultJobDescription']);
+        // filters will be passed and array of key (field handle) value (field value)
+        foreach ($filters as $key => $value) {
+            $query->$key($value);
+        }
+
+        $proximitySearchRules = $location['city'] && $location['state'] || $location['zip'];
+        $isStateOnlyJobSearch = $location['state'] && !$location['city'] && !$location['zip'];
+
+        // Get the IDS that match the search criteria.
+        if ($proximitySearchRules) {
+            $query->orderBy('makeSticky desc, distance asc');
+            $stateFullName = FrontendHelper::getStateLongName($location['state']);
+            // get all the statewide jobs
+
+            $statewideFieldQuery = $query;
+            $statewideFieldQuery->andWhere([
+                'statewideJob' => 1,
+                'location' => [
+                    'subfields' => [
+                        'state' => $stateFullName
+                    ]
+                ]
+            ]);
+
+            $statewideIds = $statewideFieldQuery->ids();
+
+            // get the jobs within the radius
+            // Use the radius search but also query for all jobs in the state.
+            $term = "#{location['city']}, #{stateLongName}, #{location['zip']} United States";
+            $address = GoogleMaps::lookup($term)->coords();
+            $lookupCords = [$address['lat'], $address['lng']];
+
+            $query->location([
+                'target' => $lookupCords,
+                'range' => $location['range'],
+                'units' => 'miles'
+            ]);
+
+            $jobsWithinRange = $query->ids();
+
+            $mergedArray = array_merge($statewideIds, $jobsWithinRange);
+            $ids = array_unique($mergedArray);
+
+        } elseif($isStateOnlyJobSearch) {
+            // Only include results in the matching state.
+            // if it's only a location.state - get all the jobs in the state - regardless of city or hiring range.
+            $options = [
+                'subfields' => [
+                    'state' => $location['state']
+                ]
+            ];
+            $query->location($options);
+        }
+
+        return $query;
+    }
+
+    public function getFilters() : array
+    {
+        // todo: get the filter handles from a GraphQL based injection from CNext into Sprig component variables
+        return ['driverType', 'trailerType', 'jobType'];
+    }
+
+    public function buildFilter($field, $value) : string
+    {
+        // Build unique filters for plain text fields and dropdown fields (with options)
+        $filtersClass =  Leadflex::$plugin->getSettings()->filterClass;
+
+        $html = "<label for='{$field->handle}' class='flex items-center'><span>{$field->name}</span></label>";
+        // get the object class of $field
+        $fieldClass = get_class($field);
+        // switch statement for the field class
+        switch ($fieldClass) {
+            case Dropdown::class:
+                $html .= "<select id='{$field->handle}' name='{$field->handle}' class='".$filtersClass."' aria-label='-Select-'>";
+                foreach ($field->options as $option) {
+                    $isSelected = $value == $option['value'] ? ' selected' : '';
+                    $html .= "<option value='{$option['value']}' {$isSelected}>{$option['label']}</option>";
+                }
+                $html .= "</select>";
+                break;
+            case PlainText::class:
+                $html .= "<input type='text' id='{$field->handle}' name='{$field->handle}' class='".$filtersClass."' aria-label='-Select-'>";
+                break;
+            default:
+                $html = '';
+        }
+
+        return $html;
     }
 }
