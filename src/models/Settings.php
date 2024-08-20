@@ -14,29 +14,34 @@ class Settings extends Model
     /**
      * @var string The section to use for the job listings
      */
-    public $section = 'jobs';
+    public string $section = 'jobs';
 
     /**
      * @var array[] ATS keys mapping to location field keys
      */
-    public $locationKeys = [
+    public array $locationKeys = [
         'city' => 'City',
         'state' => 'State',
         'zip' => 'PostalCode'
     ];
 
     /**
-     * @var boolean Disable custom slug generation for jobs {adheadline}-{jobid}
+     * @var boolean Disable custom slug generation for jobs {id}/{slugified-title}
      */
-    public $disableCustomSlugGeneration = false;
+    public bool $disableCustomSlugGeneration = false;
 
     /**
      * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
      */
-    public $includeJobCampaignEvaluation = true;
+    public bool $enableJobCampaignEvaluation = true;
 
     /**
      * @var string The classes to use for the filter input on the Job Search page
      */
-    public $filterClass = "w-full rounded-[5px] px-1 py-1";
+    public string $filterClass = "w-full rounded-[5px] px-1 py-1";
+
+    /**
+     * @var array Array of field handles to use for the filter input on the Job Search page
+     */
+    public array $filterFieldHandles = ['driverType', 'trailerType', 'jobType'];
 }

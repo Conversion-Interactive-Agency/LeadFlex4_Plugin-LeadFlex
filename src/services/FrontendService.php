@@ -109,41 +109,47 @@ class FrontendService extends Component
 
         // Get the IDS that match the search criteria.
         if ($proximitySearchRules) {
-            $query->orderBy('makeSticky desc, distance asc');
+            $proximityQuery = clone($query);
+            $statewideQuery = clone($query);
+
+            // Use the zipcode above all else
+            if (!empty($location['zip']))
+            {
+                $address = GoogleMaps::lookup($location['zip'])->one();
+                $location['state'] = $address->state;
+            }
             $stateFullName = FrontendHelper::getStateLongName($location['state']);
-            // get all the statewide jobs
 
-            $statewideFieldQuery = $query;
-            $statewideFieldQuery->andWhere([
-                'statewideJob' => 1,
-                'location' => [
-                    'subfields' => [
-                        'state' => $stateFullName
-                    ]
+            // Get the ids for statewide jobs in the matching state.
+            $statewideQuery->statewideJob(1);
+            $locationParams = [
+                'subfields' => [
+                    'state' => $location['state']
                 ]
-            ]);
+            ];
+            $statewideQuery->location($locationParams);
+            $statewideIds = $statewideQuery->ids();
 
-            $statewideIds = $statewideFieldQuery->ids();
+            // Lookup the location and get the jobs within the hiring range.
+            $term = (!empty($location['city']) ? $location['city'] . ', ' : '')
+                . $stateFullName
+                . (!empty($location['zip']) ? ', ' . $location['zip'] : '')
+                . ' United States';
 
-            // get the jobs within the radius
-            // Use the radius search but also query for all jobs in the state.
-            $term = "#{location['city']}, #{stateLongName}, #{location['zip']} United States";
-            $address = GoogleMaps::lookup($term)->coords();
-            $lookupCords = [$address['lat'], $address['lng']];
-
-            $query->location([
-                'target' => $lookupCords,
+            $proximityQuery->location([
+                'target' => $term,
                 'range' => $location['range'],
                 'units' => 'miles'
             ]);
 
-            $jobsWithinRange = $query->ids();
+            $jobsWithinRange = $proximityQuery->ids();
 
             $mergedArray = array_merge($statewideIds, $jobsWithinRange);
             $ids = array_unique($mergedArray);
 
+            $query->id($ids);
+
         } elseif($isStateOnlyJobSearch) {
-            // Only include results in the matching state.
             // if it's only a location.state - get all the jobs in the state - regardless of city or hiring range.
             $options = [
                 'subfields' => [
@@ -159,7 +165,7 @@ class FrontendService extends Component
     public function getFilters() : array
     {
         // todo: get the filter handles from a GraphQL based injection from CNext into Sprig component variables
-        return ['driverType', 'trailerType', 'jobType'];
+        return Leadflex::$plugin->getSettings()->filterFieldHandles;
     }
 
     public function buildFilter($field, $value) : string
@@ -173,7 +179,7 @@ class FrontendService extends Component
         // switch statement for the field class
         switch ($fieldClass) {
             case Dropdown::class:
-                $html .= "<select id='{$field->handle}' name='{$field->handle}' class='".$filtersClass."' aria-label='-Select-'>";
+                $html .= "<select id='{$field->handle}' name=filters[{$field->handle}] class='".$filtersClass."' aria-label='-Select-'>";
                 foreach ($field->options as $option) {
                     $isSelected = $value == $option['value'] ? ' selected' : '';
                     $html .= "<option value='{$option['value']}' {$isSelected}>{$option['label']}</option>";

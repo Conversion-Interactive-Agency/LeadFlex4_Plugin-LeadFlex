@@ -49,8 +49,8 @@ class EntryService extends Component
 
         // Check if the entry has a campaign - if not, prevent from being included into XML feed / jobs.json
         $hasCampaign = !is_null($entry->getFieldValue('assignedCampaign')->one());
-        $includeJobCampaignEvaluation = Leadflex::$plugin->getSettings()->includeJobCampaignEvaluation;
-        if ($includeJobCampaignEvaluation && (!$entry->enabled || !$hasCampaign)) {
+        $isJobCampaignEvaluationEnabled = Leadflex::$plugin->getSettings()->enableJobCampaignEvaluation;
+        if ($isJobCampaignEvaluationEnabled && (!$entry->enabled || !$hasCampaign)) {
             $event->sender->setFieldValue('advertiseJob', 'false');
             $event->sender->setFieldValue('assignedCampaign', []);
         }

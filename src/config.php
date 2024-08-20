@@ -1,6 +1,6 @@
 <?php
 /**
- * LeadFlex plugin for Craft CMS 3.x
+ * LeadFlex plugin for Craft CMS 4.x
  *
  * @link      conversionia.com
  * @copyright Copyright (c) 2023 Jeff Benusa
@@ -20,7 +20,6 @@
  * you do for 'general.php'
  */
 
-
 return [
     // The section to use for the job listings
     "section" => 'jobs',
@@ -32,12 +31,15 @@ return [
         'zip' => 'PostalCode'
     ],
 
-    // Disable custom slug generation for jobs {adheadline}-{jobid}
+    // Disable custom slug generation for jobs {id}/{slugified-title}
     "disableCustomSlugGeneration" => false,
 
     // Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
-    "includeJobCampaignEvaluation" => true,
+    "enableJobCampaignEvaluation" => true,
 
     // The classes to use for the filter input on the Job Search page
-    "filterClass" => "w-full rounded-[5px] px-1 py-1"
+    "filterClass" => "w-full rounded-[5px] px-1 py-1",
+
+    // Array of field handles to use for the filter input on the Job Search page
+    "filterFieldHandles" => ['driverType', 'trailerType', 'jobType']
 ];
