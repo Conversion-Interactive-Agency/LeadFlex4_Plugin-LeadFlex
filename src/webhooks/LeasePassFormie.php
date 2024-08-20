@@ -119,7 +119,7 @@ class LeasePassFormie extends Webhook
             'companyName','atsCompanyId','referrerValue',
             'firstName','lastName',
             'city','state','zipCode',
-            'email','cellPhone','optIn',
+            'email','cellPhone','optIn','ssnHidden'
         ];
 
         // Compile JSON data
@@ -139,6 +139,7 @@ class LeasePassFormie extends Webhook
                 'PostalCode' => trim($data['zipCode']),
                 'InternetEmailAddress' => trim($data['email']),
                 'PrimaryPhone' => SubmissionHelper::cleanPhone($data['cellPhone']),
+                'SSN'=> trim($data['ssnHidden']) ?? '',
                 // 'CommercialDriversLicense' => $data['cdlA'],
                 // 'LicenseClass' => $licenseClass,
                 'OptIn' => ($data['optIn'] ?? null || 'No' ?: 'No' ),
