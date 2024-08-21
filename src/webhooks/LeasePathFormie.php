@@ -119,7 +119,7 @@ class LeasePathFormie extends Webhook
             'companyName','atsCompanyId','referrerValue',
             'firstName','lastName',
             'city','state','zipCode',
-            'email','cellPhone','optIn','ssnHidden'
+            'email','cellPhone','optIn',
         ];
 
         // Compile JSON data
@@ -139,11 +139,11 @@ class LeasePathFormie extends Webhook
                 'PostalCode' => trim($data['zipCode']),
                 'InternetEmailAddress' => trim($data['email']),
                 'PrimaryPhone' => SubmissionHelper::cleanPhone($data['cellPhone']),
-                'SSN'=> trim($data['ssnHidden']) ?? '',
                 // 'CommercialDriversLicense' => $data['cdlA'],
                 // 'LicenseClass' => $licenseClass,
                 'OptIn' => ($data['optIn'] ?? null || 'No' ?: 'No' ),
             ],
+            'ssn'=> trim($data['socialSecurityNumber_key']) ?? ''
         ];
 
         if (!empty($uploads)){
