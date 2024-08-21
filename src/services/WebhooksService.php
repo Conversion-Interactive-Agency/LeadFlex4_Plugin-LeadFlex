@@ -16,6 +16,7 @@ use verbb\formie\services\Integrations;
 use verbb\formie\events\RegisterIntegrationsEvent;
 
 use conversionia\leadflex\webhooks\DriverReachFormie;
+use conversionia\leadflex\webhooks\LeasePathFormie;
 use conversionia\leadflex\webhooks\TenstreetFormie;
 use conversionia\leadflex\webhooks\EbeFormie;
 use conversionia\leadflex\webhooks\UkgFormie;
@@ -34,6 +35,7 @@ class WebhooksService extends Component
             static function(RegisterIntegrationsEvent $event) {
                 $event->webhooks[] = DriverReachFormie::class;
                 $event->webhooks[] = EbeFormie::class;
+                $event->webhooks[] = LeasePathFormie::class;
                 $event->webhooks[] = SalesForceFormie::class;
                 $event->webhooks[] = StarsCampusFormie::class;
                 $event->webhooks[] = TalentDriverFormie::class;
