@@ -35,6 +35,7 @@ class FrontendService extends Component
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
+        $this->registerGeo();
     }
 
     public function registerVariables()
@@ -83,5 +84,22 @@ class FrontendService extends Component
             $this->convirza['tel'] = "tel:".SubmissionHelper::cleanPhone($this->convirza['number']);
         }
         return $this->convirza;
+    }
+
+    public function registerGeo()
+    {
+        $geo = $this->getGeo();
+        header('X-LF-Geo: ' . ($geoData?->country ?? 'false'));
+    }
+
+    public function getGeo(): string
+    {
+        if (!empty(Craft::$app->request->userIP)) {
+            try {
+                $geoData = json_decode(file_get_contents('https://api.country.is/' . Craft::$app->request->userIP));
+            } catch (\Exception $e) {}
+        }
+
+        return $geoData?->country ?? 'false';
     }
 }
