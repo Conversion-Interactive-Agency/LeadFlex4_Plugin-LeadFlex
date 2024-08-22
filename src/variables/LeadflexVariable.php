@@ -47,4 +47,9 @@ class LeadflexVariable
     {
         return Leadflex::$plugin->frontend->getConvirza($job);
     }
+
+    public function getGeo() : string
+    {
+        return Leadflex::$plugin->frontend->getGeo();
+    }
 }
