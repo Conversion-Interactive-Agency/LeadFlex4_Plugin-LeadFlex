@@ -13,6 +13,8 @@ namespace conversionia\leadflex\variables;
 use conversionia\leadflex\Leadflex;
 
 use Craft;
+use Twig\Markup;
+
 use craft\elements\Entry;
 use craft\errors\InvalidFieldException;
 use modules\businesslogic\BusinessLogic;
@@ -46,5 +48,11 @@ class LeadflexVariable
     public function getConvirza($job) : array
     {
         return Leadflex::$plugin->frontend->getConvirza($job);
+    }
+
+    public function renderCookieConsentBanner() : Markup
+    {
+        $html = Leadflex::$plugin->frontend->buildConsentBanner();
+        return new Markup($html, Craft::$app->charset);
     }
 }

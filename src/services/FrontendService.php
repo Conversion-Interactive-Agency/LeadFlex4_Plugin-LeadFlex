@@ -84,4 +84,53 @@ class FrontendService extends Component
         }
         return $this->convirza;
     }
+    public function buildConsentBanner() : string
+    {
+        $template = Leadflex::$plugin->getSettings()->cookieConsentBannerPath;
+        if (Craft::$app->view->doesTemplateExist($template)) {
+            return Craft::$app->view->renderTemplate($template);
+        } else {
+            return $this->defaultConsentBanner();
+        }
+    }
+
+    public function defaultConsentBanner()
+    {
+        $settings = Leadflex::$plugin->getSettings();
+        return "<section class='fixed left-0 bottom-0 right-0 z-10 p-4' data-component='consent-modal'>
+              <div class='container xl:max-w-[70rem] mx-auto py-6 px-12 md:px-24 border bg-white content relative'>
+                <svg class='absolute top-4 right-4 p-2 h-12 w-12 cursor-pointer' id='dismissSelection'>
+                  <use xlink:href='#close'></use>
+                </svg>
+                <div class='tab' id='tab-1'>
+                  <h2 class='mb-4'>We Value Your Privacy</h2>
+                  <div class='mb-8'>
+                    ". $settings->cookieConsentBannerText ."
+                  </div>
+                  <div id='consent-cookie-types' class='flex flex-col mb-6 hidden'>
+                    <div class='flex'>
+                      <input type='checkbox' name='consent-cookie-marketing' id='consent-cookie-marketing' class='consent-checkbox' data-consent-types='ad_personalization' checked=''>
+                      <label for='consent-cookie-marketing' class='input-toggle'>Toggle marketing cookies</label>
+                      <label for='consent-cookie-marketing'>Marketing Cookies</label>
+                    </div>
+                    <div class='flex'>
+                      <input type='checkbox' name='consent-cookie-conversion' id='consent-cookie-conversion' class='consent-checkbox' data-consent-types='ad_storage,ad_user_data' checked=''>
+                      <label for='consent-cookie-conversion' class='input-toggle'>Toggle conversion tracking cookies</label>
+                      <label for='consent-cookie-conversion'>Conversion Tracking Cookies</label>
+                    </div>
+                    <div class='flex'>
+                      <input type='checkbox' name='consent-cookie-analytics' id='consent-cookie-analytics' class='consent-checkbox' data-consent-types='analytics_storage' checked=''>
+                      <label for='consent-cookie-analytics' class='input-toggle'>Toggle analytics cookies</label>
+                      <label for='consent-cookie-analytics'>Analytics</label>
+                    </div>
+                  </div>
+                  <div>
+                    <button class='button secondary uppercase' id='acceptSelection'>I understand</button>
+                    <button class='button secondary is-inverse uppercase' id='selectCookieTypes'>Cookie Preferences</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+        ";
+    }
 }

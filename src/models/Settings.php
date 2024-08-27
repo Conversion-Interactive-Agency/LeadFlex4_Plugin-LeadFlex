@@ -34,4 +34,13 @@ class Settings extends Model
      * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
      */
     public $includeJobCampaignEvaluation = true;
+
+    /**
+     * @var string The default Cookie Consent banner html to use when creating a new job
+     */
+    public string $cookieConsentBannerText = "<p>Welcome to #####, Apples</p>";
+    /**
+     * @var string default path to LeadFlex cookie consent banner for override
+     */
+    public string $cookieConsentBannerPath = "_leadflex/cookieConsentBanner";
 }

@@ -1,0 +1,9 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.textareaField({
+    label: "Cookie Consent Banner Text",
+    instructions: "Add text for the cookie consent",
+    name: 'cookieConsentBannerText',
+    value: settings.cookieConsentBannerText,
+    rows: 4,
+}) }}

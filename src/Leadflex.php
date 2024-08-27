@@ -12,11 +12,9 @@ namespace conversionia\leadflex;
 
 use conversionia\leadflex\models\Settings;
 use conversionia\leadflex\services\FormService;
-use conversionia\reporter\Reporter;
+
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
 
 use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\EntryService;
@@ -24,11 +22,6 @@ use conversionia\leadflex\services\FeedMeService;
 use conversionia\leadflex\services\RoutesService;
 use conversionia\leadflex\services\FrontendService;
 use conversionia\leadflex\services\WebhooksService;
-
-use craft\elements\Entry;
-use craft\base\Element;
-use craft\events\ModelEvent;
-use craft\helpers\StringHelper;
 
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made
@@ -77,7 +70,7 @@ class Leadflex extends Plugin
      *
      * @var bool
      */
-    public bool $hasCpSettings = false;
+    public bool $hasCpSettings = true;
 
     /**
      * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
@@ -136,7 +129,6 @@ class Leadflex extends Plugin
 
         // Set alias for this module
 
-
         // Register Events
         $request = Craft::$app->getRequest();
         // Adjust controller namespace for console requests
@@ -169,5 +161,15 @@ class Leadflex extends Plugin
     protected function createSettingsModel(): Settings
     {
         return new Settings();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function settingsHtml(): ?string
+    {
+        return Craft::$app->getView()->renderTemplate('leadflex/cp/settings', [
+            'settings' => $this->getSettings(),
+        ]);
     }
 }
