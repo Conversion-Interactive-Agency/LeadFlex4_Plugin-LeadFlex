@@ -1,4 +1,4 @@
-# Leadflex plugin for Craft CMS 3.x
+# Leadflex plugin for Craft CMS 4.x
 
 This is a generic Craft CMS plugin
 
@@ -14,4 +14,6 @@ This is a generic Craft CMS plugin
 
 ### Handlers moved into Controllers/RouteController.php.
 
+
+## Moving Job Search component into plugin
 

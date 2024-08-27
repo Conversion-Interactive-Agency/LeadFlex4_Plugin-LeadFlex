@@ -54,9 +54,14 @@ class LeadflexVariable
         return Leadflex::$plugin->frontend->getJobs($filters, $location);
     }
 
-    public function getFilters() : array
+    public function getFiltersFields() : array
     {
-        return Leadflex::$plugin->frontend->getFilters();
+        return Leadflex::$plugin->frontend->getFiltersFields();
+    }
+
+    public function buildFilter($field, $value, $sprigVariable) : string
+    {
+        return Leadflex::$plugin->frontend->buildFilter($field, $value, $sprigVariable);
     }
 
     public function buildFilter($field, $value) : string

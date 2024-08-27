@@ -1,0 +1,14 @@
+{% extends '_layouts/cp' %}
+
+{% import "_includes/forms" as forms %}
+{% set title = 'LeadFlex Settings'|t('leadflex') %}
+
+{% block content %}
+    {{ forms.textareaField({
+        label: "Cookie Consent Banner Text",
+        instructions: "Add text for the cookie consent",
+        name: 'cookieConsentBannerText',
+        value: settings.cookieConsentBannerText,
+        rows: 4,
+    }) }}
+{% endblock %}

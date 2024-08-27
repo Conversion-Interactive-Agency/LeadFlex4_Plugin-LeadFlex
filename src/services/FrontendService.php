@@ -162,13 +162,21 @@ class FrontendService extends Component
         return $query;
     }
 
-    public function getFilters() : array
+    public function getFiltersFields() : array
     {
-        // todo: get the filter handles from a GraphQL based injection from CNext into Sprig component variables
-        return Leadflex::$plugin->getSettings()->filterFieldHandles;
-    }
+        $fields = [];
+        $handles = Leadflex::$plugin->getSettings()->filterFieldHandles;
 
-    public function buildFilter($field, $value) : string
+        foreach ($handles as $handle) {
+            $field = Craft::$app->fields->getFieldByHandle($handle);
+            if ($field) {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
+    public function buildFilter($field, $value, $sprigVariable) : string
     {
         // Build unique filters for plain text fields and dropdown fields (with options)
         $filtersClass =  Leadflex::$plugin->getSettings()->filterClass;
@@ -179,7 +187,7 @@ class FrontendService extends Component
         // switch statement for the field class
         switch ($fieldClass) {
             case Dropdown::class:
-                $html .= "<select id='{$field->handle}' name=filters[{$field->handle}] class='".$filtersClass."' aria-label='-Select-'>";
+                $html .= "<select id='{$field->handle}' name={$sprigVariable}[{$field->handle}] class='".$filtersClass."' aria-label='-Select-'>";
                 foreach ($field->options as $option) {
                     $isSelected = $value == $option['value'] ? ' selected' : '';
                     $html .= "<option value='{$option['value']}' {$isSelected}>{$option['label']}</option>";

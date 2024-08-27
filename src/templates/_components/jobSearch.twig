@@ -1,0 +1,188 @@
+{% import '_macros/stateNames' as states %}
+{% import '_macros/jobQuery' as jobs %}
+
+{% set entry = craft.entries.id(entryId).one() %}
+{% set range = location['range'] ??? project.jobSearchDefaultRadius.value ??? 50 %}
+
+{% set location = {
+    range : range,
+    city : city ?? '',
+    state : state ?? '',
+    zip : zip ?? ''
+} %}
+
+{% set filterFields = craft.leadflex.getFiltersFields() %}
+{% for field in filterFields %}
+    {% set handle = field.handle %}
+    {% if filters[handle] is not defined %}
+        {% set filters = filters | merge({(handle): ''}) %}
+    {% endif %}
+{% endfor %}
+
+{% set jobsQuery = craft.leadflex.getJobs(filters, location) %}
+{% set noResultsMessage = jobsSearch.text  ??? 'No results found.' %}
+
+{% set page = page ?? 1 %}
+
+{% set pageInfo = sprig.paginate(jobsQuery, page) %}
+{% set entries = pageInfo.pageResults %}
+
+{# job-filters #}
+<div id="jobSearch" class="grid gap-4 grid-cols-2 lg:grid-cols-4 xl:flex items-end bg-theme-light p-4 text-gray-dark font-sofia [&_label]:text-[14px] [&_label]:leading-[20px] [&_label]:uppercase [&_label]:mb-1 [&_input]:h-[2.5rem] [&_select]:h-[2.5rem]">
+    {{ hiddenInput('page', page) }}
+
+    {% for filter in filterFields %}
+        <div class="flex-1">
+            {{ craft.leadflex.buildFilter(filter, filters[filter.handle], 'filters' ) | raw }}
+        </div>
+    {% endfor %}
+    <div class="flex-1">
+        <label for="city" class="flex items-center">
+            <span>City</span>
+        </label>
+        <input id="city" class="w-full rounded-[5px] px-1 py-1" type="text" name="city"
+               value="{{ location['city'] }}" autocomplete="off" placeholder="Search...">
+    </div>
+    <div class="flex-1">
+        <label for="state" class=" flex items-center ">
+            <span>State</span>
+        </label>
+        <select id="state" name="state" class="w-full rounded-[5px] px-1 py-1" aria-label="Select">
+            {% for key, value in states.allStates %}
+                {% set isSelected = location['state']|lower == key|lower ? ' selected' : '' %}
+                <option value="{{ key|e }}"{{ isSelected }}>{{ value|raw }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="flex-1">
+        <label for="zip" class=" flex items-center ">
+            <span>Zip Code</span>
+        </label>
+        <input  id="zip" class="w-full rounded-[5px] px-1 py-1" type="text" name="zip"
+                value="{{ location['zip'] }}" autocomplete="off" placeholder="Search...">
+    </div>
+    <div class="flex-1">
+        <label for="range" class=" flex items-center ">
+            <span class="flex items-center">Radius<small class="text-xs ml-1">(miles)</small></span>
+        </label>
+        <input id="range" class="w-full rounded-[5px] px-1 py-1" type="text" name="location[range]"
+               value="{{ location['range'] ? location['range'] : ''}}" autocomplete="off" placeholder="{{ entry.hiringRadius ??? 'Search...' }}">
+    </div>
+    <div class="flex-1">
+        <button sprig s-val:page="1" s-replace="#results"
+                class="button bg-theme-dark text-white hover:bg-theme hover:text-black w-full text-center jobs-search-btn" type="submit">
+            <span>SEARCH</span>
+        </button>
+    </div>
+</div>
+
+{# job results #}
+<div id="results">
+    {% if entries|length %}
+        <ul class="grid gap-[20px] md:grid-cols-2 lg:grid-cols-3 py-4 md:py-8 mb-8" >
+            {% for job in entries %}
+                {% set default = job['defaultJobDescription'][0] ?? job %}
+                {% set applyUrl = craft.leadflex.buildExternalApplicationUrl(entry) %}
+                {% set headline = job.adHeadline ??? default.adHeadline ??? default.title %}
+                {% set postDate = 'now'|date('d') <= '14' ? 'now'|date('m/01/Y') : 'now'|date('m/15/Y') %}
+                <li class="border border-[#707070] overflow-hidden max-md:max-w-[405px] w-full mx-auto font-sofia">
+                    <div class="bg-theme-dark text-center p-4 flex flex-col items-center">
+                        <svg class="h-6 w-6 text-theme" height="32">
+                            <use xlink:href="#marker-geo-alt-fill"></use>
+                        </svg>
+                        <div class="text-[1.25rem] line-height-[1.5rem] text-white uppercase mt-2">
+                            <p>
+                                {{ job.location.city ? job.location.city ~ ',' }} {{ job.location.state }}
+                                {% if job.statewideJob %}
+                                    <span class="text-[.75rem]">(statewide)</span>
+                                {% endif %}
+                            </p>
+                            {% set distance = job.location.getDistance() | number(decimals=1) ??? false %}
+                            {% if distance | boolean and distance > 0 %}
+                                <p class="text-[1rem]">Distance: {{ distance }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="px-[30px] py-[26px] [&_p]:text-gray-dark [&_p]:leading-[26px] h-auto flex flex-col justify-between">
+                        {% if currentUser is not null %}<p>Job ID: {{job.id }}</p>{% endif %}
+                        <p class="font-semibold text-left text-[1.25rem] mb-5">
+                            {{ headline | replace({'CDL A':'<span class="upper">CDL-A</span>','!':''}) | raw }}
+                        </p>
+                        <div class="flex flex-col [&_p]:mb-2 [&_p]:text-[1.125rem]">
+                            {% if job.driverType ?? null %}
+                                <p><strong class="font-bold">Driver Type:</strong> {{ job.driverType }}</p>
+                            {% endif %}
+                            {% if job.trailerType.label ?? null %}
+                                <p><strong class="font-bold">Trailer Type:</strong> {{ job.trailerType.label }}</p>
+                            {% endif %}
+                            {% if job.jobType ?? null %}
+                                <p><strong class="font-bold">Job Type:</strong> {{ job.jobType }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <a class="button w-full"
+                               href="{{ job.url }}">
+                                View Details
+                            </a>
+                            <a class="button w-full"
+                               href="{{ applyUrl }}">
+                                Apply Now
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="mx-auto py-4 md:py-8 mb-8  text-xl md:text-2xl">
+            {{ noResultsMessage }}
+        </div>
+    {% endif %}
+    {% if pageInfo.totalPages > 1 %}
+        {% set liClass = "page-item cursor-pointer"  %}
+        {% set buttonClass = "border border-brand transition cursor-pointer p-4 hover:bg-brand hover:text-white" %}
+        {% set disableClass = "bg-gray-dark text-white" %}
+        <div class="px-6 pb-8">
+            <ul class="pagination flex justify-center">
+                {% if page != 1  %}
+                    <li class="{{ liClass }}">
+                        <button class="bg-white {{ buttonClass }}"
+                                sprig s-val:page="{{ page - 1 }}" s-replace="#results" s-swap="show:window:top">
+                            PREV
+                        </button>
+                    </li>
+                {% endif %}
+                {% if page > 2 and pageInfo.totalPages > 2 %}
+                    <li class="{{ liClass }}">
+                        <button class="text-gray cursor-default border border-brand transition cursor-pointer p-4">
+                            ...
+                        </button>
+                    </li>
+                {% endif %}
+                {% for i in pageInfo.getDynamicRange(3) %}
+                    <li class="{{ liClass }} {{ i == pageInfo.currentPage ? disableClass}}" aria-current="page">
+                        <button class="{{ buttonClass }}"
+                                sprig s-val:page="{{ i }}" s-swap="show:window:top" s-replace="#results">
+                            {{ i }}
+                        </button>
+                    </li>
+                {% endfor %}
+                {% if page < pageInfo.totalPages and pageInfo.totalPages > 2 %}
+                    <li class="{{ liClass }}">
+                        <button class="text-gray cursor-default border border-brand transition cursor-pointer p-4">
+                            ...
+                        </button>
+                    </li>
+                {% endif %}
+                {% if page != pageInfo.totalPages  %}
+                    <li class="{{ liClass }}">
+                        <button class="bg-white {{ page == pageInfo.totalPages ? disableClass }} {{ buttonClass }}"
+                                sprig s-replace="#results" s-val:page="{{ page + 1 }}" s-swap="show:window:top">
+                            NEXT
+                        </button>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
