@@ -122,6 +122,8 @@ class LeasePathFormie extends Webhook
             'email','cellPhone','optIn',
         ];
 
+        $cleanedSSN = trim(str_replace('-', '', $data['socialSecurityNumber_key'] ?? ''));
+
         // Compile JSON data
         $json = [
             'form' => [
@@ -143,7 +145,7 @@ class LeasePathFormie extends Webhook
                 // 'LicenseClass' => $licenseClass,
                 'OptIn' => ($data['optIn'] ?? null || 'No' ?: 'No' ),
             ],
-            'ssn'=> trim($data['socialSecurityNumber_key']) ?? ''
+            'ssn'=> $cleanedSSN
         ];
 
         if (!empty($uploads)){
@@ -154,8 +156,8 @@ class LeasePathFormie extends Webhook
 
         // Loop through form data
         foreach ($data as $handle => $value) {
-            // If data point was not used, add to JSON data
-            if (!in_array($handle, $usedFields)) {
+            // If data point was not used, add to JSON data and the handle does not include the word 'key'
+            if (!in_array($handle, $usedFields) && strpos($handle, 'key') === false) {
                 $label = ($labels[$handle] ?? $handle);
                 $json[$label] = $value;
             }
