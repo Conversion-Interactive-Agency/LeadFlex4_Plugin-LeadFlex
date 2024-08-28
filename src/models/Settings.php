@@ -38,7 +38,7 @@ class Settings extends Model
     /**
      * @var string The default Cookie Consent banner html to use when creating a new job
      */
-    public string $cookieConsentBannerText = "<p>Welcome to #####, Apples</p>";
+    public string $cookieConsentBannerText = "";
     /**
      * @var string default path to LeadFlex cookie consent banner for override
      */

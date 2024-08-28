@@ -1,0 +1,51 @@
+<section class='fixed left-0 bottom-0 right-0 z-10 p-4 hidden' data-component='consent-modal' style='display: none'>
+    <div class='container max-w-lg mx-auto py-6 px-12 md:px-24 border bg-white relative' data-current-view='1'>
+        <div class='consent-views'>
+            <div class='consent-view'>
+                <div class='mb-3 consent-message'>{{ message | raw }}</div>
+                <div class='consent-buttons'>
+                    <div>
+                        <button type='button' class='consent-accept button secondary uppercase' data-consent='grantAll' data-consent-types='ad_storage,analytics_storage,analytics_storage'>
+                            I Understand
+                        </button>
+                    </div>
+                    <div>
+                        <button type='button' class='consent-customize button secondary is-inverse uppercase' data-consent-view='2' data-consent='show'>
+                            Customize Preferences
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class='consent-view'>
+                <div class='mb-3 consent-message'>
+                    <h2 class='font-bold text-lg mb-2'>We Value Your Privacy</h2>
+                    <p>You can control the ways in which we improve and personalize your experience. Modify your selections below and click 'Save'.</p>
+                </div>
+                <form>
+                    <div class='flex'>
+                        <input type='checkbox' name='consent-cookie-marketing' id='consent-cookie-marketing' class='consent-checkbox' data-consent-types='ad_personalization' checked />
+                        <label for='consent-cookie-marketing' class='input-toggle'>Toggle marketing cookies</label>
+                        <label for='consent-cookie-marketing'>Marketing Cookies</label>
+                    </div>
+                    <div class='flex'>
+                        <input type='checkbox' name='consent-cookie-conversion' id='consent-cookie-conversion' class='consent-checkbox' data-consent-types='ad_storage,ad_user_data' checked />
+                        <label for='consent-cookie-conversion' class='input-toggle'>Toggle conversion tracking cookies</label>
+                        <label for='consent-cookie-conversion'>Conversion Tracking Cookies</label>
+                    </div>
+                    <div class='flex'>
+                        <input type='checkbox' name='consent-cookie-analytics' id='consent-cookie-analytics' class='consent-checkbox' data-consent-types='analytics_storage' checked />
+                        <label for='consent-cookie-analytics' class='input-toggle'>Toggle analytics cookies</label>
+                        <label for='consent-cookie-analytics'>Analytics</label>
+                    </div>
+                </form>
+                <div class='consent-buttons'>
+                    <div>
+                        <button type='button' class='consent-save button secondary uppercase' data-consent='grant'>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

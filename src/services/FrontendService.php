@@ -12,8 +12,11 @@ namespace conversionia\leadflex\services;
 use Craft;
 use craft\base\Component;
 use craft\elements\Entry;
+use craft\events\RegisterTemplateRootsEvent;
+use craft\web\View;
+use Twig\Markup;
 use yii\base\Event;
-
+use conversionia\leadflex\Leadflex;
 use conversionia\leadflex\assets\site\SiteAsset;
 
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
@@ -35,6 +38,7 @@ class FrontendService extends Component
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
+        $this->registerTemplates();
     }
 
     public function registerVariables()
@@ -69,6 +73,18 @@ class FrontendService extends Component
         Craft::$app->view->registerAssetBundle(SiteAsset::class);
     }
     
+    public function registerTemplates()
+    {
+        // Base template directory
+        Event::on(View::class,
+            View::EVENT_REGISTER_SITE_TEMPLATE_ROOTS,
+            function (RegisterTemplateRootsEvent $event) {
+                $id = Leadflex::$plugin->id;
+                $event->roots[$id] = Leadflex::$plugin->getBasePath() . DIRECTORY_SEPARATOR .'templates';
+            }
+        );
+    }
+
     public function getConvirza($job): array
     {
         if (!empty($this->convirza)) return $this->convirza;
@@ -84,6 +100,7 @@ class FrontendService extends Component
         }
         return $this->convirza;
     }
+
     public function buildConsentBanner() : string
     {
         $template = Leadflex::$plugin->getSettings()->cookieConsentBannerPath;
@@ -94,43 +111,39 @@ class FrontendService extends Component
         }
     }
 
-    public function defaultConsentBanner()
+    public function buildBannerMessage() : Markup
     {
         $settings = Leadflex::$plugin->getSettings();
-        return "<section class='fixed left-0 bottom-0 right-0 z-10 p-4' data-component='consent-modal'>
-              <div class='container xl:max-w-[70rem] mx-auto py-6 px-12 md:px-24 border bg-white content relative'>
-                <svg class='absolute top-4 right-4 p-2 h-12 w-12 cursor-pointer' id='dismissSelection'>
-                  <use xlink:href='#close'></use>
-                </svg>
-                <div class='tab' id='tab-1'>
-                  <h2 class='mb-4'>We Value Your Privacy</h2>
-                  <div class='mb-8'>
-                    ". $settings->cookieConsentBannerText ."
-                  </div>
-                  <div id='consent-cookie-types' class='flex flex-col mb-6 hidden'>
-                    <div class='flex'>
-                      <input type='checkbox' name='consent-cookie-marketing' id='consent-cookie-marketing' class='consent-checkbox' data-consent-types='ad_personalization' checked=''>
-                      <label for='consent-cookie-marketing' class='input-toggle'>Toggle marketing cookies</label>
-                      <label for='consent-cookie-marketing'>Marketing Cookies</label>
-                    </div>
-                    <div class='flex'>
-                      <input type='checkbox' name='consent-cookie-conversion' id='consent-cookie-conversion' class='consent-checkbox' data-consent-types='ad_storage,ad_user_data' checked=''>
-                      <label for='consent-cookie-conversion' class='input-toggle'>Toggle conversion tracking cookies</label>
-                      <label for='consent-cookie-conversion'>Conversion Tracking Cookies</label>
-                    </div>
-                    <div class='flex'>
-                      <input type='checkbox' name='consent-cookie-analytics' id='consent-cookie-analytics' class='consent-checkbox' data-consent-types='analytics_storage' checked=''>
-                      <label for='consent-cookie-analytics' class='input-toggle'>Toggle analytics cookies</label>
-                      <label for='consent-cookie-analytics'>Analytics</label>
-                    </div>
-                  </div>
-                  <div>
-                    <button class='button secondary uppercase' id='acceptSelection'>I understand</button>
-                    <button class='button secondary is-inverse uppercase' id='selectCookieTypes'>Cookie Preferences</button>
-                  </div>
-                </div>
-              </div>
-            </section>
-        ";
+        $message = $settings->cookieConsentBannerText;
+
+        if (empty($message)) {
+            // get siteUrl of the project using the Craft
+            $siteUrl = Craft::$app->getSites()->getCurrentSite()->baseUrl;
+            // remove the protocol from the url and remove the last character if it is a slash
+            $siteUrl = rtrim(preg_replace('/^https?:\/\//', '', $siteUrl), '/');
+
+            $ppEntry = Entry::find()->section('page')->slug('privacy-policy')->one();
+            $pp = $ppEntry ? "<a href='". $ppEntry->url ."'>Privacy Policy</a>" : "Privacy Policy";
+
+            $message = "<h2 class='font-bold text-lg mb-2'>We Value Your Privacy</h2><p class='text-base mb-5'>Welcome to <b>". $siteUrl ."</b>! We're glad you're here and want you to know that we respect your 
+            privacy and your right to control how we collect and use your personal data. Please read our <?php echo $pp; ?>
+            to learn about our privacy practices or click 'Customize Preferences' to exercise control over your data.</p>";
+        }
+
+        return new Markup($message, Craft::$app->charset);
+    }
+
+    public function defaultConsentBanner()
+    {
+        $message = $this->buildBannerMessage();
+        // Get view services
+        $view = Craft::$app->getView();
+
+        $templatePath = 'leadflex/site/consentBanner';
+        $template = $view->renderTemplate($templatePath, [
+            'message' => $message,
+        ]);
+
+        return $template;
     }
 }
