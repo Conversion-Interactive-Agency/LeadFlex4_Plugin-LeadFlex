@@ -1,0 +1,154 @@
+$cc-prefix: --cm;
+
+.consent {
+    &-modal {
+        // General styles
+
+        padding: 2em;
+        background: #fff;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        box-shadow: 0 0 3em rgba(0, 0, 0, 0.1);
+        font-size: var(#{$cc-prefix}-font-size);
+        font-family: var(#{$cc-prefix}-font-family);
+        font-weight: var(#{$cc-prefix}-font-weight);
+
+        // You might want to change this to ensure it's on top of everything
+        z-index: 999;
+
+        // Fixed is better for pages with short content and does not affect page content
+        // avoiding content shift when pop-up is visible/dismissed
+        position: fixed;
+
+        a {
+            color: var(#{$cc-prefix}-link-color);
+            border-color: var(#{$cc-prefix}-link-color);
+        }
+
+        @media (min-width: 700px) {
+            width: auto;
+            left: 1em;
+            bottom: 1em;
+        }
+    }
+
+    &-container {
+        position: relative;
+    }
+
+    &-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 1em 0;
+        margin-top: 1.5em;
+    }
+
+    &-close {
+        background: none;
+        border: none;
+        padding: 0;
+        float: right;
+        margin: -1em -1em 1em 1em;
+        cursor: pointer;
+        transition: 300;
+
+        svg {
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(#{$cc-prefix}-primary-color);
+        }
+    }
+
+    &-checkbox {
+        appearance: none;
+        margin: 0;
+        padding: 0;
+        width: 0;
+        height: 0;
+        visibility: hidden;
+        border: 0;
+
+        + .input-toggle {
+            text-indent: -9999px;
+            width: 2.5em;
+            height: 1.4em;
+            display: block;
+            border-radius: 2em;
+            position: relative;
+            transition: 0.3s;
+            background: #ccc;
+            margin: 0 0.5em 0 0;
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0.2em;
+                left: 0.2em;
+                width: 1em;
+                height: 1em;
+                background: #fff;
+                border-radius: 2em;
+                transition: 0.3s;
+            }
+        }
+
+        &:checked + .input-toggle {
+            background: #FFF;
+
+            &:after {
+                left: calc(100% - 0.2em);
+                transform: translateX(-100%);
+            }
+        }
+    }
+
+    &-options {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 0.5em 0;
+        align-items: flex-start;
+
+        label {
+            cursor: pointer;
+        }
+
+        > div {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+
+    &-view {
+        display: none;
+    }
+}
+
+@each $view, $maxw in (1: 480px, 2: 540px) {
+    //@media (min-width: 700px) {
+    //    .consent-views > :nth-child(#{$view}) {
+    //        max-width: $maxw;
+    //    }
+    //}
+
+    [data-current-view="#{$view}"] {
+        .consent-view {
+            display: none;
+
+            &:nth-child(#{$view}) {
+                display: block;
+            }
+        }
+    }
+}

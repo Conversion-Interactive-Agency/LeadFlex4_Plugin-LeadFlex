@@ -8,6 +8,8 @@ import "./rudderStack";
 import "./socialShareForm";
 import "./tracking";
 import "./virtualRecruiter";
+import "./cookieConsentBanner";
 
 // Import the stylesheet
-// import "../scss/site.scss";
+import "../scss/main.scss";
+

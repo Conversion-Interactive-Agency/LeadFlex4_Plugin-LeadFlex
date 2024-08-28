@@ -15,9 +15,9 @@ class SiteAsset extends AssetBundle
             'js/site.js',
         ];
 
-        //$this->css = [
-        //    'css/site.css',
-        //];
+        $this->css = [
+            'css/site.css',
+        ];
 
         parent::init();
     }
