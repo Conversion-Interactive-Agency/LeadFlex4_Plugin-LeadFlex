@@ -9,6 +9,7 @@
 
 namespace conversionia\leadflex\services;
 
+use Yii;
 use Craft;
 use craft\base\Component;
 use craft\elements\Entry;
@@ -88,16 +89,36 @@ class FrontendService extends Component
 
     public function registerGeo()
     {
-        $geo = $this->getGeo();
-        header('X-LF-Geo: ' . ($geoData?->country ?? 'false'));
+        header('X-LF-Geo: ' . $this->getGeo());
     }
 
     public function getGeo(): string
     {
-        if (!empty(Craft::$app->request->userIP)) {
+        $userIP = Craft::$app->request->userIP;
+
+        if (empty($userIP))
+            return 'false';
+
+        // Generate a cache key based on the user IP
+        $cacheKey = 'geoData_' . $userIP;
+        $cache = Yii::$app->cache;
+
+        // Try to get data from cache to increase speed
+        $geoData = $cache->get($cacheKey);
+
+        if ($geoData === false) {
             try {
-                $geoData = json_decode(file_get_contents('https://api.country.is/' . Craft::$app->request->userIP));
+                $context = stream_context_create([
+                    'http' => [
+                        'timeout' => 2,
+                    ],
+                ]);
+                $geoData = json_decode(file_get_contents('https://api.country.is/' . $userIP, false, $context));
+
+                // Cache the result for 1 day
+                $cache->set($cacheKey, $geoData, 86400);
             } catch (\Exception $e) {}
+
         }
 
         return $geoData?->country ?? 'false';
