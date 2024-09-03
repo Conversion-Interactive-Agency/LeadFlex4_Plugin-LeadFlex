@@ -100,7 +100,7 @@ class FrontendService extends Component
             return 'false';
 
         // Generate a cache key based on the user IP
-        $cacheKey = 'geoData_' . $userIP;
+        $cacheKey = 'geoData_' . sha1($userIP);
         $cache = Yii::$app->cache;
 
         // Try to get data from cache to increase speed
