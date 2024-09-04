@@ -49,10 +49,4 @@ class LeadflexVariable
     {
         return Leadflex::$plugin->frontend->getConvirza($job);
     }
-
-    public function renderCookieConsentBanner() : Markup
-    {
-        $html = Leadflex::$plugin->frontend->buildConsentBanner();
-        return new Markup($html, Craft::$app->charset);
-    }
 }

@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 (function cookieConsentBanner() {
 
   let consent = {
@@ -93,37 +95,39 @@
     },
 
     // Sets info to cookie from current values
-    updateCookie: function(accepted = this.accepted, types = this.types) {
+    updateCookie: function( accepted = this.accepted, types = this.types ) {
       let cookie = {
-        accepted: accepted,
-        types: types
-      };
+          accepted: accepted,
+          types: types
+        },
+        consentListeners = this.consentListeners,
+        args = {
+          secure: true,
 
-      let consentListeners = this.consentListeners;
-      let args = {
-        secure: true,
-        expires: 30 // Expires after 30 days
-      };
+          // Expires after 30 days
+          expires: 30
+        };
 
-      // if (typeof website !== "undefined") {
-      //   args.domain = website.domain;
-      // }
+      Cookies.set( this.cookie, JSON.stringify( cookie ), args );
 
-      document.cookie = `${this.cookie}=${JSON.stringify(cookie)};path=/;max-age=${args.expires * 24 * 60 * 60};${args.secure ? "secure;" : ""}${args.domain ? `domain=${args.domain};` : ""}`;
 
-      // Trigger consent listeners
-      consentListeners.forEach(callback => {
-        callback(cookie.types);
-      });
+      /**
+           *   Push updated types to GA by triggering callbacks
+           *   for GTM template to update itself.
+           *
+           *   @param {function} Callback to execute on user consent
+           */
+      consentListeners.forEach( function( callback ) {
+        callback( cookie.types );
+      } );
     },
 
     init: function() {
       // Update data with cookie
-      let cookie = document.cookie.split("; ").find(row => row.startsWith(this.cookie + "="));
-      let consentListeners = [];
-
-      if (cookie) {
-        cookie = JSON.parse(cookie.split("=")[1]);
+      let cookie = Cookies.get( this.cookie ),
+        consentListeners = [];
+      if( "undefined" !== typeof cookie ) {
+        cookie = JSON.parse( cookie );
         this.accepted = cookie.accepted;
         this.types = cookie.types;
 
@@ -131,20 +135,30 @@
         this.tickTypes();
       } else {
         // If there is no cookie data, check all options
-        this.tickTypes(true);
-        this.updateTypes();
+        // Set all types to `granted`
+        this.tickTypes( true );
+
+        // Update types from ticked checkboxes
+        consent.updateTypes();
       }
 
       // Show modal if user has not accepted
-      if (!this.accepted) {
+      if( !this.accepted ) {
         this.show();
       }
 
-      // Allow adding consent listeners
-      window.addConsentListener = function(callback) {
-        consentListeners.push(callback);
+      /**
+           *   Called from GTM template to set callback to be executed when
+           *   user consent is provided. Then GTM parses `this.cookie` and
+           *   updates itself.
+           *
+           * @param callback
+           */
+      window.addConsentListener = function( callback ) {
+        consentListeners.push( callback );
       };
       this.consentListeners = consentListeners;
+
     }
   };
 

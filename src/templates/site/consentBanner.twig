@@ -1,19 +1,15 @@
-<section class='fixed left-0 bottom-0 right-0 z-10 p-4 hidden' data-component='consent-modal' style='display: none'>
-    <div class='container max-w-lg mx-auto py-6 px-12 md:px-24 border bg-white relative' data-current-view='1'>
+<section class='fixed left-0 bottom-0 z-10 p-4' data-component='consent-modal' style='display: none; max-width: 800px'>
+    <div class='mx-auto py-6 px-12 md:px-24 border bg-white relative' data-current-view='1'>
         <div class='consent-views'>
             <div class='consent-view'>
-                <div class='mb-3 consent-message'>{{ message | raw }}</div>
-                <div class='consent-buttons'>
-                    <div>
-                        <button type='button' class='consent-accept button secondary uppercase' data-consent='grantAll' data-consent-types='ad_storage,analytics_storage,analytics_storage'>
-                            I Understand
-                        </button>
-                    </div>
-                    <div>
-                        <button type='button' class='consent-customize button secondary is-inverse uppercase' data-consent-view='2' data-consent='show'>
-                            Customize Preferences
-                        </button>
-                    </div>
+                <div class='consent-message'>{{ message | raw }}</div>
+                <div class='consent-buttons mt-4'>
+                    <button type='button' class='consent-accept button secondary uppercase mr-4' data-consent='grantAll' data-consent-types='ad_storage,analytics_storage,analytics_storage'>
+                        I Understand
+                    </button>
+                    <button type='button' class='consent-customize button secondary is-inverse uppercase' data-consent-view='2' data-consent='show'>
+                        Customize Preferences
+                    </button>
                 </div>
             </div>
             <div class='consent-view'>
@@ -38,7 +34,7 @@
                         <label for='consent-cookie-analytics'>Analytics</label>
                     </div>
                 </form>
-                <div class='consent-buttons'>
+                <div class='consent-buttons mt-4'>
                     <div>
                         <button type='button' class='consent-save button secondary uppercase' data-consent='grant'>
                             Save

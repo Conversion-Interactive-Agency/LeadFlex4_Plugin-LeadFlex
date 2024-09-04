@@ -2,8 +2,6 @@ $cc-prefix: --cm;
 
 .consent {
     &-modal {
-        // General styles
-
         padding: 2em;
         background: #fff;
         bottom: 0;
@@ -35,15 +33,6 @@ $cc-prefix: --cm;
 
     &-container {
         position: relative;
-    }
-
-    &-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: flex-start;
-        gap: 1em 0;
-        margin-top: 1.5em;
     }
 
     &-close {
@@ -136,12 +125,6 @@ $cc-prefix: --cm;
 }
 
 @each $view, $maxw in (1: 480px, 2: 540px) {
-    //@media (min-width: 700px) {
-    //    .consent-views > :nth-child(#{$view}) {
-    //        max-width: $maxw;
-    //    }
-    //}
-
     [data-current-view="#{$view}"] {
         .consent-view {
             display: none;

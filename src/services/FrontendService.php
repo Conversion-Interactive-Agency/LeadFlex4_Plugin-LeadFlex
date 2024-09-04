@@ -35,13 +35,12 @@ class FrontendService extends Component
 
     public function registerFrontend()
     {
+        $this->registerEvents();
         $this->registerVariables();
-        $this->registerPluginVariable();
-        $this->registertAssets();
-        $this->registerTemplates();
+        $this->registerAssets();
     }
 
-    public function registerVariables()
+    public function registerVariables() :void
     {
         $extensions = [
             BusinessLogicTwigExtensions::class,
@@ -54,7 +53,7 @@ class FrontendService extends Component
         }
     }
 
-    public function registerPluginVariable()
+    public function registerEvents() : void
     {
         // Register our plugin
         Event::on(
@@ -66,15 +65,7 @@ class FrontendService extends Component
                 $variable->set('leadflex', LeadflexVariable::class);
             }
         );
-    }
 
-    public function registertAssets()
-    {
-        Craft::$app->view->registerAssetBundle(SiteAsset::class);
-    }
-    
-    public function registerTemplates()
-    {
         // Base template directory
         Event::on(View::class,
             View::EVENT_REGISTER_SITE_TEMPLATE_ROOTS,
@@ -83,6 +74,20 @@ class FrontendService extends Component
                 $event->roots[$id] = Leadflex::$plugin->getBasePath() . DIRECTORY_SEPARATOR .'templates';
             }
         );
+
+        // Inject the Consent Banner
+        Event::on(
+            View::class,
+            View::EVENT_END_BODY,
+            function () {
+                echo Leadflex::$plugin->frontend->buildConsentBanner();
+            }
+        );
+    }
+
+    public function registerAssets() : void
+    {
+        Craft::$app->view->registerAssetBundle(SiteAsset::class);
     }
 
     public function getConvirza($job): array
@@ -133,7 +138,7 @@ class FrontendService extends Component
         return new Markup($message, Craft::$app->charset);
     }
 
-    public function defaultConsentBanner()
+    public function defaultConsentBanner() : string
     {
         $message = $this->buildBannerMessage();
         // Get view services
