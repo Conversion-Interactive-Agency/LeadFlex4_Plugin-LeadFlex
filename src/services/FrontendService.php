@@ -9,6 +9,7 @@
 
 namespace conversionia\leadflex\services;
 
+use Yii;
 use Craft;
 use craft\base\Component;
 use craft\elements\Entry;
@@ -35,6 +36,7 @@ class FrontendService extends Component
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
+        $this->registerGeo();
     }
 
     public function registerVariables()
@@ -83,5 +85,42 @@ class FrontendService extends Component
             $this->convirza['tel'] = "tel:".SubmissionHelper::cleanPhone($this->convirza['number']);
         }
         return $this->convirza;
+    }
+
+    public function registerGeo()
+    {
+        header('X-LF-Geo: ' . $this->getGeo());
+    }
+
+    public function getGeo(): string
+    {
+        $userIP = Craft::$app->request->userIP;
+
+        if (empty($userIP))
+            return 'false';
+
+        // Generate a cache key based on the user IP
+        $cacheKey = 'geoData_' . sha1($userIP);
+        $cache = Yii::$app->cache;
+
+        // Try to get data from cache to increase speed
+        $geoData = $cache->get($cacheKey);
+
+        if ($geoData === false) {
+            try {
+                $context = stream_context_create([
+                    'http' => [
+                        'timeout' => 2,
+                    ],
+                ]);
+                $geoData = json_decode(file_get_contents('https://api.country.is/' . $userIP, false, $context));
+
+                // Cache the result for 1 day
+                $cache->set($cacheKey, $geoData, 86400);
+            } catch (\Exception $e) {}
+
+        }
+
+        return $geoData?->country ?? 'false';
     }
 }

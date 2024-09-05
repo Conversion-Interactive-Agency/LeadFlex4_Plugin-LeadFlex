@@ -1,13 +1,4 @@
 <?php
-/**
- * Reporter plugin for Craft CMS 3.x
- *
- * CIA tool to build reports
- *
- * @link      conversionia.com
- * @copyright Copyright (c) 2023 Jeff Benusa
- */
-
 namespace conversionia\leadflex\variables;
 
 use conversionia\leadflex\Leadflex;
@@ -18,15 +9,15 @@ use craft\errors\InvalidFieldException;
 use modules\businesslogic\BusinessLogic;
 
 /**
- * Reporter Variable
+ * LeadFlex Twig Variables
  *
  * Craft allows plugins to provide their own template variables, accessible from
- * the {{ craft }} global variable (e.g. {{ craft.reporter }}).
+ * the {{ craft }} global variable (e.g. {{ craft.leadflex }}).
  *
  * https://craftcms.com/docs/plugins/variables
  *
- * @author    Jeff Benusa
- * @package   Reporter
+ * @author    Jeff Benusa, JD Griffin
+ * @package   Leadflex
  * @since     1.0.0
  */
 class LeadflexVariable
@@ -46,5 +37,20 @@ class LeadflexVariable
     public function getConvirza($job) : array
     {
         return Leadflex::$plugin->frontend->getConvirza($job);
+    }
+
+    /**
+     * getGeo
+     *
+     * Get the user IP from craft and check it against the country.is API.
+     * Used in twig templates: `{% set userGeo = craft.leadflex.getGeo() %}`
+     *
+     * @since 4.4.0
+     *
+     * @return string Two character country code or 'false' on failure
+     */
+    public function getGeo() : string
+    {
+        return Leadflex::$plugin->frontend->getGeo();
     }
 }
