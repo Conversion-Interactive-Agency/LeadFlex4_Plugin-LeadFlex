@@ -16,6 +16,8 @@ use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
 use craft\fields\Dropdown;
 use craft\fields\PlainText;
+use craft\web\View;
+use craft\events\RegisterTemplateRootsEvent;
 
 use yii\base\Event;
 
@@ -42,6 +44,7 @@ class FrontendService extends Component
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
+        $this->registerTemplates();
     }
 
     public function registerVariables()
@@ -76,6 +79,18 @@ class FrontendService extends Component
         Craft::$app->view->registerAssetBundle(SiteAsset::class);
     }
     
+    public function registerTemplates()
+    {
+        // Base template directory
+        Event::on(View::class,
+            View::EVENT_REGISTER_SITE_TEMPLATE_ROOTS,
+            function (RegisterTemplateRootsEvent $event) {
+                $id = Leadflex::$plugin->id;
+                $event->roots[$id] = Leadflex::$plugin->getBasePath() . DIRECTORY_SEPARATOR .'templates';
+            }
+        );
+    }
+
     public function getConvirza($job): array
     {
         if (!empty($this->convirza)) return $this->convirza;
@@ -97,7 +112,7 @@ class FrontendService extends Component
         $filters = array_filter($filters);
 
         $query = Entry::find()->section('jobs')
-            ->orderBy('makeSticky desc, postDate desc')
+            ->limit(24)
             ->with(['defaultJobDescription']);
         // filters will be passed and array of key (field handle) value (field value)
         foreach ($filters as $key => $value) {
@@ -136,6 +151,7 @@ class FrontendService extends Component
                 . (!empty($location['zip']) ? ', ' . $location['zip'] : '')
                 . ' United States';
 
+            $proximityQuery->orderBy('distance');
             $proximityQuery->location([
                 'target' => $term,
                 'range' => $location['range'],
@@ -144,10 +160,11 @@ class FrontendService extends Component
 
             $jobsWithinRange = $proximityQuery->ids();
 
+            // Statewides first - followed by the jobs within the hiring range.
             $mergedArray = array_merge($statewideIds, $jobsWithinRange);
             $ids = array_unique($mergedArray);
 
-            $query->id($ids);
+            $query->id($ids)->fixedOrder();
 
         } elseif($isStateOnlyJobSearch) {
             // if it's only a location.state - get all the jobs in the state - regardless of city or hiring range.
@@ -157,6 +174,8 @@ class FrontendService extends Component
                 ]
             ];
             $query->location($options);
+        } else {
+            $query->orderBy('makeSticky desc, postDate desc');
         }
 
         return $query;
@@ -204,3 +223,4 @@ class FrontendService extends Component
         return $html;
     }
 }
+

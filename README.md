@@ -16,4 +16,12 @@ This is a generic Craft CMS plugin
 
 
 ## Moving Job Search component into plugin
-
+LeadFlex templates can call the job search served from the plugin 
+```
+{% set params = {
+    'entryId': entry.id,
+    'filters': [],
+    'location': []
+} %}
+{{ sprig('leadflex/_components/jobSearch', params) }}
+```

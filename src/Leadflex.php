@@ -1,6 +1,6 @@
 <?php
 /**
- * Leadflex plugin for Craft CMS 3.x
+ * Leadflex plugin for Craft CMS 4.x
  *
  * This is a generic Craft CMS plugin
  *
@@ -12,7 +12,6 @@ namespace conversionia\leadflex;
 
 use conversionia\leadflex\models\Settings;
 use conversionia\leadflex\services\FormService;
-use conversionia\reporter\Reporter;
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;

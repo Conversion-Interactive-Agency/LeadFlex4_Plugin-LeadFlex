@@ -1,6 +1,6 @@
 <?php
 /**
- * Reporter plugin for Craft CMS 3.x
+ * LeadFlex plugin for Craft CMS 4.x
  *
  * CIA tool to build reports
  *

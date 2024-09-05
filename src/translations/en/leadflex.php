@@ -1,6 +1,6 @@
 <?php
 /**
- * Leadflex plugin for Craft CMS 3.x
+ * Leadflex plugin for Craft CMS 4.x
  *
  * This is a generic Craft CMS plugin
  *

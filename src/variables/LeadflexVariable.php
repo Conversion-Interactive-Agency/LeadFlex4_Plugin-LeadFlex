@@ -1,6 +1,6 @@
 <?php
 /**
- * Reporter plugin for Craft CMS 3.x
+ * LeadFlex plugin for Craft CMS 4.x
  *
  * CIA tool to build reports
  *
@@ -16,18 +16,17 @@ use Craft;
 use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
 use craft\errors\InvalidFieldException;
-use modules\businesslogic\BusinessLogic;
 
 /**
- * Reporter Variable
+ * LeadFlex Variable
  *
  * Craft allows plugins to provide their own template variables, accessible from
- * the {{ craft }} global variable (e.g. {{ craft.reporter }}).
+ * the {{ craft }} global variable (e.g. {{ craft.leadflex }}).
  *
  * https://craftcms.com/docs/plugins/variables
  *
  * @author    Jeff Benusa
- * @package   Reporter
+ * @package   LeadFlex
  * @since     1.0.0
  */
 class LeadflexVariable
@@ -62,10 +61,5 @@ class LeadflexVariable
     public function buildFilter($field, $value, $sprigVariable) : string
     {
         return Leadflex::$plugin->frontend->buildFilter($field, $value, $sprigVariable);
-    }
-
-    public function buildFilter($field, $value) : string
-    {
-        return Leadflex::$plugin->frontend->buildFilter($field, $value);
     }
 }
