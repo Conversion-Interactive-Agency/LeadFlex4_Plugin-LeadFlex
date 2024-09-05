@@ -38,9 +38,15 @@ class Settings extends Model
     /**
      * @var string The default Cookie Consent banner html to use when creating a new job
      */
-    public string $cookieConsentBannerText = "";
+    public string $consentBannerText = "";
+    
     /**
      * @var string default path to LeadFlex cookie consent banner for override
      */
-    public string $cookieConsentBannerPath = "_leadflex/cookieConsentBanner";
+    public string $consentBannerPath = "_leadflex/consentBanner";
+
+    /**
+     * @var bool disable the cookie consent banner from being injected into the end of the body via $LeadFlex->frontend->registerEvents();
+     */
+    public bool $disableConsentBanner = false;
 }

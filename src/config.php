@@ -22,19 +22,21 @@
 
 
 return [
-    // The section to use for the job listings
-    "section" => 'jobs',
+    $section = 'jobs',
 
-    // ATS keys mapping to location field keys
-    "locationKeys" => [
+    $locationKeys = [
         'city' => 'City',
         'state' => 'State',
         'zip' => 'PostalCode'
     ],
 
-    // Disable custom slug generation for jobs {adheadline}-{jobid}
-    "disableCustomSlugGeneration" => false,
+    $disableCustomSlugGeneration = false,
 
-    // Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
-    "includeJobCampaignEvaluation" => true
+    $includeJobCampaignEvaluation = true,
+
+    $consentBannerText = "",
+
+    $consentBannerPath = "_leadflex/consentBanner",
+
+    $disableConsentBanner = false,
 ];

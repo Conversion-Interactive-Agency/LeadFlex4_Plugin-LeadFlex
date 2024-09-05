@@ -75,14 +75,16 @@ class FrontendService extends Component
             }
         );
 
-        // Inject the Consent Banner
-        Event::on(
-            View::class,
-            View::EVENT_END_BODY,
-            function () {
-                echo Leadflex::$plugin->frontend->buildConsentBanner();
-            }
-        );
+        if (!Leadflex::$plugin->getSettings()->disableConsentBanner){
+            // Inject the Consent Banner
+            Event::on(
+                View::class,
+                View::EVENT_END_BODY,
+                function () {
+                    echo Leadflex::$plugin->frontend->buildConsentBanner();
+                }
+            );
+        };
     }
 
     public function registerAssets() : void
@@ -108,7 +110,7 @@ class FrontendService extends Component
 
     public function buildConsentBanner() : string
     {
-        $template = Leadflex::$plugin->getSettings()->cookieConsentBannerPath;
+        $template = Leadflex::$plugin->getSettings()->consentBannerPath;
         if (Craft::$app->view->doesTemplateExist($template)) {
             return Craft::$app->view->renderTemplate($template);
         } else {
@@ -119,7 +121,7 @@ class FrontendService extends Component
     public function buildBannerMessage() : Markup
     {
         $settings = Leadflex::$plugin->getSettings();
-        $message = $settings->cookieConsentBannerText;
+        $message = $settings->consentBannerText;
 
         if (empty($message)) {
             // get siteUrl of the project using the Craft
