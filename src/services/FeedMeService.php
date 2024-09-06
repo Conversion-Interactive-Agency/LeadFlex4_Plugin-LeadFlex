@@ -23,7 +23,7 @@ use conversionia\leadflex\helpers\EntryHelper;
 
 class FeedMeService extends Component
 {
-    public function registerEvents()
+    public function registerEvents(): void
     {
         Event::on(Process::class, Process::EVENT_STEP_BEFORE_PARSE_CONTENT, [$this, 'beforeParseContent']);
     }

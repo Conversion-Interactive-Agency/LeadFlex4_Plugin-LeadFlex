@@ -12,11 +12,11 @@ class ControlPanelAsset extends AssetBundle
 
 
         $this->js = [
-            'js/app.js',
+            'js/cp.js',
         ];
 
         //$this->css = [
-        //    'css/app.css',
+        //    'css/cp.css',
         //];
 
         parent::init();

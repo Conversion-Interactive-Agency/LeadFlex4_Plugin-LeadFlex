@@ -13,7 +13,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Eric LaFontsee"
+            "name": "Conversion Interactive Agency",
+            "homepage": "https://conversionia.com"
         }
     ],
     "require": {
@@ -26,9 +27,8 @@
         }
     },
     "extra": {
-        "name": "Leadflex",
+        "name": "LeadFlex",
         "handle": "leadflex",
-        "developer": "Eric LaFontsee",
         "class": "conversionia\\leadflex\\Leadflex"
     },
     "config": {

@@ -1,0 +1,1 @@
+{"version":3,"file":"cp.js","sources":["../../cp/js/batchSize.js"],"sourcesContent":["function batchSize() {\n  Craft.BaseElementIndex.defaults.batchSize = 1000; // eslint-disable-line no-undef\n}\n\nexport default batchSize();\n"],"names":["batchSize"],"mappings":"AAAA,SAASA,GAAY,CACnB,MAAM,iBAAiB,SAAS,UAAY,GAC9C,CAEeA,EAAW"}

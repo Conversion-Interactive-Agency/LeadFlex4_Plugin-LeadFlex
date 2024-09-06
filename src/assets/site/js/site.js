@@ -1,5 +1,7 @@
-// Import all the JS modules
+// Import the stylesheet
+import "../scss/index.scss";
 
+// Import all the JS modules
 import "./citySearchValidation";
 import "./exitBanner";
 import "./leadAssist";
@@ -9,7 +11,3 @@ import "./socialShareForm";
 import "./tracking";
 import "./virtualRecruiter";
 import "./consentBanner";
-
-// Import the stylesheet
-import "../scss/main.scss";
-

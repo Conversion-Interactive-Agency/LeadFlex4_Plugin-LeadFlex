@@ -5,6 +5,7 @@ use Craft;
 use craft\web\Controller;
 use craft\elements\Entry;
 use craft\helpers\UrlHelper;
+use yii\web\BadRequestHttpException;
 
 class RoutesController extends Controller
 {
@@ -12,10 +13,13 @@ class RoutesController extends Controller
     protected array|bool|int $allowAnonymous = true;
 
 
-    /* Handlding Job Entries with changed urls mapped by config/routes.php instead of Craft's URL table
+    /* Handling Job Entries with changed urls mapped by config/routes.php instead of Craft's URL table
     * @param int $entryId
     * @return void */
 
+    /**
+     * @throws BadRequestHttpException
+     */
     public function actionJobs(int $entryId, string $slug = '') : void
     {
         $this->requireSiteRequest();
@@ -29,6 +33,9 @@ class RoutesController extends Controller
         $this->redirect($redirectUrl, 301);
     }
 
+    /**
+     * @throws BadRequestHttpException
+     */
     public function actionOldJobs(string $slug = '') : void
     {
         $this->requireSiteRequest();

@@ -1,1 +1,0 @@
-{"version":3,"file":"app.js","sources":["../../src/js/scripts/batchSize.js"],"sourcesContent":["function batchSize() {\n    Craft.BaseElementIndex.defaults.batchSize = 1000; // eslint-disable-line no-undef\n\n}\n\nexport default batchSize();\n"],"names":["batchSize"],"mappings":"AAAA,SAASA,GAAY,CACjB,MAAM,iBAAiB,SAAS,UAAY,GAEhD,CAEeA,EAAW"}
