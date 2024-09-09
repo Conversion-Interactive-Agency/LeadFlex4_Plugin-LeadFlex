@@ -120,6 +120,9 @@ import Cookies from "js-cookie";
       consentListeners.forEach(function (callback) {
         callback(cookie.types);
       });
+
+      // Push consent state update to GTM to re-trigger any tags with initially blocked consent types
+      window.dataLayer.push({event: "consent_state_update"});
     },
 
     registerEventListeners: function () {
