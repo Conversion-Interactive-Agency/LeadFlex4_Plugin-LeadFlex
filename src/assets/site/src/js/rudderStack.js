@@ -79,7 +79,13 @@ rudderanalytics.load("2Fivwkm2WzdbgiuTksdgWz729mz", "https://conversionwbv.datap
 });
 rudderanalytics.ready(() => {
   // Register Custom Events
-  checkIfHtmxIsLoaded();
+  if (checkIfHtmxIsLoaded()) {
+    registerEvents();
+    window.htmx.on("htmx:afterSwap", () => {
+      registerEvents();
+    });
+  }
+
   rudderanalytics.getAnonymousId();
 
   // Decrypting AnnoymousId into form field.
