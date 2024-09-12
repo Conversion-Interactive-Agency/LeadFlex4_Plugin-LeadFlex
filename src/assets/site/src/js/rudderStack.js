@@ -30,6 +30,7 @@ function registerEvents() {
           ariaLabel: element.getAttribute("aria-label"),
         };
         rudderanalytics.track("Clicked A Link", params);
+        console.warn(params);
       },
       { once: true }
     );
@@ -62,6 +63,7 @@ function registerEvents() {
           ariaLabel: element.getAttribute("aria-label"),
         };
         rudderanalytics.track("Pressed A Button", params);
+        console.warn(params);
       },
       { once: true }
     );
@@ -79,7 +81,14 @@ rudderanalytics.load("2Fivwkm2WzdbgiuTksdgWz729mz", "https://conversionwbv.datap
 });
 rudderanalytics.ready(() => {
   // Register Custom Events
-  checkIfHtmxIsLoaded();
+  registerEvents();
+
+  if (checkIfHtmxIsLoaded()) {
+    window.htmx.on("htmx:afterSwap", () => {
+      registerEvents();
+    });
+  }
+
   rudderanalytics.getAnonymousId();
 
   // Decrypting AnnoymousId into form field.

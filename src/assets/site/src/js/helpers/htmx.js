@@ -9,4 +9,6 @@ export default function checkIfHtmxIsLoaded(count = 0) {
       checkIfHtmxIsLoaded(count + 1);
     }
   }, 500);
+
+  return true;
 }
