@@ -1,8 +1,6 @@
-# Leadflex plugin for Craft CMS 3.x
+# Leadflex plugin for Craft CMS 4.x
 
-This is a generic Craft CMS plugin
-
-![Screenshot](resources/img/plugin-logo.png)
+<img src="src/icon.svg" alt="drawing" width="200"/>
 
 ## Requirements for 4.1
 
@@ -17,5 +15,3 @@ This is a generic Craft CMS plugin
 - Can be disabled with a config setting `"disableConsentBanner" => false`.
 - To include a customized banner, create a new template at `_leadflex/consentBanner.twig` in the project template directory.
 - To only update the text within the banner, update via the plugin settings `cp/settings/plugins/leadflex`.
-
-
