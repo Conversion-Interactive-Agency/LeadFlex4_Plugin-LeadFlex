@@ -42,7 +42,7 @@ $cc-prefix: --cm;
         float: right;
         margin: -1em -1em 1em 1em;
         cursor: pointer;
-        transition: 300;
+        transition: 300ms;
 
         svg {
             width: 1.5em;
@@ -90,7 +90,7 @@ $cc-prefix: --cm;
         }
 
         &:checked + .input-toggle {
-            background: #FFF;
+            background: #00C0F1;
 
             &:after {
                 left: calc(100% - 0.2em);

@@ -16,25 +16,24 @@ use Craft;
 
 use craft\base\Component;
 
-use craft\helpers\ElementHelper;
-use verbb\formie\services\Integrations;
-use verbb\formie\events\RegisterIntegrationsEvent;
-
 use conversionia\leadflex\helpers\EntryHelper;
 
+use HTMLPurifier_Exception;
 use yii\base\Event;
-use craft\errors\ElementNotFoundException;
 use craft\events\ModelEvent;
 use craft\elements\Entry;
 use craft\base\Element;
 use craft\helpers\StringHelper;
 
+use craft\htmlfield\events\ModifyPurifierConfigEvent;
+use craft\redactor\Field;
 
 class EntryService extends Component
 {
     public function registerEvents()
     {
         Event::on(Entry::class, Element::EVENT_BEFORE_SAVE, [$this, 'entryBeforeSave']);
+        Event::on(Field::class, Field::EVENT_MODIFY_PURIFIER_CONFIG, [$this, 'modifyPurifierConfig']);
     }
 
     function entryBeforeSave(ModelEvent $event)
@@ -73,6 +72,22 @@ class EntryService extends Component
         $event->sender->setFieldValue('statewideJob', $isStatewide);
     }
 
+    // Consent Banner triggers
+    /**
+     * @throws HTMLPurifier_Exception
+     */
+    public function modifyPurifierConfig(ModifyPurifierConfigEvent $event): void
+    {
+        $config = $event->config;
+        $def = $config->getDefinition('HTML', true);
+
+        if ($def) {
+            $def->addAttribute('a','data-consent', 'Text',);
+            $def->addAttribute('a','data-consent-view', 'Text',);
+        }
+    }
+
+    // Frontend Services
     public function mergeEntries(Entry $primary, Entry $fallback = null) : Entry
     {
         $job = clone $primary;
