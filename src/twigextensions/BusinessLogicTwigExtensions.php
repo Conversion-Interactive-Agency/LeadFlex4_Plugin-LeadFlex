@@ -62,7 +62,7 @@ class BusinessLogicTwigExtensions extends AbstractExtension implements GlobalsIn
         // Get the default referrer from the settings
         $defaultDirectReferrer = LeadFlex::$plugin->getSettings()->defaultDirectReferrer;
         return [
-            'referrer'      => $this->buildCookieValue('r', 'cookie-monster', $defaultDirectReferrer),
+            'referrer'      =>  $this->buildCookieValue('r', 'cookie-monster', $defaultDirectReferrer),
             'utmSource'     =>  $this->buildCookieValue('utm_source','cookie-monster-utm-source', "leadflex"),
             'utmMedium'     =>  $this->buildCookieValue('utm_medium','cookie-monster-utm-medium', "direct"),
             'utmCampaign'   =>  $this->buildCookieValue('utm_campaign','cookie-monster-utm-campaign', "lf_direct"),
