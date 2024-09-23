@@ -36,5 +36,8 @@ return [
     "disableCustomSlugGeneration" => false,
 
     // Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
-    "includeJobCampaignEvaluation" => true
+    "includeJobCampaignEvaluation" => true,
+
+    // New configurable setting for the default referrer
+    // 'defaultDirectReferrer' => 'lf_direct',
 ];

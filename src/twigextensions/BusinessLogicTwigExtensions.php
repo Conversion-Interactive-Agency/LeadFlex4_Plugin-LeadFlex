@@ -6,9 +6,17 @@ use Craft;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use yii\web\Cookie;
+use conversionia\leadflex\LeadFlex;  // Import the LeadFlex plugin class to access settings
+
 
 class BusinessLogicTwigExtensions extends AbstractExtension implements GlobalsInterface
 {
+    public function init()
+    {
+        parent::init();
+        // Add this log statement
+        Craft::info('Local LeadFlex plugin loaded!', __METHOD__);
+    }
     private function buildCookie($key, $value, $duration) : Cookie
     {
         $expiry = new \DateTime();
@@ -57,8 +65,10 @@ class BusinessLogicTwigExtensions extends AbstractExtension implements GlobalsIn
 
     public function getGlobals(): array
     {
+        // Get the default referrer from the settings
+        $defaultDirectReferrer = LeadFlex::$plugin->getSettings()->defaultDirectReferrer;
         return [
-            'referrer'      =>  $this->buildCookieValue('r','cookie-monster', "lf_direct"),
+            'referrer'      => $this->buildCookieValue('r', 'cookie-monster', $defaultDirectReferrer),
             'utmSource'     =>  $this->buildCookieValue('utm_source','cookie-monster-utm-source', "leadflex"),
             'utmMedium'     =>  $this->buildCookieValue('utm_medium','cookie-monster-utm-medium', "direct"),
             'utmCampaign'   =>  $this->buildCookieValue('utm_campaign','cookie-monster-utm-campaign', "lf_direct"),
