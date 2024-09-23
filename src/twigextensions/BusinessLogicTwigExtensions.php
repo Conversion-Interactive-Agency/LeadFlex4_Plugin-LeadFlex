@@ -11,12 +11,6 @@ use conversionia\leadflex\LeadFlex;  // Import the LeadFlex plugin class to acce
 
 class BusinessLogicTwigExtensions extends AbstractExtension implements GlobalsInterface
 {
-    public function init()
-    {
-        parent::init();
-        // Add this log statement
-        Craft::info('Local LeadFlex plugin loaded!', __METHOD__);
-    }
     private function buildCookie($key, $value, $duration) : Cookie
     {
         $expiry = new \DateTime();
