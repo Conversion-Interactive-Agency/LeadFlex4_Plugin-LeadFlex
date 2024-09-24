@@ -35,7 +35,9 @@ class Settings extends Model
      */
     public $includeJobCampaignEvaluation = true;
 
-    // Add the new setting with a default value of 'lf_direct'
+    /**
+     * @var string Defaults the direct referrer to 'lf_direct'.
+     */
     public $defaultDirectReferrer = 'lf_direct';
 
     public function defineRules(): array
