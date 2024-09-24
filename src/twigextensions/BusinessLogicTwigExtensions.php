@@ -8,7 +8,6 @@ use Twig\Extension\GlobalsInterface;
 use yii\web\Cookie;
 use conversionia\leadflex\LeadFlex;
 
-
 class BusinessLogicTwigExtensions extends AbstractExtension implements GlobalsInterface
 {
     private function buildCookie($key, $value, $duration) : Cookie
