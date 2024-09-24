@@ -34,4 +34,16 @@ class Settings extends Model
      * @var boolean Disable the Job Status = Disabled behavior - "No Campaign ---> No Advertise".
      */
     public $includeJobCampaignEvaluation = true;
+
+    /**
+     * @var string Defaults the direct referrer to 'lf_direct'.
+     */
+    public $defaultDirectReferrer = 'lf_direct';
+
+    public function defineRules(): array
+    {
+        return [
+            [['defaultDirectReferrer'], 'string'],
+        ];
+    }
 }
