@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.1](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.5.0...v4.5.1) (2024-09-24)
+
+
+### Miscellaneous Chores
+
+* Update release-please for multiversion ([454343c](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/commit/454343c850ee0d534e0be665c417db25da2b61eb))
+
 ## [4.5.0](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.4.1...v4.5.0) (2024-09-24)
 
 
