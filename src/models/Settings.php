@@ -40,7 +40,7 @@ class Settings extends Model
      */
     public $defaultDirectReferrer = 'lf_direct';
 
-    public function defineRules(): array
+    public function rules(): array
     {
         return [
             [['defaultDirectReferrer'], 'string'],
