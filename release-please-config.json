@@ -1,0 +1,9 @@
+{
+    "release-type": "php",
+    "extra-files": [
+        "package.json"
+    ],
+    "packages": {
+        ".": {}
+      }
+}
