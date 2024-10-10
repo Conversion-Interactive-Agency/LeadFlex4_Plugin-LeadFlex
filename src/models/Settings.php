@@ -40,10 +40,16 @@ class Settings extends Model
      */
     public $defaultDirectReferrer = 'lf_direct';
 
+    /**
+     * @var string defaults the leadAssit Chat ID to empty string
+     */
+    public $leadAssistID = '';
+
     public function defineRules(): array
     {
         return [
             [['defaultDirectReferrer'], 'string'],
+            [['leadAssistID'], 'string'],
         ];
     }
 }
