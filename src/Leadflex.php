@@ -134,15 +134,15 @@ class Leadflex extends Plugin
             'webhooks' => WebhooksService::class,
         ]);
 
-        // Register event to inject the LeadAssit chat snippet
+        // inject the LeadAssit JS file
         Event::on(
             View::class,
             View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
             function() {
                 $leadAssistID = $this->getSettings()->leadAssistID;
+                $chatSourceUrl = 'https://leadassist.ai/js/chat-widget.js';
                 if (!empty($leadAssistID)) {
-                    $htmlSnippet = '<script src="https://leadassist.ai/js/chat-widget.js" client="' . $leadAssistID . '"></script>';
-                    Craft::$app->view->registerHtml($htmlSnippet, \yii\web\View::POS_END);
+                    Craft::$app->view->registerJsFile($chatSourceUrl, ['client' => $leadAssistID]);
                 }
             }
         );
