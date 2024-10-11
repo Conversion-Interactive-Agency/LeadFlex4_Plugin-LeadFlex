@@ -11,19 +11,17 @@
 namespace conversionia\leadflex;
 
 use conversionia\leadflex\models\Settings;
-use conversionia\leadflex\services\FormService;
-use conversionia\reporter\Reporter;
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
 use craft\events\PluginEvent;
 
-use conversionia\leadflex\services\ExportsService;
 use conversionia\leadflex\services\EntryService;
+use conversionia\leadflex\services\ControlPanelService;
 use conversionia\leadflex\services\FeedMeService;
-use conversionia\leadflex\services\RoutesService;
 use conversionia\leadflex\services\FrontendService;
-use conversionia\leadflex\services\WebhooksService;
+use conversionia\leadflex\services\RoutesService;
+use conversionia\leadflex\services\TemplatesService;
 
 use craft\elements\Entry;
 use craft\base\Element;
@@ -77,7 +75,7 @@ class Leadflex extends Plugin
      *
      * @var bool
      */
-    public bool $hasCpSettings = false;
+    public bool $hasCpSettings = true;
 
     /**
      * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
@@ -120,15 +118,11 @@ class Leadflex extends Plugin
         // Register services
         $this->setComponents([
             'controlpanel' => ControlPanelService::class,
-            'entry' => [
-                'class' => EntryService::class,
-            ],
-            'form' => FormService::class,
-            'exports' => ExportsService::class,
+            'entry' => EntryService::class,
             'feedme' => FeedMeService::class,
+            'templates' => TemplatesService::class,
             'routes' => RoutesService::class,
             'frontend' => FrontendService::class,
-            'webhooks' => WebhooksService::class,
         ]);
 
         // Now you can access the services via $this->get('entry') or $this->entry
@@ -139,19 +133,17 @@ class Leadflex extends Plugin
 
         // Register Events
         $request = Craft::$app->getRequest();
-        // Adjust controller namespace for console requests
+        // Console requests
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'conversionia\leadflex\console\controllers';
             $this->feedme->registerEvents();
         }
 
+        // Web requests
+        $this->templates->registerTemplates();
         if ($request->getIsCpRequest()) {
-            $this->exports->registerEvents();
-            $this->form->registerEvents();
-            $this->webhooks->registerEvents();
-        }
-
-        if ($request->getIsSiteRequest()) {
+            $this->controlpanel->registerEvents();
+        } elseif ($request->getIsSiteRequest()) {
             $this->frontend->registerFrontend();
             $this->routes->registerEvents();
         }
@@ -169,5 +161,22 @@ class Leadflex extends Plugin
     protected function createSettingsModel(): Settings
     {
         return new Settings();
+    }
+
+    protected function settingsHtml(): ?string
+    {
+        return Craft::$app->getView()->renderTemplate(
+            'leadflex/_cp/settings',
+            [ 'settings' => $this->getSettings() ]
+        );
+    }
+
+    public function setSettings(array $settings): void
+    {
+        // Hook into the before-save logic here
+        $this->beforeSaveSettings($settings);
+
+        // Call the parent setSettings() method to proceed with saving
+        parent::setSettings($settings);
     }
 }
