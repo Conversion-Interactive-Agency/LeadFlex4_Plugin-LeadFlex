@@ -27,9 +27,13 @@ class RoutesService extends Component
             UrlManager::class,
             UrlManager::EVENT_REGISTER_SITE_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
+                // handling urls from initial url patterns to match with new
                 $event->rules["jobs/<entryId:[0-9]+>"] = 'leadflex/routes/jobs';
                 $event->rules["jobs/<entryId:[0-9]+>/<slug:[^\/]+>"] = 'leadflex/routes/jobs';
                 $event->rules["jobs/<slug:[^\/]+>"] = 'leadflex/routes/old-jobs';
+
+                // merging of LeadFlex domains
+                $event->rules["leadflex/jobs.json"] = 'leadflex/json/index';
             }
         );
 
