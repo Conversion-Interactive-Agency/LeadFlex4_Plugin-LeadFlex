@@ -134,24 +134,13 @@ class Leadflex extends Plugin
             'webhooks' => WebhooksService::class,
         ]);
 
-        // inject the LeadAssit JS file
-        Event::on(
-            View::class,
-            View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
-            function() {
-                $leadAssistID = $this->getSettings()->leadAssistID;
-                $chatSourceUrl = 'https://leadassist.ai/js/chat-widget.js';
-                if (!empty($leadAssistID)) {
-                    Craft::$app->view->registerJsFile($chatSourceUrl, ['client' => $leadAssistID]);
-                }
-            }
-        );
-
         // Now you can access the services via $this->get('entry') or $this->entry
         $this->entry = $this->get('entry');
 
         // Set alias for this module
 
+        // Get Lead Assist ID
+        $leadAssistID = $this->getSettings()->leadAssistID ?? '';
 
         // Register Events
         $request = Craft::$app->getRequest();
@@ -168,7 +157,7 @@ class Leadflex extends Plugin
         }
 
         if ($request->getIsSiteRequest()) {
-            $this->frontend->registerFrontend();
+            $this->frontend->registerFrontend($leadAssistID);
             $this->routes->registerEvents();
         }
 
