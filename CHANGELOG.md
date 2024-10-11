@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.0](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.5.1...v4.6.0) (2024-10-11)
+
+
+### Features
+
+* Supporting multiple feeds pulled together into a singular feed at /leadflex/jobs.json ([#9](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/issues/9)) ([62da14f](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/commit/62da14f33cb2c26b571a8344d9496aa63142ac3e))
+
 ## [4.5.1](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.5.0...v4.5.1) (2024-09-24)
 
 
