@@ -17,6 +17,11 @@ use yii\helpers\Console;
 class EntriesController extends Controller
 {
     /**
+     * @var int|null Number of days to filter the entries by.
+     */
+    public $days;
+
+    /**
      * Define available options for the console command
      * @param string $actionID
      * @return string[]
@@ -49,7 +54,7 @@ class EntriesController extends Controller
     public function actionDeleteOldEntries()
     {
         // Set default days
-        $days = 60; // Default days if not set in command line
+        $days = $this->days ?? 60;
 
         // Check if 'days' option is set
         if (isset($this->options['days'])) {
