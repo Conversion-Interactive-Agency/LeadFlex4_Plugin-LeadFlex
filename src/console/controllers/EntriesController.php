@@ -41,7 +41,7 @@ class EntriesController extends Controller
      */
     public function actionIndex()
     {
-        echo "Deletes job entries older than 60 days. Use 'days' to customize: e.g., --days=30.";
+        echo "Deletes job entries older than 60 days. Use 'days' to customize: e.g., --days=30 \n";
         return;
     }
 
@@ -53,19 +53,9 @@ class EntriesController extends Controller
      */
     public function actionDeleteOldEntries()
     {
-        // Set default days
         $days = $this->days ?? 60;
-
-        // Check if 'days' option is set
-        if (isset($this->options['days'])) {
-            $days = (int) $this->options['days'];
-        }
-
         $today = new \DateTime();
-
-        // Subtract X days from today
         $today->modify("-{$days} days");
-
         $dateThreshold = $today->format('Y-m-d');
 
         // Find entries older than the threshold date
@@ -95,7 +85,7 @@ class EntriesController extends Controller
             }
         }
 
-        echo "$deletedCount entries that were before $dateThreshold were deleted successfully.\n";
+        echo "$deletedCount entries that were published before $dateThreshold were deleted successfully.\n";
         return $deletedCount > 0 ? 0 : 1; // Return 0 if any entries were deleted, otherwise return 1
     }
 }
