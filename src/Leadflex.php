@@ -139,8 +139,6 @@ class Leadflex extends Plugin
 
         // Set alias for this module
 
-        // Get Lead Assist ID
-        $leadAssistID = $this->getSettings()->leadAssistID ?? '';
 
         // Register Events
         $request = Craft::$app->getRequest();
@@ -157,7 +155,7 @@ class Leadflex extends Plugin
         }
 
         if ($request->getIsSiteRequest()) {
-            $this->frontend->registerFrontend($leadAssistID);
+            $this->frontend->registerFrontend();
             $this->routes->registerEvents();
         }
 

@@ -15,6 +15,7 @@ use craft\base\Component;
 use craft\elements\Entry;
 use yii\base\Event;
 
+use conversionia\leadflex\Leadflex;
 use conversionia\leadflex\assets\site\SiteAsset;
 
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
@@ -33,12 +34,12 @@ class FrontendService extends Component
 {
 
     private $convirza = [];
-    private string $leadAssistID;  // Store leadAssistID
+    private string $leadAssistID;
 
 
-    public function registerFrontend(string $leadAssistID)
+    public function registerFrontend()
     {
-        $this->leadAssistID = $leadAssistID;
+        $this->leadAssistID = Leadflex::$plugin->getSettings()->leadAssistID ?? '';
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
