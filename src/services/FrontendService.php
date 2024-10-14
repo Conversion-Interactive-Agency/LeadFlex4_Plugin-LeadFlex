@@ -38,8 +38,7 @@ class FrontendService extends Component
 
     public function registerFrontend(string $leadAssistID)
     {
-        $this->leadAssistID = $leadAssistID;  // Assign it to the class property
-
+        $this->leadAssistID = $leadAssistID;
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
