@@ -41,7 +41,7 @@ class Settings extends Model
     public $defaultDirectReferrer = 'lf_direct';
 
     /**
-     * @var string defaults the leadAssit Chat ID to empty string
+     * @var string leadAssist Chat ID, default empty string
      */
     public $leadAssistID = '';
 

@@ -39,5 +39,8 @@ return [
     "includeJobCampaignEvaluation" => true,
 
     // New configurable setting for the default referrer
-    "defaultDirectReferrer" => "lf_direct"
+    "defaultDirectReferrer" => "lf_direct",
+
+    // Set Client's leadAssistID to enable chat
+    "leadAssistID"=>  ""
 ];

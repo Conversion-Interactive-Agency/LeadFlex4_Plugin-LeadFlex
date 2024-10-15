@@ -29,13 +29,10 @@ use craft\web\twig\variables\CraftVariable;
 
 use craft\web\View;
 
-
 class FrontendService extends Component
 {
 
     private $convirza = [];
-    private string $leadAssistID;
-
 
     public function registerFrontend()
     {
