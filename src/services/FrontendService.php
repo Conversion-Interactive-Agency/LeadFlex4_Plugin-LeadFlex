@@ -39,7 +39,6 @@ class FrontendService extends Component
 
     public function registerFrontend()
     {
-        $this->leadAssistID = Leadflex::$plugin->getSettings()->leadAssistID ?? '';
         $this->registerVariables();
         $this->registerPluginVariable();
         $this->registertAssets();
@@ -81,7 +80,8 @@ class FrontendService extends Component
 
     public function registerLeadAssistChat()
     {
-        $leadAssistID = $this->leadAssistID;
+        // get LeadAssist ID value
+        $leadAssistID = Leadflex::$plugin->getSettings()->leadAssistID ?? '';
         if (!empty($leadAssistID)) {
             Event::on(View::class, View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
                 function() use ($leadAssistID) {
