@@ -39,5 +39,11 @@ return [
     "includeJobCampaignEvaluation" => true,
 
     // New configurable setting for the default referrer
-    "defaultDirectReferrer" => "lf_direct"
+    "defaultDirectReferrer" => "lf_direct",
+
+    // Enable automatic deletion of stale job entries
+    "isJobDeletionEnabled" => false,
+
+    // Months closed/disabled jobs should are to be kept before deletion
+    "jobDeletionGracePeriodInMonths"=> 6
 ];

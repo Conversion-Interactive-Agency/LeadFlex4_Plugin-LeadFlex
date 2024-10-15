@@ -45,6 +45,16 @@ class Settings extends Model
      */
     public array $leadFlexDomains = [];
 
+    /**
+     * @var boolean Enable automatic deletion of stale job entries
+     */
+    public bool $isJobDeletionEnabled = false;
+
+    /**
+     * @var int Months closed/disabled jobs are kept before deletion
+     */
+    public int $jobDeletionGracePeriodInMonths = 6;
+
     public function defineRules(): array
     {
         return [
@@ -52,6 +62,8 @@ class Settings extends Model
             ['leadFlexDomains', 'safe'], // Updated rule for fully qualified domains
             ['disableCustomSlugGeneration', 'boolean'],
             ['includeJobCampaignEvaluation', 'boolean'],
+            ['jobDeletionGracePeriodInMonths', 'integer'],
+            ['isJobDeletionEnabled', 'boolean'],
             ['section', 'string'],
             ['locationKeys', 'safe'],
         ];
