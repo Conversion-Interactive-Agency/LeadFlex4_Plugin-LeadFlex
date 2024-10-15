@@ -53,7 +53,7 @@ class Settings extends Model
     /**
      * @var int Months closed/disabled jobs are kept before deletion
      */
-    public int $jobDeletionGracePeriodInMonths = 6;
+    public int $deleteDisabledJobsAfter = 6;
 
     public function defineRules(): array
     {
@@ -62,7 +62,7 @@ class Settings extends Model
             ['leadFlexDomains', 'safe'], // Updated rule for fully qualified domains
             ['disableCustomSlugGeneration', 'boolean'],
             ['includeJobCampaignEvaluation', 'boolean'],
-            ['jobDeletionGracePeriodInMonths', 'integer'],
+            ['deleteDisabledJobsAfter', 'integer'],
             ['isJobDeletionEnabled', 'boolean'],
             ['section', 'string'],
             ['locationKeys', 'safe'],

@@ -45,5 +45,5 @@ return [
     "isJobDeletionEnabled" => false,
 
     // Months closed/disabled jobs should are to be kept before deletion
-    "jobDeletionGracePeriodInMonths"=> 6
+    "deleteDisabledJobsAfter" => 6
 ];
