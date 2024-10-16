@@ -39,24 +39,26 @@ class EntriesController extends Controller
      */
     public function actionDeleteDisabledJobsAfterDate()
     {
-        $numberOfMonths = Leadflex::$plugin->getSettings()->deleteDisabledJobsAfter;
-        $today = new \DateTime();
-        $today->modify("-{$numberOfMonths} month");
-        $monthThreshold = $today->format('Y-m-d');
-
-        //Create query for jobs that are disabled and lastUpdated from $monthThreshold date
-        $entries = Entry::find()
-            ->section('jobs')
-            ->status('disabled')
-            ->dateUpdated("< $monthThreshold")
-            ->all();
+        $settings = Leadflex::$plugin->getSettings();
 
         // Check to see if action is enabled
-        $isJobDeletionEnabled = Leadflex::$plugin->getSettings()->isJobDeletionEnabled;
+        $isJobDeletionEnabled = $settings->isJobDeletionEnabled;
         if (!$isJobDeletionEnabled) {
             echo "Job deletion feature disabled. Enable option in the Leadflex plugin Settings \n";
             return 1;
         }
+
+        $numberOfMonths = $settings->deleteDisabledJobsAfter;
+
+        $today = new \DateTime();
+        $monthThreshold= $today->modify("-{$numberOfMonths} month")->format('Y-m-d');
+
+        //Create query for jobs that are disabled and lastUpdated from $monthThreshold date
+        $entries = Entry::find()
+            ->section($settings->section)
+            ->status('disabled')
+            ->dateUpdated("< $monthThreshold")
+            ->all();
 
         // Check if any job entries are found
         if (empty($entries)) {
