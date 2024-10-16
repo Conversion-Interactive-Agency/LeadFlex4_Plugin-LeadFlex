@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.1](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.6.0...v4.6.1) (2024-10-16)
+
+
+### Bug Fixes
+
+* Update release-please to work with title check ([#11](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/issues/11)) ([b5619ff](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/commit/b5619ffd9a879c4d0f05a0f1701bfc38c94bf686))
+
 ## [4.6.0](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.5.1...v4.6.0) (2024-10-11)
 
 
