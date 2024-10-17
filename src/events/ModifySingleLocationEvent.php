@@ -14,7 +14,7 @@ class ModifySingleLocationEvent extends Event
     /**
      * @var array The data that will be returned in the JSON response for a single job
      */
-    public $data;
+    public $info;
 
     /**
      * @var Entry The entry that is being processed - merged from the default job description and the entry overrides

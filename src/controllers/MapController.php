@@ -89,24 +89,24 @@ class MapController extends Controller
 
             // Trigger the event
             $event = new ModifySingleLocationEvent([
-                'data' => $location,
+                'info' => $location,
                 'entry' => $job,
             ]);
             $this->trigger(self::EVENT_MODIFY_SINGLE_LOCATION, $event);
 
             // Use the modified location JSON
-            $location = $event->data;
+            $location = $event->info;
 
             $locations[] = $location; // Add missing semicolon
         }
 
         // Trigger the event
         $event = new ModifyLocationsEvent([
-            'data' => $locations,
+            'info' => $locations,
         ]);
         $this->trigger(self::EVENT_MODIFY_LOCATIONS, $event);
 
-        $locations = $event->data;
+        $locations = $event->info;
 
         return $this->asJson($locations);
     }

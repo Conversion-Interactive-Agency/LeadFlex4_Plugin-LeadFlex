@@ -9,5 +9,5 @@ class ModifyLocationsEvent extends Event
     /**
      * @var array The data that will be returned in the JSON response for all locations / jobs
      */
-    public $data;
+    public $info;
 }
