@@ -34,6 +34,10 @@ class RoutesService extends Component
 
                 // merging of LeadFlex domains
                 $event->rules["leadflex/jobs.json"] = 'leadflex/json/index';
+
+                // Overlap Map Tool
+                $event->rules["leadflex/map"] = 'leadflex/map/index';
+                $event->rules["leadflex/map/locations"] = 'leadflex/map/locations';
             }
         );
 

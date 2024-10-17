@@ -1,0 +1,51 @@
+{% set logo = project.companyLogo.one() ??? 'https://leadflex-assets.nyc3.cdn.digitaloceanspaces.com/leadflex-template/page-images/leadflex-logo.png' %}
+{% set title = title ??? craft.app.plugins.getPlugin('reporter').getSettings().pluginName %}
+{% set description = description ??? "Tool to highlight changes across jobs & campaigns" %}
+
+<!doctype html>
+<html class="scroll-smooth" xmlns="http://www.w3.org/1999/xhtml" lang="{{ currentSite.language }}">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url("favicons/apple-touch-icon.png") }} }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url("favicons/favicon-32x32.png") }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url("favicons/favicon-16x16.png") }}">
+    <link rel="manifest" href="{{ url("favicons/site.webmanifest") }}">
+    <link rel="mask-icon" href="{{ url("favicons/safari-pinned-tab.svg") }}" color="#12377c">
+    <link rel="shortcut icon" href="{{ url("favicons/favicon.ico")}}">
+    <meta name="msapplication-TileColor" content="#12377c">
+    <meta name="msapplication-config" content="{{ url("favicons/browserconfig.xml")}}">
+    <meta name="theme-color" content="#12377c">
+
+    <link rel="canonical" href="{{ siteUrl }}"/>
+    <title>{{ title }}</title>
+    <meta name="description" content="{{description}}"/>
+    <meta name="robots" content="none"/>
+
+    {# This is the optimized webpack stylesheet #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.4"></script>
+</head>
+<body>
+
+    <header class="bg-gray-white w-full z-30">
+        <nav class="container font-sofia px-6 py-4 height-[5.75rem] relative">
+            <div class="flex justify-between items-center text-gray font-bold uppercase">
+                <a class="max-w-[10rem]" href="{{ siteUrl }}">
+                    <img src="{{ logo is iterable ? logo.url({mode:'fit',width:'127px'}) : logo }}" alt="{{ project.companyName }} logo" class="img-fluid" width="127px" height="47"/>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    {% include 'leadflex/_globals/svg' %}
+</body>
+</html>
+

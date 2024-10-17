@@ -15,7 +15,7 @@ import IifeWrap from "./vite-plugins/iife-wrap";
 import { resolve } from "path";
 
 const apps = [
-  "site"
+  "site","map"
 ];
 
 const entries = {};

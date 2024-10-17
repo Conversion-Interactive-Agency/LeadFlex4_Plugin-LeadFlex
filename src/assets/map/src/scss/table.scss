@@ -1,0 +1,45 @@
+// Base styles for table headers
+th {
+    position: relative;
+    cursor: pointer;
+    padding-right: 45px; // Ensure space for the sort icon
+
+    // Style for the sort icon
+    .sort-icon {
+        position: absolute;
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s ease; // Smooth transition for rotation
+        width: 25px;
+        height: 25px;
+        fill: currentColor; // Use the current text color
+    }
+
+    // Ascending sort style
+    &.asc .sort-icon {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    // Descending sort style
+    &.desc .sort-icon {
+        transform: translateY(-50%) rotate(180deg);
+    }
+}
+
+
+// Animations
+.flash {
+    animation: flash-animation 1s ease-in-out;
+}
+
+@keyframes flash-animation {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(246, 205, 116, 0.791);
+    }
+    // Change to desired flash color
+}
+  

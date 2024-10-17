@@ -73,6 +73,12 @@ class EntryService extends Component
         $event->sender->setFieldValue('statewideJob', $isStatewide);
     }
 
+    /**
+     * Creating a new merged entry from the entry overrides and the default job description
+     * @param Entry $primary (entry)
+     * @param Entry|null $fallback (defaultJobDescription)
+     * @return Entry (merged entry)
+     */
     public function mergeEntries(Entry $primary, Entry $fallback = null) : Entry
     {
         $job = clone $primary;

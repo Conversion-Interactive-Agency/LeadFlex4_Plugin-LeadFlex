@@ -13,20 +13,14 @@ namespace conversionia\leadflex;
 use conversionia\leadflex\models\Settings;
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
 
-use conversionia\leadflex\services\EntryService;
 use conversionia\leadflex\services\ControlPanelService;
+use conversionia\leadflex\services\EntryService;
 use conversionia\leadflex\services\FeedMeService;
 use conversionia\leadflex\services\FrontendService;
+use conversionia\leadflex\services\MapService;
 use conversionia\leadflex\services\RoutesService;
 use conversionia\leadflex\services\TemplatesService;
-
-use craft\elements\Entry;
-use craft\base\Element;
-use craft\events\ModelEvent;
-use craft\helpers\StringHelper;
 
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made
@@ -121,6 +115,7 @@ class Leadflex extends Plugin
             'entry' => EntryService::class,
             'feedme' => FeedMeService::class,
             'templates' => TemplatesService::class,
+            'map' => MapService::class,
             'routes' => RoutesService::class,
             'frontend' => FrontendService::class,
         ]);
