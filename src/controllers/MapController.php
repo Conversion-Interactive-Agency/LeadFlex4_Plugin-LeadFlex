@@ -48,9 +48,6 @@ class MapController extends Controller
         // Get the section from the LeadFlex settings
         $section = Leadflex::$plugin->getSettings()->section;
 
-        // Add a cache for the response
-        Craft::$app->response->headers->add('Cache-Control', 'public, max-age=3600');
-
         // Cache key based on section
         $cacheKey = 'leadflex_locations_' . md5($section);
         $cache = Craft::$app->getCache();
