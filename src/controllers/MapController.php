@@ -41,7 +41,21 @@ class MapController extends Controller
     {
         // Get the section from the LeadFlex settings
         $section = Leadflex::$plugin->getSettings()->section;
-        $entries = Entry::find()->section($section)->cache()->all(); // Fetch 50 entries
+
+        // Add a cache for the response
+        Craft::$app->response->headers->add('Cache-Control', 'public, max-age=3600');
+
+        // Cache key based on section
+        $cacheKey = 'leadflex_locations_' . md5($section);
+        $cache = Craft::$app->getCache();
+
+        // Try to get the cached response
+        $cachedResponse = $cache->get($cacheKey);
+        if ($cachedResponse !== false) {
+            return $this->asJson($cachedResponse);
+        }
+
+        $entries = Entry::find()->section($section)->all();
         $entriesService = new EntryService();
         $advertiseColors = [
             true => '#15803d',
@@ -83,7 +97,7 @@ class MapController extends Controller
                     'strokeOpacity' => .8,
                     'strokeWeight' => 2,
                     'fillColor' => $advertiseColors[$isBeingAdvertised],
-                    'fillOpacity' => .35,
+                    'fillOpacity' => .6,
                 ],
                 'additionalInfo' => [],
             ];
@@ -108,6 +122,9 @@ class MapController extends Controller
         $this->trigger(self::EVENT_MODIFY_LOCATIONS, $event);
 
         $locations = $event->info;
+
+        // Cache the response for future requests
+        $cache->set($cacheKey, $locations, 3600); // Cache for 1 hour
 
         return $this->asJson($locations);
     }
