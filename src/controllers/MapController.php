@@ -85,6 +85,7 @@ class MapController extends Controller
                     'fillColor' => $advertiseColors[$isBeingAdvertised],
                     'fillOpacity' => .35,
                 ],
+                'additionalInfo' => [],
             ];
 
             // Trigger the event
