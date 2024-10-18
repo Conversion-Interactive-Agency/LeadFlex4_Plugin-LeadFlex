@@ -179,7 +179,8 @@ import initTableSorting from "./table";
                                 row.dataset.jobId = job.id;
                                 let tableDataClasses = "px-4 py-2 border-b border-gray-300";
 
-                                row.innerHTML += `<td class="">${job.title}</td>`;
+                                row.innerHTML += `<td class="${tableDataClasses}">${job.title}</td>`;
+                                row.innerHTML += `<td class="${tableDataClasses}">${job.company.name}</td>`;
                                 row.innerHTML += `<td class="${tableDataClasses}">${job.types.driver}</td>`;
                                 row.innerHTML += `<td class="${tableDataClasses}">${job.types.trailer}</td>`;
                                 row.innerHTML += `<td class="${tableDataClasses}">${job.types.job}</td>`;
@@ -210,9 +211,7 @@ import initTableSorting from "./table";
                                 infoWindowContent += "</a>";
                                 infoWindowContent += "<ul class='list-disc pl-6'>";
                                 // using array of jobs.additionalInfo to populate the info window
-                                job.additionalInfo.forEach((info) => {
-                                    infoWindowContent += `<li><strong>${info.label}:</strong> ${info.value}</li>`;
-                                });
+                                infoWindowContent += `<li><strong>Company Name:</strong> ${job.company.name}</li>`;
                                 infoWindowContent += `<li><strong>Driver Type:</strong> ${job.types.driver}</li>`;
                                 infoWindowContent += `<li><strong>Trailer Type:</strong> ${job.types.trailer}</li>`;
                                 infoWindowContent += `<li><strong>Job Type:</strong> ${job.types.job}</li>`;
