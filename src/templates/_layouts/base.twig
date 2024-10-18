@@ -36,7 +36,8 @@
         <nav class="container font-sofia px-6 py-4 height-[5.75rem] relative">
             <div class="flex justify-between items-center text-gray font-bold uppercase">
                 <a class="max-w-[10rem]" href="{{ siteUrl }}">
-                    <img src="{{ logo is iterable ? logo.url({mode:'fit',width:'127px'}) : logo }}" alt="{{ project.companyName }} logo" class="img-fluid" width="127px" height="47"/>
+
+                    <img src="{{ logo is iterable ? logo.url({mode:'fit',width:'127px'}) : logo }}" alt="{{ project.companyName ??? craft.app.config.general.systemName }} logo" class="img-fluid" width="127px" height="47"/>
                 </a>
             </div>
         </nav>
