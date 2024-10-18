@@ -124,11 +124,11 @@ class MapController extends Controller
         ]);
         $this->trigger(self::EVENT_MODIFY_LOCATIONS, $event);
 
-        $locations = $event->info;
+        $locations = ['data' => $event->info];
 
         // Cache the response for future requests
         $cache->set($cacheKey, $locations, 3600); // Cache for 1 hour
 
-        return $this->asJson(['data' => $locations]);
+        return $this->asJson($locations);
     }
 }
