@@ -30,8 +30,14 @@ class MapController extends Controller
         $view = $this->getView();
         $view->registerAssetBundle(MapAsset::class);
 
-        // Render the 'leadflex/templates/map/index' template and pass the entries to it
-        $this->renderTemplate('leadflex/map');
+        // check if a custom template exists as '_leadflex/map.twig', if not use the default 'leadflex/map' template
+        $template = '_leadflex/map';
+        if (!Craft::$app->getView()->doesTemplateExist($template)) {
+            $template = 'leadflex/map';
+        }
+
+        // Render the template and pass the entries to it
+        $this->renderTemplate($template);
     }
 
     /**
@@ -126,6 +132,6 @@ class MapController extends Controller
         // Cache the response for future requests
         $cache->set($cacheKey, $locations, 3600); // Cache for 1 hour
 
-        return $this->asJson($locations);
+        return $this->asJson(['data' => $locations]);
     }
 }

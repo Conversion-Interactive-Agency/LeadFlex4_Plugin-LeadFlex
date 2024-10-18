@@ -1,6 +1,5 @@
 {% extends "leadflex/_layouts/base" %}
 
-{% set locations = craft.entries.section('jobs').limit(50).cache().all() %}
 {% do googleMaps.loadAssets() %}
 
 {% macro columnHeader(name, isSortable) %}
@@ -15,7 +14,7 @@
 {% endmacro %}
 
 {% block content %}
-    <div id="map" style="height: 500px"></div>
+    <div id="map" style="height: 500px"{# data-fetch-locations-url="/api/locations.json"#}></div>
     <div class="container mx-auto my-8">
         <table id="overlaps" class="w-full table-auto border-collapse border border-gray-300">
             <thead>
