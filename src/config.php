@@ -44,6 +44,6 @@ return [
     // Enable automatic deletion of stale job entries
     "isJobDeletionEnabled" => false,
 
-    // Months closed/disabled jobs should are to be kept before deletion
-    "deleteDisabledJobsAfter" => 6
+    // Months disabled jobs should are to be kept before deletion -  This should be a string accepted by DateTime::modify(), such as: '6 months' (valid format)
+    "jobDeletionMonths" => '6 months'
 ];

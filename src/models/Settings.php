@@ -51,9 +51,13 @@ class Settings extends Model
     public bool $isJobDeletionEnabled = false;
 
     /**
-     * @var int Months closed/disabled jobs are kept before deletion
+     * @var string Months closed/disabled jobs are kept before deletion.
+     *  This should be a string accepted by DateTime::modify(), such as:
+     *
+     *  '6 months' (valid format)
+     *
      */
-    public int $deleteDisabledJobsAfter = 6;
+    public string $jobDeletionMonths = '6 months';
 
     public function defineRules(): array
     {
@@ -62,7 +66,7 @@ class Settings extends Model
             ['leadFlexDomains', 'safe'], // Updated rule for fully qualified domains
             ['disableCustomSlugGeneration', 'boolean'],
             ['includeJobCampaignEvaluation', 'boolean'],
-            ['deleteDisabledJobsAfter', 'integer'],
+            ['jobDeletionMonths', 'string'],
             ['isJobDeletionEnabled', 'boolean'],
             ['section', 'string'],
             ['locationKeys', 'safe'],
