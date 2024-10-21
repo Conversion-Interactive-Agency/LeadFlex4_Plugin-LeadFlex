@@ -27,7 +27,7 @@ class EntriesController extends Controller
      */
     public function actionIndex()
     {
-        echo "Deletes job entries older than 6 Months. This is adjustable via Leadflex plugin settins \n";
+        echo "Deletes job entries older than 6 Months. This is adjustable via Leadflex plugin settings \n";
         return 1;
     }
 
