@@ -29,9 +29,6 @@ use craft\elements\Entry;
 use craft\base\Element;
 use craft\events\ModelEvent;
 use craft\helpers\StringHelper;
-use craft\web\View;
-
-use yii\base\Event;
 
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made

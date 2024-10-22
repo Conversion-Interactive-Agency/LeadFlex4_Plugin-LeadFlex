@@ -49,7 +49,7 @@ class Settings extends Model
     {
         return [
             [['defaultDirectReferrer'], 'string'],
-            [['leadAssistID'], 'string'],
+            [['leadAssistID'], 'string', 'length' => 32, 'skipOnEmpty' => true],
         ];
     }
 }
