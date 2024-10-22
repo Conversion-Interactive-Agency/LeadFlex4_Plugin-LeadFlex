@@ -38,6 +38,7 @@ class RoutesService extends Component
                 // Overlap Map Tool
                 $event->rules["leadflex/map"] = 'leadflex/map/index';
                 $event->rules["leadflex/map/locations"] = 'leadflex/map/locations';
+                $event->rules["leadflex/map/state"] = 'leadflex/map/by-state';
             }
         );
 

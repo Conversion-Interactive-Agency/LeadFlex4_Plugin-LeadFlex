@@ -8,6 +8,8 @@ use craft\web\Controller;
 use craft\elements\Entry;
 use conversionia\leadflex\assets\map\MapAsset;
 use conversionia\leadflex\services\EntryService;
+use conversionia\leadflex\services\MapService;
+
 use yii\web\Response;
 use yii\base\InvalidConfigException;
 
@@ -127,11 +129,62 @@ class MapController extends Controller
         ]);
         $this->trigger(self::EVENT_MODIFY_LOCATIONS, $event);
 
-        $locations = $event->info;
+        $locations = ['data' => $event->info];
 
         // Cache the response for future requests
         $cache->set($cacheKey, $locations, 3600); // Cache for 1 hour
 
-        return $this->asJson(['data' => $locations]);
+        return $this->asJson($locations);
+    }
+
+
+    // add a new action to breakdown the jobs by state, as well as the number of jobs in each state and number of jobs in each state that do not have an overlapping hiring area
+    public function actionByState(): Response
+    {
+        // Get the section from the LeadFlex settings
+        $section = Leadflex::$plugin->getSettings()->section;
+
+        // Instantiate the MapService
+        $mapService = new MapService();
+        $entriesService = new EntryService();
+
+        // Fetch all entries in the section with statewideJob as false
+        $entries = Entry::find()
+            ->section($section)
+            ->statewideJob(false)
+            ->all();
+
+        // Initialize state breakdown array
+        $stateBreakdown = [];
+
+        // Group jobs by state
+        $jobsByState = [];
+        foreach ($entries as $entry) {
+            $rel = $entry->defaultJobDescription->one() ?: $entry;
+            $job = $entriesService->mergeEntries($entry, $rel);
+
+            $state = $job->location->state;
+            if (!isset($jobsByState[$state])) {
+                $jobsByState[$state] = [];
+            }
+            $jobsByState[$state][] = $job;
+        }
+
+        ksort($jobsByState);
+
+        // Process each state
+        foreach ($jobsByState as $state => $jobs) {
+            // Get the count of overlapping and non-overlapping jobs
+            $overlapResults = $mapService->findJobOverlaps($jobs, $state);
+
+            // Add the state breakdown to the stateBreakdown array
+            $stateBreakdown[$state] = [
+                'totalJobs' => count($jobs),
+                'areOverlapping' => $overlapResults['overlappingCount'],
+                'haveNoOverlap' => $overlapResults['nonOverlappingCount'],
+            ];
+        }
+
+        return $this->asJson($stateBreakdown);
     }
 }
