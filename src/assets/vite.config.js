@@ -58,7 +58,8 @@ export default ({ command }) => ({
     }),
 
     eslintPlugin({
-      fix: true,
+        fix: true,
+        overrideConfigFile: 'eslint.config.js',
     }),
 
     // todo: Add stylelintPlugin

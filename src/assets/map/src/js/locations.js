@@ -34,6 +34,10 @@ import initTableSorting from "./table";
         const baseRadius = circle.getRadius();
         const pulseDuration = 1500; // 1.5s per pulse
 
+        circle.setOptions({
+            zIndex: 1000, // Ensure the circle is on top
+        });
+
         function pulse() {
             if (pulseCount >= maxPulses) {
                 return;
@@ -73,8 +77,8 @@ import initTableSorting from "./table";
     function initMap() {
         console.log("Initializing map...");
 
-        const mapElement = document.getElementById('map')
-        const loadingIndicator = document.getElementById('loading-indicator')
+        const mapElement = document.getElementById("map");
+        const loadingIndicator = document.getElementById("loading-indicator");
 
         // Create a map centered to show the lower 48 states of the USA
         const map = new google.maps.Map(document.getElementById("map"), {
@@ -91,7 +95,7 @@ import initTableSorting from "./table";
 
         // if mapElement has a data attribute for fetch-locations-url (elements-api can use this).
         // Use leadflex plugin endpoint if not provided.
-        const fetchLocationsUrl = mapElement.dataset.fetchLocationsUrl ?? '/leadflex/map/locations'
+        const fetchLocationsUrl = mapElement.dataset.fetchLocationsUrl ?? "/leadflex/map/locations";
 
         // Fetch location data
         fetch(fetchLocationsUrl)
@@ -101,7 +105,7 @@ import initTableSorting from "./table";
             })
             .then(response => {
                 console.log("Locations fetched:", response);
-                const locations = response.data
+                const locations = response.data;
 
                 // Hide the loading indicator
                 if (loadingIndicator) {
@@ -111,7 +115,7 @@ import initTableSorting from "./table";
                 locations.forEach(job => {
                     // exit early if coords are not lat, lng
                     if (!job.location.coords.lat || !job.location.coords.lng) {
-                        console.error("Invalid coordinates for job:", job.title);
+                        console.warn("Invalid coordinates for job:", job.title);
                         return;
                     }
 
@@ -125,7 +129,7 @@ import initTableSorting from "./table";
                         fillOpacity: job.circle.fillOpacity ?? 0.6,
                         map: map,
                         center: job.location.coords,
-                        radius: job.hiringRadius
+                        radius: job.hiringRadius ?? 40
                     });
 
                     // Extend the bounds to include this circle's center
@@ -201,6 +205,9 @@ import initTableSorting from "./table";
                                 row.innerHTML += `<td class="${tableDataClasses}">
                                     <a href="${job.url}" target="_blank" class="text-blue-500 hover:underline">View Job</a> 
                                   </td>`;
+                                row.innerHTML += `<td class="${tableDataClasses}">
+                                    <span class="cursor-pointer text-blue-500 hover:underline">Highlight</span> 
+                                  </td>`;
                                 tbody.appendChild(row);
 
                                 advertiseSvg.className = `h-2 w-2 mr-1 ${advertiseColors[job.advertiseJob].tw}`;
@@ -246,7 +253,6 @@ import initTableSorting from "./table";
                                 document.querySelectorAll(".job-info").forEach(container => {
                                     console.log(container);
                                     container.addEventListener("click", (e) => {
-                                        e.preventDefault();
                                         // parse to int
                                         const jobId = parseInt(container.getAttribute("data-job-id"));
                                         // exit early if jobId is not a number
