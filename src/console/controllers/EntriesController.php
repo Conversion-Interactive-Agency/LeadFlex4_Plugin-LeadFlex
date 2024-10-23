@@ -42,8 +42,8 @@ class EntriesController extends Controller
         $settings = Leadflex::$plugin->getSettings();
 
         // Check to see if action is enabled
-        $isJobDeletionEnabled = $settings->isJobDeletionEnabled;
-        if (!$isJobDeletionEnabled) {
+        $isDeleteStaleJobsEnabled = $settings->isDeleteStaleJobsEnabled;
+        if (!$isDeleteStaleJobsEnabled) {
             Craft::warning("Job deletion feature disabled. Enable option in the Leadflex plugin Settings");
             echo "Job deletion feature disabled. Enable option in the Leadflex plugin Settings \n";
             return 1;

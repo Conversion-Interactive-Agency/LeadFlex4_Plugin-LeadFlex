@@ -48,7 +48,7 @@ class Settings extends Model
     /**
      * @var boolean Enable automatic deletion of stale job entries
      */
-    public bool $isJobDeletionEnabled = false;
+    public bool $isDeleteStaleJobsEnabled = false;
 
     /**
      * @var string Months closed/disabled jobs are kept before deletion.
@@ -67,7 +67,7 @@ class Settings extends Model
             ['disableCustomSlugGeneration', 'boolean'],
             ['includeJobCampaignEvaluation', 'boolean'],
             ['jobDeletionMonths', 'string'],
-            ['isJobDeletionEnabled', 'boolean'],
+            ['isDeleteStaleJobsEnabled', 'boolean'],
             ['section', 'string'],
             ['locationKeys', 'safe'],
         ];
