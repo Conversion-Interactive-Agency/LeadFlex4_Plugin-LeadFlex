@@ -39,5 +39,11 @@ return [
     "includeJobCampaignEvaluation" => true,
 
     // New configurable setting for the default referrer
-    "defaultDirectReferrer" => "lf_direct"
+    "defaultDirectReferrer" => "lf_direct",
+
+    // Enable automatic deletion of stale job entries
+    "isDeleteStaleJobsEnabled" => false,
+
+    // Duration disabled jobs should be kept before deletion - DateTime::modify(), e.g., '6 months', '1 year', '30 days'
+    "jobDeletionDuration" => '6 months'
 ];

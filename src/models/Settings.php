@@ -45,6 +45,20 @@ class Settings extends Model
      */
     public array $leadFlexDomains = [];
 
+    /**
+     * @var boolean Enable automatic deletion of stale job entries
+     */
+    public bool $isDeleteStaleJobsEnabled = false;
+
+    /**
+     * @var string string Duration closed/disabled jobs are kept before deletion.
+     * This should be a string accepted by DateTime::modify(), such as:
+     *
+     * '6 months', '1 year', '30 days' (valid formats)
+     *
+     */
+    public string $jobDeletionDuration = '6 months';
+
     public function defineRules(): array
     {
         return [
@@ -52,6 +66,8 @@ class Settings extends Model
             ['leadFlexDomains', 'safe'], // Updated rule for fully qualified domains
             ['disableCustomSlugGeneration', 'boolean'],
             ['includeJobCampaignEvaluation', 'boolean'],
+            ['jobDeletionDuration', 'string'],
+            ['isDeleteStaleJobsEnabled', 'boolean'],
             ['section', 'string'],
             ['locationKeys', 'safe'],
         ];
