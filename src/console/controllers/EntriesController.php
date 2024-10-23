@@ -49,22 +49,22 @@ class EntriesController extends Controller
             return 1;
         }
 
-        $numberOfMonths = $settings->jobDeletionMonths;
+        $deletionDuration = $settings->jobDeletionDuration;
 
         $today = new \DateTime();
-        $monthThreshold= $today->modify("-${numberOfMonths}")->format('Y-m-d');
+        $thresholdDate= $today->modify("-${deletionDuration}")->format('Y-m-d');
 
         //Create query for jobs that are disabled and lastUpdated from $monthThreshold date
         $entries = Entry::find()
             ->section($settings->section)
             ->status('disabled')
-            ->dateUpdated("< $monthThreshold")
+            ->dateUpdated("< $thresholdDate")
             ->all();
 
         // Check if any job entries are found
         if (empty($entries)) {
-            Craft::warning("No job entries found for $monthThreshold");
-            echo "No entries older than {$numberOfMonths} found.\n";
+            Craft::warning("No job entries found for $thresholdDate");
+            echo "No entries older than {$deletionDuration} found.\n";
             return 0;
         }
 
@@ -83,8 +83,8 @@ class EntriesController extends Controller
             }
         }
 
-        Craft::info("$deletedCount entries that were published before $monthThreshold were deleted successfully.\n");
-        echo "$deletedCount entries that were published before $monthThreshold were deleted successfully.\n";
+        Craft::info("$deletedCount entries that were published before $thresholdDate were deleted successfully.\n");
+        echo "$deletedCount entries that were published before $thresholdDate were deleted successfully.\n";
         return $deletedCount > 0 ? 0 : 1; // Return 0 if any entries were deleted, otherwise return 1
     }
 }
