@@ -15,6 +15,7 @@ use craft\base\Component;
 use craft\elements\Entry;
 use yii\base\Event;
 
+use conversionia\leadflex\Leadflex;
 use conversionia\leadflex\assets\site\SiteAsset;
 
 use conversionia\leadflex\twigextensions\BusinessLogicTwigExtensions;
@@ -25,6 +26,8 @@ use conversionia\leadflex\helpers\EntryHelper;
 
 use conversionia\leadflex\variables\LeadflexVariable;
 use craft\web\twig\variables\CraftVariable;
+
+use craft\web\View;
 
 class FrontendService extends Component
 {
@@ -37,6 +40,7 @@ class FrontendService extends Component
         $this->registerPluginVariable();
         $this->registertAssets();
         $this->registerGeo();
+        $this->registerLeadAssistChat();
     }
 
     public function registerVariables()
@@ -69,6 +73,20 @@ class FrontendService extends Component
     public function registertAssets()
     {
         Craft::$app->view->registerAssetBundle(SiteAsset::class);
+    }
+
+    public function registerLeadAssistChat()
+    {
+        // get LeadAssist ID value
+        $leadAssistID = Leadflex::$plugin->getSettings()->leadAssistID ?? '';
+        if (!empty($leadAssistID)) {
+            Event::on(View::class, View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
+                function() use ($leadAssistID) {
+                    $chatSourceUrl = 'https://leadassist.ai/js/chat-widget.js';
+                    Craft::$app->view->registerJsFile($chatSourceUrl, ['client' => $leadAssistID]);
+                }
+            );
+        }
     }
     
     public function getConvirza($job): array

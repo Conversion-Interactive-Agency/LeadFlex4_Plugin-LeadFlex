@@ -45,10 +45,16 @@ class Settings extends Model
      */
     public array $leadFlexDomains = [];
 
+    /**
+     * @var string leadAssist Chat ID, default empty string
+     */
+    public $leadAssistID = '';
+
     public function defineRules(): array
     {
         return [
             [['defaultDirectReferrer'], 'string'],
+            [['leadAssistID'], 'string', 'length' => 32, 'skipOnEmpty' => true],
             ['leadFlexDomains', 'safe'], // Updated rule for fully qualified domains
             ['disableCustomSlugGeneration', 'boolean'],
             ['includeJobCampaignEvaluation', 'boolean'],
