@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.7.0](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.6.0...v4.7.0) (2024-10-24)
+
+
+### Features
+
+* Adding settings to enable Leadassist chat via plugin config ([#13](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/issues/13)) ([65323b0](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/commit/65323b027628465a0cec5eb4dd9c933399121678))
+
+
+### Bug Fixes
+
+* Update release-please to work with title check ([#11](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/issues/11)) ([b5619ff](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/commit/b5619ffd9a879c4d0f05a0f1701bfc38c94bf686))
+
 ## [4.6.0](https://github.com/Conversion-Interactive-Agency/LeadFlex4_Plugin-LeadFlex/compare/v4.5.1...v4.6.0) (2024-10-11)
 
 
