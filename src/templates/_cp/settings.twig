@@ -1,0 +1,29 @@
+{% import '_includes/forms.twig' as forms %}
+
+{% set cols = {
+    domain: {
+        type: 'singleline',
+        heading: 'LeadFlex Domain Name',
+        info: 'Save event will strip protocol & any tailing slashes (e.g. "https://drive4cia.com/" becomes "drive4cia.com")',
+        placeholder: 'Enter the domain name (e.g. drive4cia.com)',
+    },
+    uri: {
+        type: 'singleline',
+        heading: 'URI (Optional)',
+        info: 'Leave blank to read from /jobs.json',
+        placeholder: 'jobs.json'
+    },
+}  %}
+
+{{ forms.editableTableField({
+    label: 'LeadFlex Domains',
+    instructions: 'Enter the LeadFlex domains you want to be merged into a single feed',
+    name: 'leadFlexDomains',
+    id: 'leadFlexDomains',
+    cols: cols,
+    rows: settings.leadFlexDomains,
+    addRowLabel: 'Add a domain',
+    allowAdd: true,
+    allowDelete: true,
+    allowReorder: true,
+}) }}
