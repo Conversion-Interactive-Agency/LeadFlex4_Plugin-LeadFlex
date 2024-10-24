@@ -3,8 +3,8 @@
     "version": "4.6.0",
     "private": true,
     "scripts": {
-        "dev": "cd ./src/assets && vite build --watch",
-        "build": "cd ./src/assets && vite build"
+        "dev": "cd ./src/assets && vite build --watch --mode development",
+        "build": "cd ./src/assets && vite build --mode production"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.17",

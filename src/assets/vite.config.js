@@ -23,12 +23,13 @@ apps.forEach(app => (entries[app] = resolve(__dirname, `${app}/src/js/${app}.js`
 
 const styleLint = stylelintPlugin;
 
-export default ({ command }) => ({
+export default ({ mode }) => ({
   build: {
     outDir: "dist",
     emptyOutDir: true,
     manifest: false,
     sourcemap: true,
+    minify: mode === 'production', // Minify only in production mode
     rollupOptions: {
       input: { ...entries },
       output: {
@@ -59,6 +60,7 @@ export default ({ command }) => ({
 
     eslintPlugin({
       fix: true,
+      overrideConfigFile: "./eslint.config.js",
     }),
 
     // todo: Add stylelintPlugin
